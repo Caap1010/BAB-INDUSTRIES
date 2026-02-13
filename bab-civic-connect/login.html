@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | BAB CivicConnect</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/civicconnect.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <img src="assets/images/civic-connect.png" class="brand-logo-circle" alt="CivicConnect" />
+        <div class="brand-text">
+          <span class="brand-tagline">BAB CivicConnect</span>
+          <span class="brand-name">Citizen Access Portal</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="form-card">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h1>Login</h1>
+        <p>Enter your details to access your dashboard.</p>
+
+        <form id="loginForm" style="margin-top:1.4rem;">
+          <input id="loginEmail" type="email" class="input-field" placeholder="Email" required />
+          <input id="loginPassword" type="password" class="input-field" placeholder="Password" required />
+          <button class="btn-primary" style="width:100%;">Log In</button>
+        </form>
+
+        <div id="loginMessage" style="margin-top:0.8rem; font-size:0.85rem;"></div>
+
+        <div class="form-footer">
+          <a href="reset-password.html">Forgot your password?</a><br>
+          New to CivicConnect? <a href="register.html">Create an account</a>.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">© <span id="year"></span> BAB CivicConnect</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/civicconnect-auth.js"></script>
+</body>
+
+</html>

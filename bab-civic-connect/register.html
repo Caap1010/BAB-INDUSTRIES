@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | BAB CivicConnect</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/civicconnect.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <img src="assets/images/civic-connect.png" class="brand-logo-circle" alt="Logo" />
+        <div class="brand-text">
+          <span class="brand-tagline">BAB CivicConnect</span>
+          <span class="brand-name">Citizen Access Portal</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="form-card">
+        <p class="eyebrow">CREATE ACCOUNT</p>
+        <h1>Register for CivicConnect</h1>
+        <p>Set up your profile so you can access emergency and government services.</p>
+
+        <form id="registerForm" style="margin-top:1.5rem;">
+          <input type="text" class="input-field" id="regFullName" placeholder="Full Name" required />
+          <input type="email" class="input-field" id="regEmail" placeholder="Email" required />
+          <input type="tel" class="input-field" id="regPhone" placeholder="Mobile Number" required />
+          <input type="text" class="input-field" id="regAddress" placeholder="Home Address (optional)" />
+          <input type="text" class="input-field" id="regMedical" placeholder="Medical Info (optional)" />
+          <input type="text" class="input-field" id="regEmergencyContactName" placeholder="Emergency Contact Name"
+            required />
+          <input type="tel" class="input-field" id="regEmergencyContactPhone" placeholder="Emergency Contact Phone"
+            required />
+          <input type="password" class="input-field" id="regPassword" placeholder="Password (min 6 characters)"
+            minlength="6" required />
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:0.5rem;">
+            Create Account
+          </button>
+        </form>
+
+        <div class="form-footer">
+          Already have an account?
+          <a href="login.html">Log in here.</a>
+        </div>
+
+        <div id="registerMessage" style="margin-top:0.7rem; font-size:0.85rem;"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">BAB CivicConnect</div>
+        <div class="footer-subtitle">Powered by BAB Industries</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © <span id="year"></span> BAB CivicConnect
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/civicconnect-auth.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divisions | BAB Industries</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <img src="assets/images/bab-logo.jpg" alt="BAB Logo" class="brand-logo">
+                <div class="brand-text">
+                    <span class="brand-tagline">The Hate U Give</span>
+                    <span class="brand-name">BAB Industries</span>
+                </div>
+            </div>
+
+            <nav class="nav-desktop">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+
+        <nav id="navMobile" class="nav-mobile">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="divisions.html">Divisions</a>
+            <a href="businesses.html">Businesses</a>
+            <a href="leadership.html">Leadership</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+
+    <main class="section section-dark">
+        <div class="container">
+
+            <p class="eyebrow">WHAT WE OPERATE</p>
+            <h1>Divisions of BAB Industries</h1>
+
+            <p style="margin-top:1rem; max-width:45rem;">
+                BAB Industries is composed of specialised divisions spanning the real and digital economy.
+                Each division contains multiple brands designed for impact, scale and long‑term growth.
+            </p>
+
+            <div class="grid divisions-grid" style="margin-top:2rem;">
+
+                <div class="card">
+                    <h3>Finance & Capital</h3>
+                    <p>Consulting, credit, investments, blockchain, insurance.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Technology & Innovation</h3>
+                    <p>Cybersecurity, cloud storage, smart homes, AI & automation.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Property & Construction</h3>
+                    <p>Property, renovations, green builds, interior design.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Transport & Automotive</h3>
+                    <p>Logistics, rentals, motorsport, EV mobility, towing.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Food & Hospitality</h3>
+                    <p>Bakery, catering, food trucks, coffee shops, beverages.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Sports, Media & Lifestyle</h3>
+                    <p>Sports academy, podcasts, modelling, fashion, photography.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Education & Development</h3>
+                    <p>Tech training, tutoring, language learning, driving school.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Sustainability & Community</h3>
+                    <p>Solar energy, eco‑farm, recycling, community upliftment.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+
+            <div class="footer-left">
+                <div class="footer-brand">BAB Industries</div>
+                <div class="footer-subtitle">Africa‑Born • Globally Focused</div>
+            </div>
+
+            <div class="footer-right">
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB Industries. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const navToggle = document.getElementById("navToggle");
+        const navMobile = document.getElementById("navMobile");
+        navToggle.addEventListener("click", () => {
+            navMobile.classList.toggle("nav-mobile-open");
+        });
+    </script>
+
+</body>
+
+</html>

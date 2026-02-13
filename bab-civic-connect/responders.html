@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CivicConnect | Responders Command Centre</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/civicconnect.css" />
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner container">
+            <div class="brand">
+                <img src="assets/images/civic-connect.png" class="brand-logo-circle">
+                <div class="brand-text">
+                    <span class="brand-tagline">BAB CivicConnect</span>
+                    <span class="brand-name">Responders Command Centre</span>
+                </div>
+            </div>
+
+            <nav class="nav-desktop">
+                <a href="responders.html">Incidents</a>
+                <a href="app.html">Citizen View</a>
+                <a href="#" data-logout>Logout</a>
+            </nav>
+
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+
+        <nav id="navMobile" class="nav-mobile">
+            <a href="responders.html">Incidents</a>
+            <a href="app.html">Citizen View</a>
+            <a href="#" data-logout>Logout</a>
+        </nav>
+    </header>
+
+    <main class="admin-layout">
+        <div class="container">
+
+            <div class="dashboard-header">
+                <p class="eyebrow">RESPONDERS DASHBOARD</p>
+                <h1 id="responderWelcome">Loading responder…</h1>
+                <p style="color:#cbd5e1;">Manage incidents and track live responder GPS.</p>
+
+                <div class="admin-stats">
+                    <div class="admin-stat">Open: <span id="statOpen">0</span></div>
+                    <div class="admin-stat">In Progress: <span id="statInProgress">0</span></div>
+                    <div class="admin-stat">Resolved: <span id="statResolved">0</span></div>
+                </div>
+            </div>
+
+            <!-- GPS SHARING -->
+            <div style="margin-bottom:1rem;">
+                <button id="startLocationSharing" class="btn-primary">📡 Share Live Location</button>
+                <button id="stopLocationSharing" class="btn-outline" style="display:none;">✋ Stop Sharing</button>
+            </div>
+
+            <div class="admin-grid">
+
+                <!-- INCIDENT LIST -->
+                <section class="card">
+                    <h2>
+                        All Incidents
+                        <span class="live-badge"><span class="live-badge-dot"></span> LIVE</span>
+                    </h2>
+
+                    <div class="admin-filters">
+                        <select id="filterType">
+                            <option value="">All types</option>
+                            <option value="Ambulance / Medical">Ambulance / Medical</option>
+                            <option value="Police / Crime">Police / Crime</option>
+                            <option value="Fire & Rescue">Fire & Rescue</option>
+                            <option value="Security / Other">Security / Other</option>
+                        </select>
+
+                        <select id="filterStatus">
+                            <option value="">All statuses</option>
+                            <option value="open">Open</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+
+                        <button id="refreshIncidentsBtn">Refresh</button>
+                    </div>
+
+                    <div id="responderIncidents">
+                        <p style="color:#94a3b8;">Loading incidents…</p>
+                    </div>
+                </section>
+
+                <!-- MAP -->
+                <section class="card">
+                    <h2>Incident Map</h2>
+                    <p style="font-size:0.85rem; color:#94a3b8;">
+                        Click an incident in the table to center on the map.
+                    </p>
+                    <div id="responderMap" style="height:320px; border-radius:12px;"></div>
+                </section>
+
+            </div>
+
+            <!-- INCIDENT CHAT -->
+            <section class="card" style="margin-top:2rem;">
+                <h2>Incident Chat</h2>
+                <p style="color:#94a3b8; font-size:0.85rem;">Click an incident row to chat.</p>
+
+                <div id="responderChatIncidentLabel" style="font-size:0.8rem; color:#cbd5e1; margin-bottom:0.5rem;">
+                    No incident selected.
+                </div>
+
+                <div id="responderChatMessages" class="chat-messages">
+                    <div style="color:#64748b;">Select an incident from the table.</div>
+                </div>
+
+                <form id="responderChatForm" style="display:flex; gap:0.4rem; margin-top:0.6rem;">
+                    <input id="responderChatInput" class="input-field" type="text" placeholder="Type a message…"
+                        style="flex:1; margin-bottom:0;">
+                    <button class="btn-primary" style="padding-inline:1rem;">Send</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB CivicConnect – Responders Command Centre
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Main JS -->
+    <script src="js/civicconnect-auth.js"></script>
+
+    <!-- Service Worker -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .catch(err => console.warn("Service worker failed:", err));
+        }
+    </script>
+
+</body>
+
+</html>

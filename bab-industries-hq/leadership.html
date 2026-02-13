@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership | BAB Industries</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container header-inner">
+
+            <div class="brand">
+                <img src="assets/images/bab-logo.jpg" class="brand-logo">
+                <div class="brand-text">
+                    <span class="brand-tagline">The Hate U Give</span>
+                    <span class="brand-name">BAB Industries</span>
+                </div>
+            </div>
+
+            <nav class="nav-desktop">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+
+        <nav id="navMobile" class="nav-mobile">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="divisions.html">Divisions</a>
+            <a href="businesses.html">Businesses</a>
+            <a href="leadership.html">Leadership</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+
+    <main class="section section-dark">
+        <div class="container">
+
+            <p class="eyebrow">FOUNDER‑LED ORGANISATION</p>
+            <h1>Leadership at BAB Industries</h1>
+
+            <p style="margin-top:1rem; max-width:45rem;">
+                BAB Industries is fully founder‑owned and founder‑led by
+                <strong>Sfiso Quintin Tshotwane</strong>. Every brand, every concept,
+                every step of the empire’s growth comes from one vision and one standard.
+            </p>
+
+            <div class="ceo-section" style="margin-top:2rem; display:grid; gap:2rem;">
+
+                <div class="ceo-card">
+                    <h2 class="ceo-name">Sfiso Quintin Tshotwane</h2>
+                    <p class="ceo-title">Founder • Director • Chief Executive Officer</p>
+
+                    <p><strong>Mobile:</strong> 062 068 8465</p>
+                    <p><strong>WhatsApp:</strong> 067 784 4577</p>
+                    <p><strong>Email:</strong> brokenaintbad@gmail.com</p>
+
+                    <p style="margin-top:1rem;"><strong>Tagline:</strong> The Hate U Give</p>
+                    <p><strong>Slogan:</strong> “The absence of evidence is not the evidence of absence.”</p>
+
+                    <p class="ceo-message">
+                        “I built BAB Industries to prove that broken isn’t the end — it’s the start.
+                        You rebuild, you re-learn, you outwork, you outlast. Everything I build is
+                        for people like me: underestimated, doubted, counted out. BAB is not just a
+                        company. It’s a declaration.”
+                    </p>
+                </div>
+
+                <div class="ceo-side-panel">
+                    <h3>Leadership Philosophy</h3>
+                    <ul style="line-height:1.8;">
+                        <li><strong>Founder-led:</strong> one vision, complete accountability.</li>
+                        <li><strong>Innovation-driven:</strong> broken systems create openings.</li>
+                        <li><strong>People-first:</strong> businesses built to uplift, not exploit.</li>
+                        <li><strong>Long-term:</strong> empires take time, pressure and purpose.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">BAB Industries</div>
+                <div class="footer-subtitle">Africa‑Born • Globally Focused</div>
+            </div>
+            <div class="footer-right">
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB Industries. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const navToggle = document.getElementById("navToggle");
+        const navMobile = document.getElementById("navMobile");
+        navToggle.addEventListener("click", () => {
+            navMobile.classList.toggle("nav-mobile-open");
+        });
+    </script>
+
+</body>
+
+</html>

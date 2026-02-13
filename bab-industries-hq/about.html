@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | BAB Industries</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <img src="assets/images/bab-logo.jpg" alt="BAB Industries Logo" class="brand-logo">
+                <div class="brand-text">
+                    <span class="brand-tagline">The Hate U Give</span>
+                    <span class="brand-name">BAB Industries</span>
+                </div>
+            </div>
+            <nav class="nav-desktop">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+        <nav id="navMobile" class="nav-mobile">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="divisions.html">Divisions</a>
+            <a href="businesses.html">Businesses</a>
+            <a href="leadership.html">Leadership</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main class="section section-dark">
+        <div class="container">
+            <p class="eyebrow">ABOUT US</p>
+            <h1>About BAB Industries</h1>
+
+            <p style="margin-top:1rem; max-width:45rem;">
+                BAB Industries is an Africa‑born, multi‑industry holding company built on the belief that
+                <strong>Broken Ain’t Bad</strong>. We identify broken systems, overlooked opportunities and
+                unfair barriers — then design businesses that turn those gaps into long‑term value.
+            </p>
+
+            <p style="margin-top:1rem; max-width:45rem;">
+                Our portfolio spans finance, technology, property, sustainability, food, media, logistics,
+                sports and education. Each venture is focused, system‑driven and aligned under one founder‑led
+                vision: build the organisations and tools needed for the next generation of Africa.
+            </p>
+
+            <h2 style="margin-top:3rem;">Our Purpose</h2>
+            <ul style="margin-top:1rem; max-width:45rem; line-height:1.7;">
+                <li>Identify where people are underserved or locked out.</li>
+                <li>Build scalable brands and platforms that serve those gaps.</li>
+                <li>Combine technology, creativity and discipline in execution.</li>
+                <li>Create wealth, ownership and opportunity across the continent.</li>
+            </ul>
+
+            <h2 style="margin-top:3rem;">Our Identity</h2>
+            <p><strong>Tagline:</strong> The Hate U Give</p>
+            <p><strong>Slogan:</strong> “The absence of evidence is not the evidence of absence.”</p>
+
+            <p style="margin-top:1rem; max-width:45rem;">
+                These principles express our belief that potential exists before proof, and that doubt or hate
+                can be converted into fuel, focus and execution.
+            </p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">BAB Industries</div>
+                <div class="footer-subtitle">Africa‑Born • Globally Focused</div>
+            </div>
+            <div class="footer-right">
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB Industries. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const navToggle = document.getElementById("navToggle");
+        const navMobile = document.getElementById("navMobile");
+        navToggle.addEventListener("click", () => {
+            navMobile.classList.toggle("nav-mobile-open");
+        });
+    </script>
+</body>
+
+</html>

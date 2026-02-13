@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BAB Sports Predictor – All Predictions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="sp-header">
+    <div class="sp-header-left">
+      <div class="sp-logo-circle">BAB</div>
+      <div>
+        <div class="sp-eyebrow">BAB INDUSTRIES • SPORTS DIVISION</div>
+        <h1 class="sp-title">All Match Predictions</h1>
+        <p class="sp-subtitle">
+          Browse all upcoming fixtures by league, day category and market type.
+        </p>
+      </div>
+    </div>
+    <nav class="sp-nav">
+      <a href="index.html">Today</a>
+      <a href="predictions.html" class="active">All Predictions</a>
+      <a href="slips.html">Slips</a>
+    </nav>
+  </header>
+
+  <main class="sp-main">
+    <section class="sp-section">
+      <header class="sp-section-header">
+        <h2>Filter</h2>
+        <div class="sp-filters">
+          <select id="filter-day">
+            <option value="all">All days</option>
+            <option value="today">Today</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="weekend">Weekend</option>
+          </select>
+          <select id="filter-league">
+            <option value="all">All leagues</option>
+          </select>
+          <select id="filter-market">
+            <option value="all">All markets</option>
+            <option value="1x2">1X2</option>
+            <option value="goals">Goals (O/U, BTTS)</option>
+            <option value="corners">Corners</option>
+            <option value="cards">Cards</option>
+          </select>
+        </div>
+      </header>
+
+      <div id="all-matches" class="sp-grid"></div>
+    </section>
+  </main>
+
+  <footer class="sp-footer">
+    <span>BAB Sports Predictor</span>
+    <span>Pure HTML • CSS • JavaScript</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/predictions.js"></script>
+</body>
+</html>

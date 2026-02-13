@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CivicConnect | Dispatcher Command Centre</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/civicconnect.css" />
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner container">
+            <div class="brand">
+                <img src="assets/images/civic-connect.png" class="brand-logo-circle" alt="Logo" />
+                <div class="brand-text">
+                    <span class="brand-tagline">BAB CivicConnect</span>
+                    <span class="brand-name">Dispatcher Command Centre</span>
+                </div>
+            </div>
+
+            <nav class="nav-desktop">
+                <a href="dispatcher.html">Dispatcher Console</a>
+                <a href="responders.html">Responder View</a>
+                <a href="app.html">Citizen View</a>
+                <a href="#" data-logout>Logout</a>
+            </nav>
+
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+
+        <nav id="navMobile" class="nav-mobile">
+            <a href="dispatcher.html">Dispatcher Console</a>
+            <a href="responders.html">Responder View</a>
+            <a href="app.html">Citizen View</a>
+            <a href="#" data-logout>Logout</a>
+        </nav>
+    </header>
+
+    <main class="dispatcher-layout">
+        <div class="container">
+            <!-- HEADER + STATS -->
+            <div class="dashboard-header">
+                <p class="eyebrow">DISPATCHER CONTROL ROOM</p>
+                <h1 id="dispatcherWelcome">Loading dispatcher…</h1>
+                <p style="color:#cbd5e1;">
+                    Coordinate responders, assign incidents, and manage staff in real time.
+                </p>
+
+                <div class="admin-stats">
+                    <div class="admin-stat">Open: <span id="dStatOpen">0</span></div>
+                    <div class="admin-stat">In Progress: <span id="dStatInProgress">0</span></div>
+                    <div class="admin-stat">Resolved: <span id="dStatResolved">0</span></div>
+                    <div class="admin-stat">Active Responders: <span id="dStatActiveResponders">0</span></div>
+                </div>
+            </div>
+
+            <!-- MAIN GRID: INCIDENTS + MAP + DETAILS -->
+            <div class="dispatcher-grid">
+                <!-- LEFT: INCIDENT FEED -->
+                <section class="card dispatcher-panel">
+                    <h2>
+                        Live Incidents
+                        <span class="live-badge"><span class="live-badge-dot"></span> LIVE</span>
+                    </h2>
+
+                    <div class="admin-filters">
+                        <select id="dFilterType">
+                            <option value="">All types</option>
+                            <option value="Ambulance / Medical">Ambulance / Medical</option>
+                            <option value="Police / Crime">Police / Crime</option>
+                            <option value="Fire &amp; Rescue">Fire &amp; Rescue</option>
+                            <option value="Security / Other">Security / Other</option>
+                        </select>
+
+                        <select id="dFilterStatus">
+                            <option value="">All statuses</option>
+                            <option value="open">Open</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+
+                        <select id="dFilterAssignment">
+                            <option value="">All assignments</option>
+                            <option value="unassigned">Unassigned only</option>
+                            <option value="assigned">Assigned</option>
+                        </select>
+
+                        <button id="dRefreshIncidentsBtn">Refresh</button>
+                    </div>
+
+                    <div id="dispatcherIncidents">
+                        <p style="color:#94a3b8;">Loading incidents…</p>
+                    </div>
+                </section>
+
+                <!-- CENTER: MAP -->
+                <section class="card dispatcher-panel">
+                    <h2>Map View</h2>
+                    <p style="font-size:0.85rem; color:#94a3b8;">
+                        Click an incident from the left to focus it. Responder locations update live.
+                    </p>
+                    <div id="dispatcherMap" style="height:360px; border-radius:12px;"></div>
+
+                    <div
+                        style="margin-top:0.7rem; font-size:0.8rem; color:#94a3b8; display:flex; gap:0.75rem; flex-wrap:wrap;">
+                        <span>Legend:</span>
+                        <span>🔴 Incident</span>
+                        <span>🟢 Responder (available)</span>
+                        <span>🟡 Responder (busy)</span>
+                        <span>⚫ Responder (offline)</span>
+                    </div>
+                </section>
+
+                <!-- RIGHT: INCIDENT DETAILS + CHAT -->
+                <section class="card dispatcher-panel">
+                    <h2>Incident Details</h2>
+                    <div id="dIncidentDetails" class="incident-details-pane">
+                        <p style="color:#64748b;">Select an incident from the left to view details.</p>
+                    </div>
+
+                    <h3 style="margin-top:1rem;">Incident Chat</h3>
+                    <div id="dispatcherChatIncidentLabel"
+                        style="font-size:0.8rem; color:#cbd5e1; margin-bottom:0.5rem;">
+                        No incident selected.
+                    </div>
+                    <div id="dispatcherChatMessages" class="chat-messages">
+                        <div style="color:#64748b;">Select an incident to join the conversation.</div>
+                    </div>
+                    <form id="dispatcherChatForm" style="display:flex; gap:0.4rem; margin-top:0.6rem;">
+                        <input id="dispatcherChatInput" class="input-field" type="text" placeholder="Type a message…"
+                            style="flex:1; margin-bottom:0;" />
+                        <button class="btn-primary" style="padding-inline:1rem;">Send</button>
+                    </form>
+                </section>
+            </div>
+
+            <!-- STAFF MANAGEMENT -->
+            <section class="card" style="margin-top:2rem;">
+                <h2>Staff Management</h2>
+                <p style="font-size:0.85rem; color:#94a3b8;">
+                    View and manage citizens, responders and dispatchers. New staff should register via the normal
+                    signup page,
+                    then you can promote them here.
+                </p>
+
+                <div class="admin-filters">
+                    <select id="staffFilterRole">
+                        <option value="">All roles</option>
+                        <option value="citizen">Citizens</option>
+                        <option value="responder">Responders</option>
+                        <option value="dispatcher">Dispatchers</option>
+                    </select>
+
+                    <select id="staffFilterActive">
+                        <option value="">All statuses</option>
+                        <option value="active">Active only</option>
+                        <option value="inactive">Inactive only</option>
+                    </select>
+
+                    <button id="staffRefreshBtn">Refresh Staff</button>
+                </div>
+
+                <div id="staffTableWrapper">
+                    <p style="color:#94a3b8;">Loading staff list…</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB CivicConnect – Dispatcher Command Centre
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Main JS -->
+    <script src="js/civicconnect-auth.js"></script>
+
+    <!-- Service Worker -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register("service-worker.js")
+                .catch(err => console.warn("Service worker failed:", err));
+        }
+    </script>
+</body>
+
+</html>

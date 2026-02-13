@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BAB Sports Predictor – Results Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="sp-header">
+    <div class="sp-header-left">
+      <div class="sp-logo-circle">BAB</div>
+      <div>
+        <div class="sp-eyebrow">BAB INDUSTRIES • SPORTS DIVISION</div>
+        <h1 class="sp-title">Results Tracker</h1>
+        <p class="sp-subtitle">
+          Mark predictions as Win / Loss / Push and measure hit rate over time.
+        </p>
+      </div>
+    </div>
+    <nav class="sp-nav">
+      <a href="index.html">Today</a>
+      <a href="predictions.html">All Predictions</a>
+      <a href="slips.html">Slips</a>
+      <a href="tracker.html" class="active">Results Tracker</a>
+    </nav>
+  </header>
+
+  <main class="sp-main">
+    <section class="sp-section">
+      <header class="sp-section-header">
+        <h2>Summary Statistics</h2>
+        <p>These stats are stored in your browser (localStorage). They will stay as long as you don't clear site data.</p>
+      </header>
+
+      <div id="tracker-summary" class="sp-tracker-summary">
+        <!-- filled by JS -->
+      </div>
+    </section>
+
+    <section class="sp-section sp-section-alt">
+      <header class="sp-section-header">
+        <h2>Predictions &amp; Results</h2>
+        <p>Each row is one main prediction for a match. Update the actual result after the game finishes.</p>
+      </header>
+
+      <div class="sp-tracker-table-wrap">
+        <table class="sp-tracker-table">
+          <thead>
+            <tr>
+              <th>Match</th>
+              <th>League &amp; Date</th>
+              <th>Predicted Market</th>
+              <th>Probability</th>
+              <th>Your Result</th>
+            </tr>
+          </thead>
+          <tbody id="tracker-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sp-footer">
+    <span>Results tracking is manual – always bet responsibly.</span>
+    <span>BAB Sports Predictor • Static Demo</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/tracker.js"></script>
+</body>
+</html>

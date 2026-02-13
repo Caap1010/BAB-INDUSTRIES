@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BAB Sports Predictor – Today’s Picks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="sp-header">
+    <div class="sp-header-left">
+      <div class="sp-logo-circle">BAB</div>
+      <div>
+        <div class="sp-eyebrow">BAB INDUSTRIES • SPORTS DIVISION</div>
+        <h1 class="sp-title">BAB Sports Predictor</h1>
+        <p class="sp-subtitle">
+          AI-style football predictions and probability slips – Pure HTML, CSS &amp; JavaScript.
+        </p>
+      </div>
+    </div>
+    <nav class="sp-nav">
+      <a href="index.html" class="active">Today</a>
+      <a href="predictions.html">All Predictions</a>
+      <a href="slips.html">Slips</a>
+    </nav>
+  </header>
+
+  <main class="sp-main">
+    <section class="sp-section">
+      <header class="sp-section-header">
+        <h2>Today’s Featured Matches</h2>
+        <p>High-interest games with quick probabilities for 1X2, Over 2.5 and BTTS.</p>
+      </header>
+
+      <div id="today-matches" class="sp-grid"></div>
+    </section>
+
+    <section class="sp-section sp-section-alt">
+      <header class="sp-section-header">
+        <h2>Slip Highlights</h2>
+        <p>Preview of what the generator will use for safe, medium and high-risk slips.</p>
+      </header>
+      <div class="sp-slip-summary-grid">
+        <div class="sp-slip-card safe">
+          <h3>Safe Slip (2+ Odds)</h3>
+          <p>High probability selections: double chance &amp; over 1.5 goals.</p>
+        </div>
+        <div class="sp-slip-card medium">
+          <h3>Medium Slip (5+ Odds)</h3>
+          <p>Balanced mix of over 2.5 goals and BTTS picks.</p>
+        </div>
+        <div class="sp-slip-card risky">
+          <h3>High-Risk Jackpot</h3>
+          <p>Correct scores and aggressive markets for big returns.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sp-footer">
+    <span>BAB Sports Predictor • Static HTML/CSS/JS Demo</span>
+    <span>Built under BAB Industries • MASTER CAAP concept</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/predictions.js"></script>
+</body>
+</html>

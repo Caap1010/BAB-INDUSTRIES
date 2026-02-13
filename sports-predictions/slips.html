@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BAB Sports Predictor – Slip Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="sp-header">
+    <div class="sp-header-left">
+      <div class="sp-logo-circle">BAB</div>
+      <div>
+        <div class="sp-eyebrow">BAB INDUSTRIES • SPORTS DIVISION</div>
+        <h1 class="sp-title">Probability Slip Generator</h1>
+        <p class="sp-subtitle">
+          Create safe, medium and high-risk slips, connect fixture screenshots, and import your own stats.
+        </p>
+      </div>
+    </div>
+    <nav class="sp-nav">
+      <a href="index.html">Today</a>
+      <a href="predictions.html">All Predictions</a>
+      <a href="slips.html" class="active">Slips</a>
+      <a href="tracker.html">Results Tracker</a>
+    </nav>
+  </header>
+
+  <main class="sp-main">
+    <!-- Slip Generator Section -->
+    <section class="sp-section">
+      <header class="sp-section-header">
+        <h2>Generate Slips (Built‑in Predictions)</h2>
+        <p>Choose your risk level or specific market and let the system build a slip using the current probability model.</p>
+      </header>
+
+      <div class="sp-slip-controls">
+        <button data-type="safe" class="sp-btn safe">Generate Safe Slip</button>
+        <button data-type="medium" class="sp-btn medium">Generate 5+ Odds Slip</button>
+        <button data-type="high" class="sp-btn risky">Generate High-Risk Jackpot</button>
+      </div>
+
+      <div class="sp-slip-controls">
+        <button data-market="over25" class="sp-btn-outline">Best Over 2.5 Goals Slip</button>
+        <button data-market="btts" class="sp-btn-outline">Best BTTS Slip</button>
+        <button data-market="corners" class="sp-btn-outline">Best Corners Slip</button>
+        <button data-market="doubleChance" class="sp-btn-outline">Best Double Chance Slip</button>
+      </div>
+
+      <div id="slip-output" class="sp-slip-output"></div>
+    </section>
+
+    <!-- Image Upload Predictor Section -->
+    <section class="sp-section sp-section-alt">
+      <header class="sp-section-header">
+        <h2>Image Upload • Match Predictions</h2>
+        <p>
+          Upload screenshots of upcoming fixtures. For each image, select the correct match and view probabilities &amp; analysis.
+        </p>
+      </header>
+
+      <div class="sp-upload-controls">
+        <label class="sp-upload-label">
+          <input type="file" id="fixture-images" accept="image/*" multiple />
+          <span>📷 Upload Fixture Images</span>
+        </label>
+        <p class="sp-upload-note">
+          This version does not read text inside the image. You manually pick the match, then the system shows existing stats &amp; predictions.
+        </p>
+      </div>
+
+      <div id="image-gallery" class="sp-image-gallery"></div>
+    </section>
+
+    <!-- NEW: Text / File Import for Extra Stats -->
+    <section class="sp-section">
+      <header class="sp-section-header">
+        <h2>Import Fixtures / Past Results (Text or File)</h2>
+        <p>
+          Paste text or upload a .txt / .csv file with past results. The website will build extra team form stats and use them to
+          influence which selections go into your slips.
+        </p>
+      </header>
+
+      <div class="sp-upload-controls">
+        <textarea
+          id="custom-text"
+          rows="4"
+          placeholder="Example format (one result per line):
+Premier League,2026-02-01,Manchester City,Arsenal,3,1
+La Liga,2026-01-25,Real Madrid,Barcelona,2,2"
+        ></textarea>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+          <button id="process-text" class="sp-btn-outline">Process Text Data</button>
+
+          <label class="sp-upload-label">
+            <input type="file" id="custom-file" accept=".txt,.csv" />
+            <span>📄 Upload .txt / .csv</span>
+          </label>
+        </div>
+
+        <p class="sp-upload-note">
+          Format: <strong>league,date,homeTeam,awayTeam,homeGoals,awayGoals</strong> per line.  
+          Example: <code>Serie A,2026-01-28,Inter Milan,Juventus,1,0</code>
+        </p>
+      </div>
+
+      <div id="data-summary" class="sp-data-summary"></div>
+    </section>
+  </main>
+
+  <footer class="sp-footer">
+    <span>Predictions are demo only – not financial advice.</span>
+    <span>BAB Industries • MASTER CAAP concept</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/slips.js"></script>
+  <script src="js/imagePredictor.js"></script>
+  <script src="js/ingest.js"></script>
+</body>
+</html>

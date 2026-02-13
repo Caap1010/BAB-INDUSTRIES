@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>MASTER CAAP — BAB Industries Tech</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Fonts (optional, safe to remove if your work PC blocks external fonts) -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap">
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="mc-app">
+        <!-- Top bar / brand -->
+        <header class="mc-header">
+            <div class="mc-header-left">
+                <div class="mc-logo-circle">MC</div>
+                <div class="mc-brand-text">
+                    <span class="mc-brand-eyebrow">BAB INDUSTRIES • TECH DIVISION</span>
+                    <span class="mc-brand-name">MASTER CAAP</span>
+                    <span class="mc-brand-subtitle">AI Code Architect for BAB Businesses</span>
+                </div>
+            </div>
+            <div class="mc-header-right">
+                <span class="mc-chip">AI Dev Agent</span>
+                <span class="mc-chip mc-chip-outline">VS Code • GitHub • Supabase Ready</span>
+            </div>
+        </header>
+
+        <!-- Layout: sidebar + chat -->
+        <div class="mc-main">
+            <!-- Left: Prompt helper / project summary -->
+            <aside class="mc-sidebar">
+                <section class="mc-panel">
+                    <div class="mc-panel-title">Quick Start Prompts</div>
+                    <ul class="mc-prompt-list">
+                        <li class="mc-prompt-pill"
+                            data-prompt="Build a Supabase + React task manager with auth and dark mode.">
+                            Supabase + React Task App
+                        </li>
+                        <li class="mc-prompt-pill"
+                            data-prompt="Create a landing page for a BAB Industries business with contact form and pricing section.">
+                            BAB Business Landing Page
+                        </li>
+                        <li class="mc-prompt-pill"
+                            data-prompt="Generate a Node.js + Express API with CRUD for products and JWT auth.">
+                            Node API with Auth
+                        </li>
+                        <li class="mc-prompt-pill"
+                            data-prompt="Scaffold a fullstack app with Next.js, Supabase auth, and protected dashboard.">
+                            Fullstack Dashboard App
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="mc-panel mc-panel-secondary">
+                    <div class="mc-panel-title">Current Project Spec</div>
+                    <div id="project-spec" class="mc-spec-body mc-spec-empty">
+                        No project captured yet.
+                        Start by telling MASTER CAAP what you want to build.
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Right: Chat area -->
+            <main class="mc-chat-area">
+                <div id="chat-container" class="mc-chat-container">
+                    <!-- Initial assistant message -->
+                    <div class="mc-message mc-assistant">
+                        <div class="mc-avatar">🤖</div>
+                        <div class="mc-bubble">
+                            <div class="mc-bubble-header">
+                                <span class="mc-bubble-role">MASTER CAAP</span>
+                                <span class="mc-bubble-tag">BAB Tech • AI Code Architect</span>
+                            </div>
+                            <div class="mc-bubble-body">
+                                Welcome, creator 👋
+                                I am <strong>MASTER CAAP</strong>, a BAB Industries AI built to turn your ideas
+                                into real, structured code.
+
+                                <br><br>
+                                <strong>How it works:</strong>
+                                <ol>
+                                    <li>You describe the app, site, or system you want.</li>
+                                    <li>I ask smart questions to clarify details.</li>
+                                    <li>I suggest enhancements to make it stronger.</li>
+                                    <li>I generate structure & code you can paste into VS Code.</li>
+                                </ol>
+
+                                Start by telling me what you want to build — or click a quick prompt on the left.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input bar -->
+                <footer class="mc-input-bar">
+                    <div class="mc-input-wrapper">
+                        <textarea id="user-input" rows="1"
+                            placeholder="Describe what you want to build (e.g. 'Supabase + React task app with login, dark mode, and role-based access')..."></textarea>
+                    </div>
+                    <button id="send-btn" class="mc-send-btn">
+                        <span>Send</span>
+                        <span class="mc-send-icon">⮞</span>
+                    </button>
+                </footer>
+            </main>
+        </div>
+
+        <!-- Bottom status bar -->
+        <footer class="mc-status-bar">
+            <span>MASTER CAAP • BAB Industries</span>
+            <span>Mode: <strong>Spec → Enhancements → Code Outline</strong></span>
+        </footer>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>

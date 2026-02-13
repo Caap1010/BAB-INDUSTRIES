@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | BAB Industries</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container header-inner">
+
+            <div class="brand">
+                <img src="assets/images/bab-logo.jpg" class="brand-logo">
+                <div class="brand-text">
+                    <span class="brand-tagline">The Hate U Give</span>
+                    <span class="brand-name">BAB Industries</span>
+                </div>
+            </div>
+
+            <nav class="nav-desktop">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+
+        <nav id="navMobile" class="nav-mobile">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="divisions.html">Divisions</a>
+            <a href="businesses.html">Businesses</a>
+            <a href="leadership.html">Leadership</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+
+    <main class="section section-dark">
+        <div class="container">
+
+            <p class="eyebrow">CONTACT US</p>
+            <h1>Get in Touch</h1>
+
+            <p style="margin-top:1rem; max-width:45rem;">
+                For partnerships, investments, collaborations or enquiries, connect directly with our founder
+                and CEO using the details below.
+            </p>
+
+            <div class="ceo-card" style="margin-top:2rem;">
+                <h2 class="ceo-name">Sfiso Quintin Tshotwane</h2>
+                <p class="ceo-title">Founder • Director • Chief Executive Officer</p>
+
+                <p><strong>Mobile:</strong> 062 068 8465</p>
+                <p><strong>WhatsApp:</strong> 067 784 4577</p>
+                <p><strong>Email:</strong> brokenaintbad@gmail.com</p>
+
+                <p style="margin-top:1rem; font-size:0.95rem; opacity:0.9;">
+                    “The absence of evidence is not the evidence of absence.”
+                </p>
+            </div>
+
+            <h2 style="margin-top:3rem;">Send a Message</h2>
+
+            <form style="margin-top:1rem; max-width:480px;">
+                <input type="text" class="input-field" placeholder="Your Name">
+                <input type="email" class="input-field" placeholder="Your Email">
+                <input type="text" class="input-field" placeholder="Subject">
+                <textarea rows="4" class="input-field" placeholder="Your Message"></textarea>
+                <button type="submit" class="btn-primary">Submit (UI Only)</button>
+            </form>
+
+        </div>
+    </main>
+
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-left">
+                <div class="footer-brand">BAB Industries</div>
+                <div class="footer-subtitle">Africa‑Born • Globally Focused</div>
+            </div>
+            <div class="footer-right">
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                <a href="businesses.html">Businesses</a>
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB Industries. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const navToggle = document.getElementById("navToggle");
+        const navMobile = document.getElementById("navMobile");
+        navToggle.addEventListener("click", () => {
+            navMobile.classList.toggle("nav-mobile-open");
+        });
+    </script>
+
+</body>
+
+</html>

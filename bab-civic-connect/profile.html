@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile | BAB CivicConnect</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/civicconnect.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="header-inner container">
+            <div class="brand">
+                <img src="assets/images/civic-connect.png" class="brand-logo-circle" alt="Logo" />
+                <div class="brand-text">
+                    <span class="brand-tagline">BAB CivicConnect</span>
+                    <span class="brand-name">Citizen Access Portal</span>
+                </div>
+            </div>
+            <nav class="nav-desktop">
+                <a href="app.html">Dashboard</a>
+                <a href="profile.html">My Profile</a>
+                <a href="#" data-logout>Logout</a>
+            </nav>
+            <button id="navToggle" class="nav-toggle">☰</button>
+        </div>
+        <nav id="navMobile" class="nav-mobile">
+            <a href="app.html">Dashboard</a>
+            <a href="profile.html">My Profile</a>
+            <a href="#" data-logout>Logout</a>
+        </nav>
+    </header>
+
+    <main class="section">
+        <div class="container">
+            <div class="form-card">
+                <p class="eyebrow">MY PROFILE</p>
+                <h1>Account Details</h1>
+                <p>Update your personal and emergency information.</p>
+
+                <!-- Basic info display -->
+                <div style="margin-top:1rem; margin-bottom:1rem; font-size:0.9rem; color:#cbd5e1;">
+                    <div><strong>Name:</strong> <span id="profileNameDisplay">Loading…</span></div>
+                    <div><strong>Email:</strong> <span id="profileEmailDisplay">Loading…</span></div>
+                </div>
+
+                <form id="profileForm" style="margin-top:0.5rem;">
+                    <input type="tel" class="input-field" id="profilePhone" placeholder="Mobile Number" />
+                    <input type="text" class="input-field" id="profileAddress" placeholder="Home Address (optional)" />
+                    <input type="text" class="input-field" id="profileMedical" placeholder="Medical Info (optional)" />
+                    <input type="text" class="input-field" id="profileEmergencyName"
+                        placeholder="Emergency Contact Name" />
+                    <input type="tel" class="input-field" id="profileEmergencyPhone"
+                        placeholder="Emergency Contact Phone" />
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:0.5rem;">
+                        Save Changes
+                    </button>
+                </form>
+
+                <div id="profileMessage" style="margin-top:0.8rem; font-size:0.85rem;"></div>
+
+                <div class="form-footer" style="margin-top:1.2rem;">
+                    ← <a href="app.html">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            © <span id="year"></span> BAB CivicConnect
+        </div>
+    </footer>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <!-- App Logic -->
+    <script src="js/civicconnect-auth.js"></script>
+</body>
+
+</html>

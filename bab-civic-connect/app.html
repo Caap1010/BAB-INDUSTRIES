@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicConnect Dashboard</title>
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#020617" />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/civicconnect.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="brand">
+        <img src="assets/images/civic-connect.png" class="brand-logo-circle" alt="Logo" />
+        <div class="brand-text">
+          <span class="brand-tagline">BAB CivicConnect</span>
+          <span class="brand-name">Emergency &amp; Government Access</span>
+        </div>
+      </div>
+
+      <!-- DESKTOP NAV -->
+      <nav class="nav-desktop">
+        <a href="app.html">Dashboard</a>
+        <a href="profile.html">My Profile</a>
+
+        <!-- Shown only if user_role = 'responder' (JS will toggle) -->
+        <a href="responders.html" id="responderLink" style="display:none;">
+          Responder Panel
+        </a>
+
+        <a href="#" data-logout>Logout</a>
+      </nav>
+
+      <button id="navToggle" class="nav-toggle">☰</button>
+    </div>
+
+    <!-- MOBILE NAV -->
+    <nav id="navMobile" class="nav-mobile">
+      <a href="app.html">Dashboard</a>
+      <a href="profile.html">My Profile</a>
+      <a href="responders.html" id="responderLinkMobile" style="display:none;">
+        Responder Panel
+      </a>
+      <a href="#" data-logout>Logout</a>
+    </nav>
+  </header>
+
+  <main class="dashboard">
+    <div class="container">
+      <!-- WELCOME HEADER -->
+      <div class="dashboard-header">
+        <p class="eyebrow">CITIZEN DASHBOARD</p>
+        <h1 id="dashboardWelcome">Loading user…</h1>
+        <p style="margin-top:0.4rem; color:#cbd5e1;">
+          Use CivicConnect to access emergency and government tools.
+        </p>
+      </div>
+
+      <!-- EMERGENCY + INCIDENTS -->
+      <div class="grid-2">
+        <!-- EMERGENCY CARD -->
+        <section class="card">
+          <h2>Emergency</h2>
+          <p>Select emergency type:</p>
+          <div class="emergency-buttons">
+            <button class="emergency-btn emergency-ambulance" data-type="ambulance">
+              🚑 Ambulance
+            </button>
+            <button class="emergency-btn emergency-police" data-type="police">
+              🚓 Police
+            </button>
+            <button class="emergency-btn emergency-fire" data-type="fire">
+              🔥 Fire
+            </button>
+            <button class="emergency-btn emergency-security" data-type="security">
+              🛡 Security
+            </button>
+          </div>
+
+          <!-- AI RISK DESCRIPTION -->
+          <div style="margin-top:1rem; font-size:0.85rem; color:#cbd5e1;">
+            Or describe your emergency (for risk analysis):
+          </div>
+          <textarea id="riskDescription" class="input-field"
+            placeholder="Example: There is a man with a knife trying to get into my house."
+            style="min-height:70px;"></textarea>
+          <div id="riskAssessment" style="font-size:0.8rem; color:#94a3b8; margin-top:-0.3rem; margin-bottom:0.6rem;">
+            Risk: N/A
+          </div>
+
+          <!-- VOICE NOTE -->
+          <div style="margin-top:0.5rem; font-size:0.85rem; color:#cbd5e1;">
+            Or record a voice note (optional):
+          </div>
+          <div style="display:flex; gap:0.5rem; margin-top:0.3rem;">
+            <button type="button" id="startRecording" class="btn-outline" style="flex:1;">
+              🎙 Start Recording
+            </button>
+            <button type="button" id="stopRecording" class="btn-outline" style="flex:1; display:none;">
+              ⏹ Stop
+            </button>
+          </div>
+          <audio id="voicePreview" controls style="display:none; margin-top:0.6rem; width:100%;"></audio>
+          <div id="voiceTranscript" style="margin-top:0.4rem; font-size:0.8rem; color:#94a3b8;"></div>
+
+          <!-- MEDIA UPLOAD + CAMERA -->
+          <div style="margin-top:0.8rem; font-size:0.85rem; color:#cbd5e1;">
+            Attach a photo or video (optional):
+          </div>
+
+          <div style="display:flex; gap:0.5rem; margin-top:0.3rem; flex-wrap:wrap;">
+            <!-- Open camera (mobile) or webcam (desktop) -->
+            <button type="button" id="openCameraBtn" class="btn-outline" style="flex:1;">
+              📷 Open Camera
+            </button>
+
+            <!-- Fallback: normal file picker -->
+            <input type="file" id="incidentMediaFile" accept="image/*,video/*" capture="environment"
+              style="font-size:0.8rem; color:#cbd5e1; flex:1;" />
+          </div>
+
+          <!-- Live camera preview -->
+          <video id="cameraPreview" autoplay playsinline
+            style="display:none; width:100%; margin-top:0.5rem; border-radius:8px;"></video>
+
+          <!-- Hidden canvas used for capturing a frame -->
+          <canvas id="cameraCanvas" style="display:none;"></canvas>
+
+          <!-- Capture button -->
+          <button type="button" id="capturePhotoBtn" class="btn-primary"
+            style="display:none; margin-top:0.5rem; width:100%;">
+            📸 Capture Photo
+          </button>
+
+          <!-- Info text about selected media -->
+          <div id="mediaSelectedInfo" style="margin-top:0.4rem; font-size:0.8rem; color:#94a3b8;"></div>
+
+          <!-- Status message -->
+          <div id="emergencyStatus" style="margin-top:1rem;"></div>
+
+          <!-- NEW: SPEED DIAL BUTTON (hidden until we have an assigned responder) -->
+          <button id="speedDialBtn" class="speed-dial-btn" style="display:none;">
+            📞 Call Responder
+          </button>
+        </section>
+        <!-- INCIDENTS LIST -->
+        <section class="card">
+          <h2>Recent Incidents</h2>
+          <div id="incidentList" class="incident-list">
+            <p style="color:#94a3b8;">Loading…</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- GOV SERVICES -->
+      <section class="section">
+        <div class="grid-2">
+          <!-- Home Affairs -->
+          <div class="card">
+            <h2>Home Affairs</h2>
+            <ul style="margin-left:1rem; line-height:1.7;">
+              <li>
+                <a href="https://ehome.dha.gov.za/ehomeaffairs" target="_blank">
+                  e-Home Affairs: ID &amp; Passport Booking
+                </a>
+              </li>
+              <li>
+                <a href="https://dha.gov.za" target="_blank">
+                  Home Affairs Website
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- IEC -->
+          <div class="card">
+            <h2>IEC South Africa</h2>
+            <ul style="margin-left:1rem; line-height:1.7;">
+              <li>
+                <a href="https://registertovote.elections.org.za" target="_blank">
+                  IEC Online Voter Registration
+                </a>
+              </li>
+              <li>
+                <a href="https://elections.org.za" target="_blank">
+                  IEC Main Website
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- APPOINTMENTS -->
+      <section class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h2>Medical Appointments</h2>
+            <form id="appointmentForm" class="appointment-form">
+              <input type="text" class="input-field" id="apptFacility" placeholder="Facility Name" required />
+              <input type="date" class="input-field" id="apptDate" required />
+              <input type="time" class="input-field" id="apptTime" required />
+              <input type="text" class="input-field" id="apptNotes" placeholder="Notes (optional)" />
+              <button class="btn-outline" style="width:100%;">Save</button>
+            </form>
+            <div id="appointmentList" class="appointment-list">
+              <p style="color:#94a3b8;">Loading…</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INCIDENT CHAT -->
+      <section class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h2>Incident Chat</h2>
+            <p style="font-size:0.85rem; color:#94a3b8;">
+              Select an incident to chat with responders in real time.
+            </p>
+
+            <select id="citizenChatIncidentSelect" class="input-field" style="margin-bottom:0.8rem;">
+              <option value="">Select an incident…</option>
+            </select>
+
+            <div id="citizenChatMessages" class="chat-messages">
+              <div style="color:#64748b;">No incident selected.</div>
+            </div>
+
+            <form id="citizenChatForm" style="margin-top:0.6rem; display:flex; gap:0.4rem;">
+              <input type="text" id="citizenChatInput" class="input-field" placeholder="Type a message…"
+                style="margin-bottom:0; flex:1;" />
+              <button class="btn-primary" style="padding-inline:1rem;">
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      © <span id="year"></span> BAB CivicConnect
+    </div>
+  </footer>
+
+  <!-- Supabase Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- Main App Logic -->
+  <script src="js/civicconnect-auth.js"></script>
+
+  <!-- PWA Service Worker registration -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .catch(err => console.warn("SW registration failed:", err));
+      });
+    }
+  </script>
+</body>
+
+</html>
