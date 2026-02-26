@@ -1,11 +1,11 @@
-name: Deploy BAB Language Hub
+name: Deploy BAB Industries HQ
 
 on:
   push:
     branches:
       - main
     paths:
-      - bab-language-hub/**
+      - bab-industries-hq/**
       - .github/workflows/deploy-bab-language-hub.yml
   workflow_dispatch:
 
@@ -34,7 +34,7 @@ jobs:
       - name: Prepare deployment folder
         run: |
           mkdir -p .deploy-pages
-          rsync -av bab-language-hub/ .deploy-pages/ \
+          rsync -av bab-industries-hq/ .deploy-pages/ \
             --exclude node_modules \
             --exclude .git \
             --exclude .github \
@@ -44,7 +44,7 @@ jobs:
             --exclude "*.runtime.json" \
             --exclude "tunnel.js"
 
-      - name: Upload BAB Language Hub artifact
+      - name: Upload BAB Industries HQ artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .deploy-pages
