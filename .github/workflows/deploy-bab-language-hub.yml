@@ -3,7 +3,7 @@ name: Deploy BAB Language Hub
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - bab-language-hub/**
       - .github/workflows/deploy-bab-language-hub.yml
