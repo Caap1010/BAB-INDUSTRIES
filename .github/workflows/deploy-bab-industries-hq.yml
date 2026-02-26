@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - bab-industries-hq/**
-      - .github/workflows/deploy-bab-language-hub.yml
+      - .github/workflows/deploy-bab-industries-hq.yml
   workflow_dispatch:
 
 permissions:
