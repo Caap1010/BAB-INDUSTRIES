@@ -140,6 +140,40 @@ h1 {
     line-height: 1.65;
 }
 
+.install-section {
+    padding: 8px 0 18px;
+}
+
+.install-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+}
+
+.install-card h2 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}
+
+.install-hint {
+    margin: 0 0 10px;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.install-steps {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.install-steps li {
+    margin-bottom: 4px;
+}
+
 .translator-section {
     padding: 18px 0 24px;
 }

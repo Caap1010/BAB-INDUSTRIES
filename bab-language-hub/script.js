@@ -124,6 +124,10 @@ const speakBtn = document.getElementById("speakBtn");
 const stopAudioBtn = document.getElementById("stopAudioBtn");
 const autoVoiceTranslateToggle = document.getElementById("autoVoiceTranslateToggle");
 const installAppBtn = document.getElementById("installAppBtn");
+const installSection = document.getElementById("installSection");
+const installPrimaryBtn = document.getElementById("installPrimaryBtn");
+const installHint = document.getElementById("installHint");
+const installSteps = document.getElementById("installSteps");
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
@@ -477,39 +481,132 @@ function bindEvents() {
     });
 }
 
-function setupInstallPrompt() {
-    if (!installAppBtn) {
+function isRunningStandalone() {
+    return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function getInstallProfile() {
+    const ua = (navigator.userAgent || "").toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isAndroid = /android/.test(ua);
+    const isHuawei = /huawei|honor|harmonyos/.test(ua);
+
+    return {
+        isIOS,
+        isAndroid,
+        isHuawei,
+        isMobile: isIOS || isAndroid,
+    };
+}
+
+function renderInstallGuide(steps, hint) {
+    if (!installSection || !installHint || !installSteps) {
         return;
     }
+
+    installSection.hidden = false;
+    installHint.textContent = hint;
+    installSteps.innerHTML = steps.map((step) => `<li>${step}</li>`).join("");
+}
+
+function hideInstallGuide() {
+    if (installSection) {
+        installSection.hidden = true;
+    }
+}
+
+function showInstallButtons(show) {
+    if (installAppBtn) {
+        installAppBtn.hidden = !show;
+    }
+    if (installPrimaryBtn) {
+        installPrimaryBtn.hidden = !show;
+    }
+}
+
+function installPromptClickHandler() {
+    if (!deferredInstallPrompt) {
+        setStatus("Install option is not available in this browser yet.");
+        return;
+    }
+
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.catch(() => undefined);
+}
+
+function setupManualInstallGuidance() {
+    const profile = getInstallProfile();
+
+    if (isRunningStandalone()) {
+        hideInstallGuide();
+        showInstallButtons(false);
+        return;
+    }
+
+    if (profile.isIOS) {
+        renderInstallGuide(
+            [
+                "Open this site in Safari.",
+                "Tap the Share button.",
+                "Tap Add to Home Screen, then tap Add."
+            ],
+            "iPhone/iPad install uses Safari's Add to Home Screen option."
+        );
+        showInstallButtons(false);
+        return;
+    }
+
+    if (profile.isAndroid || profile.isHuawei) {
+        renderInstallGuide(
+            [
+                "Open browser menu (⋮).",
+                "Tap Install app or Add to Home screen.",
+                "Confirm by tapping Install/Add."
+            ],
+            profile.isHuawei
+                ? "On Huawei devices, use browser menu install options in Chrome/Edge/Huawei Browser."
+                : "Android browsers may show Install app in the menu if prompt is not automatic."
+        );
+        showInstallButtons(false);
+        return;
+    }
+
+    hideInstallGuide();
+    showInstallButtons(false);
+}
+
+function setupInstallPrompt() {
+    setupManualInstallGuidance();
 
     window.addEventListener("beforeinstallprompt", (event) => {
         event.preventDefault();
         deferredInstallPrompt = event;
-        installAppBtn.hidden = false;
+        showInstallButtons(true);
+        if (!isRunningStandalone() && installSection) {
+            installSection.hidden = false;
+        }
+        if (installHint) {
+            installHint.textContent = "Install is available. Tap Install App below.";
+        }
+        if (installSteps) {
+            installSteps.innerHTML = "";
+        }
     });
 
     window.addEventListener("appinstalled", () => {
-        installAppBtn.hidden = true;
+        showInstallButtons(false);
         deferredInstallPrompt = null;
         setStatus("App installed successfully.");
+        hideInstallGuide();
     });
 
-    installAppBtn.addEventListener("click", async () => {
-        if (!deferredInstallPrompt) {
-            setStatus("Install option is not available on this browser yet.");
-            return;
-        }
+    if (installAppBtn) {
+        installAppBtn.addEventListener("click", installPromptClickHandler);
+    }
 
-        deferredInstallPrompt.prompt();
-        try {
-            await deferredInstallPrompt.userChoice;
-        } catch (error) {
-            // no-op
-        }
-
-        deferredInstallPrompt = null;
-        installAppBtn.hidden = true;
-    });
+    if (installPrimaryBtn) {
+        installPrimaryBtn.addEventListener("click", installPromptClickHandler);
+    }
 }
 
 async function registerServiceWorker() {
