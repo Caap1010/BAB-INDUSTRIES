@@ -17,14 +17,16 @@ if (-not $repoRoot) {
     throw "Run this script inside a git repository."
 }
 
+$repoRootFull = [System.IO.Path]::GetFullPath($repoRoot).TrimEnd([char[]]@('\', '/'))
+
 Set-Location $repoRoot
 
 if (-not (Test-Path $Folder)) {
     throw "Folder not found: $Folder"
 }
 
-$folderPath = (Resolve-Path $Folder).Path
-if (-not $folderPath.StartsWith($repoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+$folderPath = [System.IO.Path]::GetFullPath((Resolve-Path $Folder).Path).TrimEnd([char[]]@('\', '/'))
+if (-not $folderPath.StartsWith($repoRootFull, [System.StringComparison]::OrdinalIgnoreCase)) {
     throw "Folder must be inside repo root."
 }
 
@@ -42,12 +44,18 @@ if (-not $splitSha) {
 Write-Host "Split commit: $splitSha"
 Write-Host "Pushing to $RepoUrl ($Branch)"
 
-$pushArgs = @("push", $RepoUrl, "$splitSha:refs/heads/$Branch")
+$pushArgs = @("push", $RepoUrl, "${splitSha}:refs/heads/$Branch")
 if ($ForcePush) {
     $pushArgs += "--force"
 }
 
 git @pushArgs
+if ($LASTEXITCODE -ne 0) {
+    if (git show-ref --verify --quiet "refs/heads/$tmpBranch") {
+        git branch -D $tmpBranch | Out-Null
+    }
+    throw "git push failed for $prefix"
+}
 
 # cleanup local temp split branch
 if (git show-ref --verify --quiet "refs/heads/$tmpBranch") {

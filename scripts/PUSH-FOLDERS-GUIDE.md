@@ -16,13 +16,14 @@ Use `-ForcePush` if the target repo already has an initial commit (README).
 scripts\repo-map.example.csv
 ```
 
-2. Run:
+1. Run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\push-folders-from-map.ps1 -MapFile ".\scripts\repo-map.example.csv" -ForcePush
 ```
 
 ## Notes
+
 - These scripts push each folder with its own history split from this monorepo.
 - Run commands from the repository root.
 - Folder names are relative to repo root.
