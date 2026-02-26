@@ -560,12 +560,12 @@ function setupManualInstallGuidance() {
         renderInstallGuide(
             [
                 "Open browser menu (⋮).",
-                "Tap Install app or Add to Home screen.",
+                "Tap Install or Add to Home screen.",
                 "Confirm by tapping Install/Add."
             ],
             profile.isHuawei
                 ? "On Huawei devices, use browser menu install options in Chrome/Edge/Huawei Browser."
-                : "Android browsers may show Install app in the menu if prompt is not automatic."
+                : "Android browsers may show Install in the menu if prompt is not automatic."
         );
         showInstallButtons(false);
         return;
@@ -586,7 +586,7 @@ function setupInstallPrompt() {
             installSection.hidden = false;
         }
         if (installHint) {
-            installHint.textContent = "Install is available. Tap Install App below.";
+            installHint.textContent = "Install is available. Tap Install below.";
         }
         if (installSteps) {
             installSteps.innerHTML = "";
