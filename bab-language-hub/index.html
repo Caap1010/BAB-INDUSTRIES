@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Language Hub | Global Translator</title>
+    <meta name="theme-color" content="#020617" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="BAB Language Hub" />
+    <meta name="description"
+        content="Translate text across a wide range of world languages instantly with BAB Language Hub." />
+    <link rel="icon" type="image/png" sizes="192x192" href="images/app-icon-192.png" />
+    <link rel="shortcut icon" type="image/png" href="images/app-icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/app-icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-content">
+            <a class="brand" href="#">
+                <img id="brandLogo" class="brand-logo" src="images/bab-anguage-hub-logo.png"
+                    alt="BAB Language Hub logo" />
+                <span id="brandBadge" class="brand-badge brand-badge-fallback">BL</span>
+                <span>
+                    <strong>BAB Language Hub</strong>
+                    <small>Translate the world in seconds</small>
+                </span>
+            </a>
+            <nav class="nav">
+                <a href="#translator">Translator</a>
+                <a href="#features">Features</a>
+                <button id="installAppBtn" class="install-btn" type="button" hidden>Install App</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <p class="pill">Fast • Accurate • Multilingual</p>
+                <h1>Translate across global languages instantly</h1>
+                <p class="hero-copy">Type or paste text, choose source and target languages, and translate instantly.
+                    Supports a broad language catalog through live translation services.</p>
+            </div>
+        </section>
+
+        <section id="translator" class="translator-section">
+            <div class="container">
+                <div class="translator-card">
+                    <div class="controls-row">
+                        <label>
+                            From
+                            <select id="sourceLanguage"></select>
+                        </label>
+                        <button id="swapLanguages" class="swap-btn" aria-label="Swap languages">⇄</button>
+                        <label>
+                            To
+                            <select id="targetLanguage"></select>
+                        </label>
+                    </div>
+
+                    <div class="editor-grid">
+                        <article>
+                            <div class="editor-head">
+                                <h2>Input</h2>
+                                <span id="charCount">0 characters</span>
+                            </div>
+                            <textarea id="sourceText" placeholder="Enter text to translate..."></textarea>
+                        </article>
+
+                        <article>
+                            <div class="editor-head">
+                                <h2>Translation</h2>
+                                <span id="detectedLanguage">Detected: —</span>
+                            </div>
+                            <textarea id="translatedText" readonly
+                                placeholder="Your translation will appear here..."></textarea>
+                        </article>
+                    </div>
+
+                    <div class="actions-row">
+                        <button id="translateBtn" class="button">Translate</button>
+                        <button id="clearBtn" class="button outline">Clear</button>
+                        <button id="copyBtn" class="button outline">Copy Translation</button>
+                        <button id="voiceInputBtn" class="button outline">Voice Input</button>
+                        <button id="speakBtn" class="button outline">Speak Translation</button>
+                        <button id="stopAudioBtn" class="button outline">Stop Audio</button>
+                        <label class="toggle-inline" for="autoVoiceTranslateToggle">
+                            <input type="checkbox" id="autoVoiceTranslateToggle" checked />
+                            Auto-translate while speaking
+                        </label>
+                        <p id="statusMessage" class="status">Ready</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container feature-grid">
+                <article>
+                    <h3>Wide Language Support</h3>
+                    <p>Choose from a large catalog of languages for business, education, and global communication.</p>
+                </article>
+                <article>
+                    <h3>Auto Detection</h3>
+                    <p>Set source to Auto Detect and let the app identify the input language before translating.</p>
+                </article>
+                <article>
+                    <h3>Quick Workflow</h3>
+                    <p>Swap languages, clear text, and copy results with one click for faster daily use.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© <span id="year"></span> BAB Language Hub. Built for global communication.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BAB Catering | A Division of BAB Industries</title>
+
+  <!-- Google Font similar to HQ style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top Bar Motto -->
+  <div class="top-bar">
+    <span class="top-bar-motto">THE HATE U GIVE</span>
+    <span class="top-bar-division">BAB Catering · A Division of BAB Industries</span>
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <img src="images/bab-catering-logo.png" alt="BAB Catering Logo" class="logo">
+        <div class="nav-brand-text">
+          <span class="brand-sub">BAB INDUSTRIES DIVISION</span>
+          <span class="brand-main">BAB Catering</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#menu">Menu</a>
+        <a href="#packages">Packages</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-cta" onclick="scrollToSection('contact')">
+        Request a Quote
+      </button>
+
+      <!-- Mobile menu button -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        ☰
+      </button>
+    </div>
+
+    <!-- Mobile dropdown menu -->
+    <div class="nav-mobile" id="navMobile">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#menu">Menu</a>
+      <a href="#packages">Packages</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <p class="eyebrow">AFRICA-BORN CATERING DIVISION</p>
+          <h1>Premium Catering for Every Culture, Every Moment.</h1>
+          <p class="hero-subtitle">
+            BAB Catering is the official hospitality, events, and food services division of 
+            BAB Industries — delivering scalable, respectful catering across corporate events,
+            funerals, private dining, and large-scale gatherings.
+          </p>
+
+          <div class="hero-buttons">
+            <button class="btn primary" onclick="scrollToSection('services')">
+              Explore Services
+            </button>
+            <button class="btn secondary" onclick="scrollToSection('packages')">
+              View Packages & Pricing
+            </button>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-number">10+</span>
+              <span class="stat-label">Service Categories</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">150+</span>
+              <span class="stat-label">Guest Scale &amp; Up</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">4</span>
+              <span class="stat-label">Core Pillars</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right Card (like BAB Philosophy card) -->
+        <aside class="hero-card">
+          <h3 class="card-label">BAB PHILOSOPHY</h3>
+          <h2 class="card-title">
+            The absence of evidence is not the evidence of absence.
+          </h2>
+          <p class="card-text">
+            BAB Catering sees potential beyond the surface — in people, in flavours, in cultures,
+            and in opportunities. We value what others overlook, and we cook for that hidden potential.
+          </p>
+          <ul class="card-tags">
+            <li>Respect</li>
+            <li>Precision</li>
+            <li>Innovation</li>
+            <li>Consistency</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT / INTRO + MISSION -->
+    <section id="about" class="section">
+      <div class="section-inner two-column">
+        <div>
+          <h2>About BAB Catering</h2>
+          <p>
+            BAB Catering is the official hospitality, events, and food services division of 
+            <strong>BAB Industries</strong> — one of Africa’s most ambitious multi‑industry ecosystems.
+          </p>
+          <p>
+            Guided by the corporate philosophy <strong>“The Hate U Give”</strong>, BAB Catering delivers 
+            high‑quality, culturally respectful, scalable catering solutions across corporate events, 
+            funerals, private dining, and large‑scale gatherings.
+          </p>
+          <p>
+            BAB Catering follows the same brand language, visual identity, operational discipline 
+            and premium service ethos that defines BAB Industries.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Mission</h3>
+          <p>
+            To serve Africa — and the world — with premium, respectful, and consistently excellent 
+            catering, designed for every moment and every culture.
+          </p>
+          <h3>Philosophy</h3>
+          <p class="quote">
+            “The absence of evidence is not the evidence of absence.”
+          </p>
+          <p>
+            We see potential beyond the surface — in people, in flavours, in cultures, and in opportunities.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES / WHAT WE DO -->
+    <section id="services" class="section section-alt">
+      <div class="section-inner">
+        <h2>What BAB Catering Does</h2>
+        <p class="section-subtitle">
+          End‑to‑end food solutions for corporate, private, and community needs.
+        </p>
+
+        <div class="grid-3">
+          <div class="service-card">
+            <h3>Corporate &amp; Business Catering</h3>
+            <ul>
+              <li>Executive breakfasts &amp; lunches</li>
+              <li>Daily corporate meals</li>
+              <li>Conference catering</li>
+              <li>Training sessions &amp; staff meals</li>
+              <li>Coffee &amp; snack stations</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <h3>Event Catering</h3>
+            <ul>
+              <li>Weddings</li>
+              <li>Funerals &amp; unveilings</li>
+              <li>Memorial services</li>
+              <li>Birthday parties &amp; graduations</li>
+              <li>Community events</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <h3>Private Dining</h3>
+            <ul>
+              <li>Chef‑driven in‑home catering</li>
+              <li>Luxury tasting menus</li>
+              <li>Family gatherings</li>
+              <li>Themed dinners</li>
+              <li>Braai &amp; fire‑cooking experiences</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <h3>Bulk Meal Production</h3>
+            <ul>
+              <li>NGO feeding &amp; community programs</li>
+              <li>Canteens &amp; staff meal programs</li>
+              <li>Large funerals &amp; gatherings</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <h3>Mobile Kitchen Solutions</h3>
+            <ul>
+              <li>Outdoor events &amp; festivals</li>
+              <li>Remote locations</li>
+              <li>Live cooking stations</li>
+            </ul>
+          </div>
+
+          <div class="service-card">
+            <h3>Meal Prep &amp; Weekly Plans</h3>
+            <ul>
+              <li>Weekly meal prep</li>
+              <li>Healthy plans</li>
+              <li>Halaal‑friendly options</li>
+              <li>Delivery available</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE VALUES / 4 PILLARS -->
+    <section id="values" class="section">
+      <div class="section-inner">
+        <h2>The 4 Pillars of BAB Catering</h2>
+        <p class="section-subtitle">
+          Quality • Consistency • Respect • Innovation
+        </p>
+
+        <div class="grid-4">
+          <div class="pillar-card">
+            <h3>Quality</h3>
+            <p>Chef‑crafted menus prepared with fresh ingredients and professional techniques.</p>
+          </div>
+          <div class="pillar-card">
+            <h3>Consistency</h3>
+            <p>Every event, every plate, every table — same standard, same excellence.</p>
+          </div>
+          <div class="pillar-card">
+            <h3>Respect</h3>
+            <p>
+              Especially for funerals and culturally sensitive gatherings. Food delivered with dignity.
+            </p>
+          </div>
+          <div class="pillar-card">
+            <h3>Innovation</h3>
+            <p>Modern cooking, mobile kitchens, flexible menus, and scalable service formats.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU SYSTEM -->
+    <section id="menu" class="section section-alt">
+      <div class="section-inner">
+        <h2>Menu System</h2>
+        <p class="section-subtitle">
+          Four category blocks designed to cover every event type and taste.
+        </p>
+
+        <div class="grid-2">
+          <div class="menu-block">
+            <h3>1️⃣ Starters &amp; Finger Foods</h3>
+            <ul>
+              <li>Canapés, sliders, wings, meatballs</li>
+              <li>Snack platters</li>
+              <li>Fresh breads &amp; butters</li>
+              <li>Tea‑time savoury trays</li>
+            </ul>
+          </div>
+
+          <div class="menu-block">
+            <h3>2️⃣ Main Courses</h3>
+            <ul>
+              <li>African cuisine (pap, stews, curries, samp, chakalaka)</li>
+              <li>Grilled meats &amp; carvery (chicken, lamb, beef, wors)</li>
+              <li>Fish &amp; vegetarian options</li>
+              <li>Halaal‑friendly custom menus</li>
+            </ul>
+          </div>
+
+          <div class="menu-block">
+            <h3>3️⃣ Desserts &amp; Coffee Tables</h3>
+            <ul>
+              <li>Cakes, pastries, puddings</li>
+              <li>Funeral tea tables</li>
+              <li>Dessert shooters &amp; premium trays</li>
+              <li>Corporate coffee stations</li>
+            </ul>
+          </div>
+
+          <div class="menu-block">
+            <h3>4️⃣ Beverages &amp; Bar Service</h3>
+            <ul>
+              <li>Soft drinks &amp; juices</li>
+              <li>Coffee &amp; tea</li>
+              <li>Cocktails &amp; mocktails</li>
+              <li>
+                Premium bar service (Vodka, Cognac, Whiskey, Gin, Rum, Wine, Champagne – on request)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PACKAGES & PRICING -->
+    <section id="packages" class="section">
+      <div class="section-inner">
+        <h2>Packages &amp; Pricing</h2>
+        <p class="section-subtitle">
+          Corporate pricing model that scales with guest count.
+        </p>
+
+        <div class="grid-4 pricing-grid">
+          <div class="pricing-card bronze">
+            <h3>Bronze Package</h3>
+            <p class="price">R1,499 – R4,500</p>
+            <p class="guests">10–20 guests</p>
+            <p class="tag">Small Events</p>
+          </div>
+
+          <div class="pricing-card silver">
+            <h3>Silver Package</h3>
+            <p class="price">R4,600 – R9,999</p>
+            <p class="guests">20–60 guests</p>
+            <p class="tag">Medium Corporate &amp; Funerals</p>
+          </div>
+
+          <div class="pricing-card gold">
+            <h3>Gold Package</h3>
+            <p class="price">R10,000 – R19,999</p>
+            <p class="guests">60–150 guests</p>
+            <p class="tag">Large Events &amp; Weddings</p>
+          </div>
+
+          <div class="pricing-card platinum">
+            <h3>Platinum / Custom</h3>
+            <p class="price">150+ guests</p>
+            <p class="guests">Full custom</p>
+            <p class="tag">Mass‑Scale Events</p>
+          </div>
+        </div>
+
+        <div class="centered">
+          <button class="btn primary" onclick="scrollToSection('contact')">
+            Request a Custom Quote
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY BAB CATERING IS DIFFERENT -->
+    <section id="why" class="section section-alt">
+      <div class="section-inner two-column">
+        <div>
+          <h2>Why BAB Catering Is Different</h2>
+          <p>
+            BAB Catering runs with the same discipline, visual identity, and operational structure 
+            that powers BAB Industries.
+          </p>
+          <ul class="check-list">
+            <li>Corporate‑grade quality and professionalism</li>
+            <li>Culturally sensitive – especially for funerals &amp; memorials</li>
+            <li>Modern + African fusion culinary approach</li>
+            <li>Scalable from 10 people to 1,000+ guests</li>
+            <li>Powered by BAB Industries logistics, brand, and ecosystem</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Target Clients</h3>
+          <p>BAB Catering serves:</p>
+          <div class="tag-grid">
+            <span>Corporates</span>
+            <span>Government departments</span>
+            <span>Families</span>
+            <span>Communities</span>
+            <span>Churches</span>
+            <span>NGOs</span>
+            <span>Funeral homes</span>
+            <span>Wedding planners</span>
+            <span>Event coordinators</span>
+            <span>Private clients</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISION / FUTURE -->
+    <section id="vision" class="section">
+      <div class="section-inner two-column">
+        <div>
+          <h2>Vision for the Future</h2>
+          <p>
+            BAB Catering aims to become one of Africa’s most influential catering brands — 
+            combining corporate precision with deep cultural respect.
+          </p>
+          <ul class="check-list">
+            <li>Africa’s largest multi‑sector catering brand</li>
+            <li>Leading innovator in mobile kitchens</li>
+            <li>Trusted partner for corporate South Africa</li>
+            <li>Household name for premium funeral catering</li>
+            <li>Modern lifestyle brand with meal prep &amp; smart food solutions</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Fast Overview</h3>
+          <p>
+            BAB Catering is the food, catering, and hospitality division of BAB Industries — 
+            delivering premium, scalable, respectful catering for every type of event.
+          </p>
+          <p>
+            Built on four pillars: <strong>Quality · Consistency · Respect · Innovation</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section section-alt">
+      <div class="section-inner two-column">
+        <div>
+          <h2>Contact BAB Catering</h2>
+          <p>
+            Ready to plan your event, funeral, or private dining experience? 
+            Reach out and the BAB Catering team will respond with a tailored quote.
+          </p>
+          <ul class="contact-list">
+            <li><strong>Tel / WhatsApp:</strong> +27 67 784 4577</li>
+            <li><strong>Email:</strong> brokenaintbad@gmail.com</li>
+            <li><strong>Division:</strong> BAB Catering · A Division of BAB Industries</li>
+          </ul>
+        </div>
+
+        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+          <h3>Request a Quote</h3>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input id="name" type="text" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input id="email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone / WhatsApp</label>
+            <input id="phone" type="tel" placeholder="+27 ..." required>
+          </div>
+          <div class="form-group">
+            <label for="eventType">Event Type</label>
+            <select id="eventType" required>
+              <option value="">Select event type</option>
+              <option>Corporate / Business</option>
+              <option>Funeral / Memorial</option>
+              <option>Wedding</option>
+              <option>Private Dining</option>
+              <option>Community / NGO</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guests">Estimated Number of Guests</label>
+            <input id="guests" type="number" min="1" placeholder="e.g. 80" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Additional Details</label>
+            <textarea id="message" rows="4" placeholder="Tell us about your event..."></textarea>
+          </div>
+          <button type="submit" class="btn primary full-width">
+            Submit Request
+          </button>
+          <p class="form-note">
+            This form is for demo purposes only. For immediate bookings, please call or WhatsApp directly.
+          </p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-motto">THE HATE U GIVE</p>
+        <p class="footer-brand">BAB Catering · A Division of BAB Industries</p>
+      </div>
+      <div class="footer-links">
+        <span>Quality</span>
+        <span>Consistency</span>
+        <span>Respect</span>
+        <span>Innovation</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

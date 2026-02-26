@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Disclosure | BAB Cyber Defence</title>
+    <meta name="description"
+        content="Risk disclosures for cybersecurity assets, cybersecurity transactions, volatility, security, and regulatory uncertainty.">
+    <meta name="keywords"
+        content="cybersecurity risk disclosure, digital asset risk, cybersecurity volatility, custody risk">
+    <meta name="robots" content="index,follow">
+    <meta property="og:title" content="Risk Disclosure | BAB Cyber Defence">
+    <meta property="og:description"
+        content="Understand key risks associated with cybersecurity operations, incidents, and digital infrastructure.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/bab-cyber-defence-logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Risk Disclosure | BAB Cyber Defence">
+    <meta name="twitter:description"
+        content="Understand key risks associated with cybersecurity operations, incidents, and digital infrastructure.">
+    <meta name="twitter:image" content="assets/images/bab-cyber-defence-logo.png">
+    <link rel="canonical" href="risk-disclosure.html">
+    <link rel="icon" type="image/png" href="assets/images/bab-cyber-defence-logo.png">
+    <link rel="apple-touch-icon" href="assets/images/bab-cyber-defence-logo.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <img src="assets/images/bab-cyber-defence-logo.png" alt="BAB Cyber Defence logo" class="brand-logo">
+                <div class="brand-text">
+                    <span class="brand-tagline">The Hate U Give</span>
+                    <span class="brand-name">BAB Cyber Defence</span>
+                </div>
+            </div>
+            <nav class="nav-desktop">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <button id="navToggle" class="nav-toggle">&#9776;</button>
+        </div>
+
+        <nav id="navMobile" class="nav-mobile">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="divisions.html">Divisions</a>
+            
+            <a href="leadership.html">Leadership</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main class="section section-dark">
+        <div class="container">
+            <p class="eyebrow">LEGAL</p>
+            <h1 class="page-title">Risk Disclosure</h1>
+            <p class="page-intro">Digital asset activities carry substantial risk and may not be suitable for all users
+                or organizations.</p>
+
+            <section style="margin-top:2rem;" class="card">
+                <h3>Market Volatility</h3>
+                <p>cybersecurity assets can experience rapid and significant price movements that may result in partial
+                    or
+                    total capital loss.</p>
+            </section>
+
+            <section style="margin-top:1rem;" class="card">
+                <h3>Technology and Security Risk</h3>
+                <p>Configuration errors, identity compromise, cyber attacks, and control failures can impact service
+                    availability, integrity, and trust.</p>
+            </section>
+
+            <section style="margin-top:1rem;" class="card">
+                <h3>Regulatory and Legal Risk</h3>
+                <p>Laws and regulatory frameworks may change and can affect the legality, availability, or taxation of
+                    services and assets.</p>
+            </section>
+
+            <section style="margin-top:1rem;" class="card">
+                <h3>Liquidity and Counterparty Risk</h3>
+                <p>In stressed market conditions, liquidity may reduce and counterparties may fail to perform
+                    obligations on time.</p>
+            </section>
+
+            <section style="margin-top:1rem;" class="card">
+                <h3>No Guaranteed Returns</h3>
+                <p>Past performance does not guarantee future results, and no representation is made regarding profit or
+                    loss outcomes.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-left">
+                <div class="footer-brand">BAB Cyber Defence</div>
+                <div class="footer-subtitle">A BAB Industries Company</div>
+            </div>
+            <div class="footer-right">
+                <a href="about.html">About</a>
+                <a href="divisions.html">Divisions</a>
+                
+                <a href="leadership.html">Leadership</a>
+                <a href="contact.html">Contact</a>
+                <a href="terms.html">Terms</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="risk-disclosure.html">Risk Disclosure</a>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; <span id="year"></span> BAB Cyber Defence. All rights reserved.</div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const navToggle = document.getElementById("navToggle");
+        const navMobile = document.getElementById("navMobile");
+        navToggle.addEventListener("click", () => {
+            navMobile.classList.toggle("nav-mobile-open");
+        });
+    </script>
+</body>
+
+</html>
+

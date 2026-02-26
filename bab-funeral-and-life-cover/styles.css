@@ -1,0 +1,498 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #020617;
+    color: #e2e8f0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.section {
+    padding: 4rem 0;
+}
+
+.section-dark {
+    background-color: #0f172a;
+    border-top: 1px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
+}
+
+.eyebrow {
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    color: #38bdf8;
+    text-transform: uppercase;
+}
+
+.grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.two-col {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.cards-3 {
+    margin-top: 1.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.site-header {
+    background-color: #020617;
+    border-bottom: 1px solid #1e293b;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: #e2e8f0;
+}
+
+.brand-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    object-fit: cover;
+    border: 1px solid #38bdf8;
+}
+
+.brand-fallback {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    display: none;
+    place-items: center;
+    font-weight: 700;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-tagline {
+    font-size: 0.65rem;
+    color: #38bdf8;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.brand-name {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.nav-desktop {
+    display: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-desktop a {
+    text-decoration: none;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+}
+
+.nav-desktop a:hover {
+    color: #38bdf8;
+}
+
+.nav-toggle {
+    background: transparent;
+    border: 1px solid #334155;
+    padding: 0.3rem 0.7rem;
+    color: #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.nav-mobile {
+    display: none;
+    flex-direction: column;
+    background-color: #020617;
+    border-top: 1px solid #1e293b;
+    padding: 0.75rem 1.5rem;
+}
+
+.nav-mobile a {
+    color: #e2e8f0;
+    text-decoration: none;
+    padding: 0.4rem 0;
+}
+
+.nav-mobile a:hover {
+    color: #38bdf8;
+}
+
+.nav-mobile-open {
+    display: flex;
+}
+
+.hero {
+    position: relative;
+    min-height: 72vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #1e293b;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 25% 20%, #1e293b, #020617 60%);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(2, 6, 23, 0.78),
+            rgba(15, 23, 42, 0.92),
+            rgba(15, 23, 42, 1));
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 4rem 1.5rem;
+}
+
+.hero-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.hero-text h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #cbd5e1;
+    max-width: 60ch;
+}
+
+.hero-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.hero-actions a {
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    font-size: 0.9rem;
+}
+
+.hero-actions a:hover {
+    background-color: #38bdf8;
+    color: #020617;
+}
+
+.hero-meta {
+    margin-top: 0.8rem;
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+.philosophy-card {
+    border: 1px solid #0ea5e9;
+    border-radius: 14px;
+    background: rgba(2, 16, 40, 0.6);
+    padding: 1.4rem;
+    max-width: 520px;
+}
+
+.philosophy-card h3 {
+    margin-top: 0.5rem;
+    font-size: 2rem;
+    line-height: 1.3;
+}
+
+.philosophy-card p {
+    margin-top: 0.8rem;
+    color: #cbd5e1;
+}
+
+.section-title {
+    margin-top: 0.35rem;
+    font-size: 1.8rem;
+}
+
+.panel,
+.card,
+.ceo-card {
+    background: #0b1220;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 1.2rem;
+}
+
+.panel h2,
+.card h3 {
+    margin-bottom: 0.6rem;
+}
+
+.panel p,
+.card p,
+.panel li,
+.panel ol {
+    color: #cbd5e1;
+}
+
+.panel ul,
+.panel ol {
+    margin-left: 1.15rem;
+}
+
+.price-range {
+    color: #38bdf8 !important;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.pricing-note {
+    margin-top: 1rem;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    background: #0b1220;
+    color: #cbd5e1;
+}
+
+.contact-wrap h2 {
+    margin-top: 0.35rem;
+}
+
+.lead-copy {
+    margin-top: 0.8rem;
+    max-width: 45rem;
+}
+
+.ceo-card {
+    margin-top: 1.4rem;
+    max-width: 650px;
+}
+
+.ceo-name {
+    margin-bottom: 0.35rem;
+}
+
+.ceo-title {
+    color: #38bdf8;
+    margin-bottom: 0.7rem;
+}
+
+.quote {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+.form-heading {
+    margin-top: 2rem;
+}
+
+.contact-form {
+    margin-top: 1rem;
+    max-width: 680px;
+    display: grid;
+    gap: 0.8rem;
+}
+
+.input-field {
+    width: 100%;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #020617;
+    color: #e2e8f0;
+    padding: 0.72rem 0.85rem;
+}
+
+.cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.contact-status {
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #38bdf8;
+    background: transparent;
+    color: #38bdf8;
+    border-radius: 999px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background: #38bdf8;
+    color: #020617;
+}
+
+.btn-primary.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.site-footer {
+    border-top: 1px solid #1e293b;
+    margin-top: 1.5rem;
+}
+
+.footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.4rem 1.5rem;
+}
+
+.footer-brand {
+    font-weight: 700;
+    font-size: 1.02rem;
+}
+
+.footer-subtitle {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.footer-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-right a {
+    color: #cbd5e1;
+    text-decoration: none;
+}
+
+.footer-right a:hover {
+    color: #38bdf8;
+}
+
+.footer-bottom {
+    border-top: 1px solid #1e293b;
+    padding: 0.8rem 1.5rem 1.2rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+    .hero-text h1 {
+        font-size: 2.6rem;
+    }
+
+    .two-col {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hero-split {
+        grid-template-columns: 1.6fr 1fr;
+        align-items: start;
+    }
+
+    .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    .nav-desktop {
+        display: flex;
+    }
+
+    .nav-toggle,
+    .nav-mobile {
+        display: none !important;
+    }
+}
+
+.table-wrap {
+    margin-top: 1.2rem;
+    overflow-x: auto;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    background: #0b1220;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.comparison-table th,
+.comparison-table td {
+    text-align: left;
+    padding: 0.85rem 0.9rem;
+    border-bottom: 1px solid #1e293b;
+    vertical-align: top;
+}
+
+.comparison-table th {
+    background: #0a162d;
+    color: #38bdf8;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.comparison-table td {
+    color: #cbd5e1;
+    font-size: 0.92rem;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: 0;
+}

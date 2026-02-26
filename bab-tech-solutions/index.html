@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Tech Solutions | Premium Electronics Marketplace</title>
+    <meta name="description"
+        content="Shop premium electronics at unbeatable prices. Smartphones, accessories, laptops, TVs, gaming gear, repair parts, and trusted support in one digital marketplace." />
+    <link rel="icon" type="image/png" href="images/bab-tech-solutions-logo.png" />
+    <link rel="shortcut icon" type="image/png" href="images/bab-tech-solutions-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-content">
+            <a class="brand" href="#home" aria-label="BAB Tech Solutions home">
+                <img class="brand-logo" src="images/bab-tech-solutions-logo.png" alt="BAB Tech Solutions logo" />
+                <span>
+                    <strong>BAB Tech Solutions</strong>
+                    <small>Africa-Born • Globally Focused</small>
+                </span>
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="#products">Products</a>
+                <a href="#services">Services</a>
+                <a href="#support">Support</a>
+                <a href="#checkout">Checkout</a>
+            </nav>
+
+            <button class="button outline" id="accountBtn">My Account</button>
+        </div>
+    </header>
+
+    <main id="home">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <p class="pill">Trusted • Fast • Secure</p>
+                    <h1>The home of premium electronics, unbeatable prices, and world-class customer experience.</h1>
+                    <p class="hero-copy">
+                        Discover smartphones, accessories, computers, home entertainment, repair parts, and gaming
+                        equipment in one modern digital store.
+                        Shop with confidence through verified products, safe payments, real-time stock updates, and
+                        nationwide delivery.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#products" class="button">Shop Now</a>
+                        <a href="#services" class="button outline">Book Repair</a>
+                    </div>
+                    <div class="hero-trust">
+                        <span>✔ Encrypted Payments</span>
+                        <span>✔ 7-Day Returns</span>
+                        <span>✔ Manufacturer Warranty</span>
+                    </div>
+                </div>
+
+                <aside class="hero-panel" aria-label="Live updates">
+                    <h2>Live Deals & Stock</h2>
+                    <p id="dealTimer">Flash Sale ends in 03:59:59</p>
+                    <ul>
+                        <li><strong>Today:</strong> Up to 30% off selected smartphones</li>
+                        <li><strong>Bundle Deal:</strong> Phone + Case + Charger combo</li>
+                        <li><strong>Hot Stock:</strong> Gaming laptops restocked</li>
+                        <li><strong>WhatsApp Orders:</strong> 067 784 4577</li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+
+        <section class="section stats">
+            <div class="container stats-grid">
+                <article>
+                    <h3>10k+</h3>
+                    <p>Products Available</p>
+                </article>
+                <article>
+                    <h3>24/7</h3>
+                    <p>Live Chat & WhatsApp Support</p>
+                </article>
+                <article>
+                    <h3>Same Day</h3>
+                    <p>Delivery in Selected Areas</p>
+                </article>
+                <article>
+                    <h3>4.8★</h3>
+                    <p>Verified Customer Satisfaction</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="products">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Clean & Modern Online Store</h2>
+                    <p>Fast browsing, smart filtering, and reliable product quality indicators.</p>
+                </div>
+
+                <div class="controls" role="search">
+                    <input type="search" id="searchInput" placeholder="Search products, brands, features..."
+                        aria-label="Search products" />
+
+                    <select id="categoryFilter" aria-label="Filter by category">
+                        <option value="all">All Categories</option>
+                        <option value="smartphones">Smartphones</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="computers-tablets">Computers & Tablets</option>
+                        <option value="tv-entertainment">TV & Entertainment</option>
+                        <option value="repair-parts">Repair Parts</option>
+                        <option value="gaming">Gaming Equipment</option>
+                    </select>
+
+                    <select id="brandFilter" aria-label="Filter by brand">
+                        <option value="all">All Brands</option>
+                    </select>
+
+                    <select id="priceFilter" aria-label="Filter by price">
+                        <option value="all">Any Price</option>
+                        <option value="0-999">Under R1 000</option>
+                        <option value="1000-4999">R1 000 - R4 999</option>
+                        <option value="5000-14999">R5 000 - R14 999</option>
+                        <option value="15000-99999">R15 000+</option>
+                    </select>
+
+                    <select id="sortFilter" aria-label="Sort products">
+                        <option value="featured">Sort: Featured</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="rating-desc">Rating: High to Low</option>
+                    </select>
+                </div>
+
+                <div class="result-bar">
+                    <p id="resultsCount">Showing 0 products</p>
+                    <p id="recommendationText">Recommendations update as you browse.</p>
+                </div>
+
+                <div id="productGrid" class="product-grid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="section" id="checkout">
+            <div class="container two-col">
+                <article class="card">
+                    <h3>Place Order Directly</h3>
+                    <p>Your order is prepared and sent directly to our contact channels.</p>
+
+                    <div id="cartSummary" class="cart-summary"></div>
+
+                    <form id="orderForm" class="order-form">
+                        <label>
+                            Full Name
+                            <input type="text" id="customerName" placeholder="Your full name" />
+                        </label>
+                        <label>
+                            Phone Number
+                            <input type="text" id="customerPhone" placeholder="Your phone number" />
+                        </label>
+                        <label>
+                            Email Address
+                            <input type="email" id="customerEmail" placeholder="you@example.com" />
+                        </label>
+                        <label>
+                            Notes
+                            <textarea id="customerNotes" rows="3"
+                                placeholder="Color, model, delivery area, or special requests"></textarea>
+                        </label>
+                    </form>
+
+                    <div class="checkout-actions">
+                        <a id="orderEmailBtn" class="button" href="#">Place via Email</a>
+                        <a id="orderWhatsappBtn" class="button outline" href="#" target="_blank"
+                            rel="noopener noreferrer">Place via WhatsApp</a>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3>Contact Details</h3>
+                    <p>Using official BAB Industries contact information.</p>
+                    <ul class="feature-list">
+                        <li><strong>Mobile:</strong> 062 068 8465</li>
+                        <li><strong>WhatsApp:</strong> 067 784 4577</li>
+                        <li><strong>Email:</strong> brokenaintbad@gmail.com</li>
+                        <li><strong>CEO:</strong> Sfiso Quintin Tshotwane</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Additional Services</h2>
+                    <p>Beyond shopping: repairs, trade-ins, delivery, and protection plans.</p>
+                </div>
+
+                <div class="services-grid">
+                    <article class="card">
+                        <h3>Device Repairs</h3>
+                        <p>Screen replacements, battery swaps, water damage assessments, and component-level diagnostics
+                            by professional technicians.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Buy-Back & Trade-In</h3>
+                        <p>Exchange old phones and laptops for store discounts or cash-out value.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Delivery</h3>
+                        <p>Nationwide shipping, same-day delivery in selected areas, secure packaging, and live package
+                            tracking.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Warranty & Protection</h3>
+                        <p>Optional extended warranties, 7-day return policy, and manufacturer-backed warranty on
+                            selected products.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="support">
+            <div class="container two-col">
+                <article class="card">
+                    <h3>Customer Support Channels</h3>
+                    <ul class="feature-list">
+                        <li>Live Chat Support</li>
+                        <li>WhatsApp Support: <a href="https://wa.me/27677844577" target="_blank"
+                                rel="noopener noreferrer">067 784 4577</a></li>
+                        <li>Email Support: <a href="mailto:brokenaintbad@gmail.com">brokenaintbad@gmail.com</a></li>
+                        <li>After-sales help for repairs and returns</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Knowledge Base</h3>
+                    <p>Tips, FAQs, product guides, and policy updates to help customers make informed decisions.</p>
+                    <a class="button small" href="#">Explore FAQs</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="section brand-values">
+            <div class="container">
+                <h2>Built for a World-Class Digital Shopping Experience</h2>
+                <div class="values">
+                    <span>Professional</span>
+                    <span>Trustworthy</span>
+                    <span>Easy to Use</span>
+                    <span>Fast</span>
+                    <span>Secure</span>
+                    <span>Customer-Focused</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <aside class="compare-drawer" id="compareDrawer" aria-live="polite">
+        <p id="compareStatus">Select up to 2 products to compare.</p>
+        <button class="button small" id="clearCompareBtn">Clear</button>
+    </aside>
+
+    <a class="quick-whatsapp"
+        href="https://wa.me/27677844577?text=Hi%20BAB%20Tech%20Solutions%2C%20I%20want%20to%20place%20an%20order."
+        target="_blank" rel="noopener noreferrer" aria-label="Quick WhatsApp Order">
+        <span class="quick-icon" aria-hidden="true">💬</span>
+        <span>WhatsApp Order</span>
+    </a>
+
+    <a class="quick-call" href="tel:+27620688465" aria-label="Call Now">
+        <span class="quick-icon" aria-hidden="true">📞</span>
+        <span>Call Now</span>
+    </a>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <p>© <span id="year"></span> BAB Tech Solutions. All rights reserved.</p>
+            <div>
+                <a href="mailto:brokenaintbad@gmail.com">Email</a>
+                <a href="https://wa.me/27677844577" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="#support">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

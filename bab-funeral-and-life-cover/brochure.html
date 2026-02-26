@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Funeral and Life Cover | PDF Brochure</title>
+    <link rel="icon" type="image/png" href="images/bab-funeral-and-life-cover.png" />
+    <link rel="shortcut icon" type="image/png" href="images/bab-funeral-and-life-cover.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .page {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 22px 24px 32px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 14px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand img {
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            object-fit: cover;
+            border: 1px solid #38bdf8;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .brand p {
+            margin: 0;
+            color: #38bdf8;
+            letter-spacing: 0.18em;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .print-note {
+            margin-top: 10px;
+            color: #94a3b8;
+            font-size: 0.86rem;
+        }
+
+        .hero {
+            margin-top: 18px;
+            padding: 16px;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            background: #0b1220;
+        }
+
+        .eyebrow {
+            margin: 0;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.72rem;
+        }
+
+        .hero h2 {
+            margin: 8px 0 0;
+            font-size: 1.8rem;
+            line-height: 1.25;
+        }
+
+        .hero .sub {
+            margin-top: 10px;
+            color: #cbd5e1;
+        }
+
+        .pill-row {
+            margin-top: 12px;
+            color: #93c5fd;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin-top: 16px;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 14px;
+            background: #0b1220;
+        }
+
+        .section h3 {
+            margin: 0 0 8px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .card {
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 10px;
+            background: #0d1528;
+        }
+
+        .price {
+            color: #38bdf8;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin: 4px 0;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            margin-top: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 860px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #1e293b;
+            vertical-align: top;
+            font-size: 0.88rem;
+        }
+
+        th {
+            color: #38bdf8;
+            background: #091427;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            font-size: 0.76rem;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .contacts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .contacts p {
+            margin: 4px 0;
+            color: #cbd5e1;
+        }
+
+        .footer {
+            margin-top: 16px;
+            border-top: 1px solid #1e293b;
+            padding-top: 10px;
+            color: #94a3b8;
+            font-size: 0.82rem;
+        }
+
+        @media print {
+            .print-note {
+                display: none;
+            }
+
+            .page {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <header class="top">
+            <div class="brand">
+                <img src="images/bab-funeral-and-life-cover.png" alt="BAB Funeral and Life Cover logo" />
+                <div>
+                    <p>THE HATE U GIVE</p>
+                    <h1>BAB Funeral and Life Cover</h1>
+                </div>
+            </div>
+            <div>Official Product Brochure</div>
+        </header>
+
+        <p class="print-note">Tip: In the print dialog, choose <strong>Save as PDF</strong> for a branded downloadable
+            document.</p>
+
+        <section class="hero">
+            <p class="eyebrow">Africa-Born Insurance Brand</p>
+            <h2>Premium funeral and life cover built for families who plan ahead.</h2>
+            <p class="sub">Compassionate service, transparent policy options, and dependable claims support for
+                long-term family peace of mind.</p>
+            <p class="pill-row">Family Plans • Individual Life Cover • Founder-Led Service</p>
+        </section>
+
+        <section class="section">
+            <h3>Plan Price Ranges</h3>
+            <div class="grid">
+                <article class="card">
+                    <strong>Essential Funeral Plan</strong>
+                    <p class="price">R120 – R250 / month</p>
+                    <p>Immediate family support with core funeral payout protection.</p>
+                </article>
+                <article class="card">
+                    <strong>Family Funeral Plus</strong>
+                    <p class="price">R260 – R550 / month</p>
+                    <p>Expanded spouse/dependent cover with stronger payout tiers.</p>
+                </article>
+                <article class="card">
+                    <strong>Life Cover Secure</strong>
+                    <p class="price">R300 – R900 / month</p>
+                    <p>Long-term life risk protection for family continuity planning.</p>
+                </article>
+                <article class="card">
+                    <strong>Extended Family Cover</strong>
+                    <p class="price">R100 – R400 / member</p>
+                    <p>Optional protection for parents and selected relatives.</p>
+                </article>
+                <article class="card">
+                    <strong>Senior 50+ Plan</strong>
+                    <p class="price">R200 – R650 / month</p>
+                    <p>Flexible structures for senior members and late-entry clients.</p>
+                </article>
+                <article class="card">
+                    <strong>Premium Legacy Plan</strong>
+                    <p class="price">R700 – R1 800 / month</p>
+                    <p>Enhanced family/estate support with priority servicing.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <h3>Benefits Comparison</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Waiting Period</th>
+                            <th>Payout Speed</th>
+                            <th>Entry Age</th>
+                            <th>Major Exclusions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Essential Funeral</td>
+                            <td>6 months natural death, immediate accidental cover</td>
+                            <td>48–72 hours</td>
+                            <td>18–65</td>
+                            <td>Fraud, non-disclosure, excluded waiting period claims</td>
+                        </tr>
+                        <tr>
+                            <td>Family Funeral Plus</td>
+                            <td>6 months natural death, immediate accidental cover</td>
+                            <td>24–72 hours</td>
+                            <td>18–70</td>
+                            <td>Policy lapse, fraud, excluded events</td>
+                        </tr>
+                        <tr>
+                            <td>Life Cover Secure</td>
+                            <td>Up to 12 months for selected causes</td>
+                            <td>3–7 business days</td>
+                            <td>18–60</td>
+                            <td>Suicide clause period, fraud, non-disclosure</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section contacts">
+            <article>
+                <h3>Contact Details</h3>
+                <p><strong>CEO:</strong> Sfiso Quintin Tshotwane</p>
+                <p><strong>Mobile:</strong> 062 068 8465</p>
+                <p><strong>WhatsApp:</strong> 067 784 4577</p>
+                <p><strong>Email:</strong> brokenaintbad@gmail.com</p>
+            </article>
+            <article>
+                <h3>Quote & Claims Channels</h3>
+                <p>Submit quote enquiries via WhatsApp, call, or email.</p>
+                <p>Claims are processed after document verification.</p>
+                <p>Priority support available for selected plan categories.</p>
+            </article>
+        </section>
+
+        <div class="footer">
+            © <span id="year"></span> BAB Funeral and Life Cover. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("print") === "1") {
+            window.addEventListener("load", () => {
+                setTimeout(() => window.print(), 350);
+            });
+        }
+    </script>
+</body>
+
+</html>

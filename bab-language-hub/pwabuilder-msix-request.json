@@ -1,0 +1,17 @@
+{
+    "name": "BAB Language Hub",
+    "packageId": "BABIndustries.BABLanguageHub",
+    "applicationId": "BABIndustries.BABLanguageHub",
+    "url": "https://example.com",
+    "version": "1.0.0",
+    "allowSigning": true,
+    "publisher": {
+        "displayName": "BAB Industries",
+        "commonName": "CN=BAB Industries"
+    },
+    "generateModernPackage": true,
+    "classicPackage": {
+        "generate": false,
+        "version": "1.0.0"
+    }
+}

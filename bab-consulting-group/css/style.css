@@ -1,0 +1,526 @@
+/* ---------------------------
+   GLOBAL STYLES
+---------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: #06122A; /* deep navy */
+    color: #E6ECF3;
+    line-height: 1.7;
+    padding-bottom: 60px;
+}
+
+/* Simple page wrapper */
+main {
+    min-height: 70vh;
+}
+
+/* ---------------------------
+   NAVIGATION BAR
+---------------------------- */
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 60px;
+    background: #0B1A3A;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo h1 {
+    color: #00C7FF;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.logo .slogan {
+    color: #7EC8FF;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+}
+
+.nav-links li a {
+    color: #E6ECF3;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s ease-in-out;
+}
+
+.nav-links li a:hover {
+    color: #00C7FF;
+}
+
+/* Mobile nav toggle (hidden on desktop) */
+.nav-toggle {
+    display: none;
+    font-size: 22px;
+    color: #E6ECF3;
+    cursor: pointer;
+}
+
+/* ---------------------------
+   HERO SECTION (HOME PAGE)
+---------------------------- */
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 80px 60px;
+    gap: 40px;
+}
+
+.hero-text {
+    width: 60%;
+    animation: fadeInUp 0.7s ease-out;
+}
+
+.hero-text h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #FFFFFF;
+}
+
+.hero-text p {
+    font-size: 17px;
+    color: #BFD6F5;
+    margin-bottom: 25px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.hero-buttons a {
+    padding: 12px 22px;
+    background: #00C7FF;
+    color: #06122A;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.hero-buttons a:nth-child(2) {
+    background: transparent;
+    color: #00C7FF;
+    border: 1px solid #00C7FF;
+}
+
+.hero-buttons a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 199, 255, 0.4);
+}
+
+.hero-stats {
+    margin-top: 10px;
+    color: #7EC8FF;
+}
+
+.hero-stats span {
+    margin-right: 18px;
+    font-size: 14px;
+}
+
+/* ---------------------------
+   HERO RIGHT BOX
+---------------------------- */
+
+.hero-box {
+    width: 40%;
+    background: radial-gradient(circle at top left, rgba(0,199,255,0.2), transparent),
+                rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 30px;
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.7s ease-out;
+}
+
+.hero-box h3 {
+    font-size: 14px;
+    color: #7EC8FF;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hero-box h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #FFFFFF;
+}
+
+.hero-box p {
+    color: #BFD6F5;
+}
+
+/* ---------------------------
+   PAGE HEADERS
+---------------------------- */
+
+.page-header {
+    padding: 60px 60px 20px;
+}
+
+.page-header h1 {
+    font-size: 36px;
+    color: #FFFFFF;
+}
+
+.page-header p {
+    color: #BFD6F5;
+    margin-top: 8px;
+}
+
+/* ---------------------------
+   PRACTICE AREAS GRID
+---------------------------- */
+
+.divisions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding: 40px 60px;
+}
+
+.division-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 25px;
+    transition: 0.3s;
+}
+
+.division-card:hover {
+    transform: translateY(-5px);
+    border-color: #00C7FF;
+}
+
+.division-card h2 {
+    color: #FFFFFF;
+    margin-bottom: 12px;
+}
+
+.division-card p {
+    color: #BFD6F5;
+}
+
+/* ---------------------------
+   ABOUT PAGE
+---------------------------- */
+
+.about-section {
+    padding: 40px 60px 60px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+.about-section p {
+    color: #BFD6F5;
+    margin-bottom: 15px;
+}
+
+.about-highlight {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.about-highlight h3 {
+    color: #7EC8FF;
+    margin-bottom: 10px;
+}
+
+/* ---------------------------
+   CLIENTS PAGE
+---------------------------- */
+
+.clients-grid {
+    padding: 40px 60px 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.client-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.3s;
+}
+
+.client-card:hover {
+    transform: translateY(-4px);
+    border-color: #00C7FF;
+}
+
+.client-card h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.client-card span {
+    color: #7EC8FF;
+    font-size: 13px;
+}
+
+.client-card p {
+    color: #BFD6F5;
+    margin-top: 8px;
+}
+
+/* ---------------------------
+   CONTACT PAGE
+---------------------------- */
+
+.contact-card {
+    background: rgba(255,255,255,0.05);
+    padding: 30px;
+    margin: 40px 60px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.contact-card h2 {
+    font-size: 26px;
+    color: #FFFFFF;
+}
+
+.contact-card h3 {
+    color: #7EC8FF;
+    margin-bottom: 20px;
+}
+
+.contact-card p {
+    margin-bottom: 10px;
+    color: #BFD6F5;
+}
+
+.contact-card blockquote {
+    margin-top: 20px;
+    padding-left: 12px;
+    border-left: 3px solid #00C7FF;
+    color: #FFFFFF;
+    font-style: italic;
+}
+
+/* ---------------------------
+   LEADERSHIP
+---------------------------- */
+
+.leadership-profile {
+    padding: 40px 60px 60px;
+}
+
+.leadership-profile h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.leadership-profile h3 {
+    color: #7EC8FF;
+    margin-bottom: 20px;
+}
+
+.leadership-profile p {
+    color: #BFD6F5;
+}
+
+.leadership-profile blockquote {
+    margin-top: 20px;
+    padding-left: 12px;
+    border-left: 3px solid #00C7FF;
+    font-style: italic;
+}
+
+/* ---------------------------
+   FOOTER
+---------------------------- */
+
+.site-footer {
+    padding: 30px 60px 20px;
+    background: #050C1D;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 40px;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.footer-top h3 {
+    color: #FFFFFF;
+}
+
+.footer-top p {
+    color: #7EC8FF;
+}
+
+.footer-links a {
+    color: #BFD6F5;
+    text-decoration: none;
+    margin-left: 18px;
+    font-size: 13px;
+}
+
+.footer-links a:hover {
+    color: #00C7FF;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #6F7FA5;
+}
+
+/* ---------------------------
+   ANIMATIONS
+---------------------------- */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------------------------
+   RESPONSIVE DESIGN
+---------------------------- */
+
+/* Tablets */
+@media (max-width: 992px) {
+    .hero {
+        padding: 60px 30px;
+        flex-direction: column;
+    }
+
+    .hero-text, .hero-box {
+        width: 100%;
+    }
+
+    .divisions-grid,
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 30px;
+    }
+
+    .about-section {
+        padding: 30px;
+        grid-template-columns: 1fr;
+    }
+
+    .contact-card,
+    .leadership-profile {
+        margin: 30px;
+        padding: 25px;
+    }
+
+    .site-footer {
+        padding: 25px 30px 15px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+    .navbar {
+        padding: 12px 20px;
+    }
+
+    .nav-links {
+        display: none; /* hide desktop menu */
+        position: absolute;
+        top: 56px;
+        right: 0;
+        background: #0B1A3A;
+        flex-direction: column;
+        width: 100%;
+        padding: 15px 20px 20px;
+        gap: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* we will manually toggle this class with JS if you want later
+       but even without JS, menu will stay hidden on mobile which is okay for now */
+
+    .nav-toggle {
+        display: block;
+    }
+
+    .hero {
+        padding: 40px 20px;
+    }
+
+    .hero-text h1 {
+        font-size: 30px;
+    }
+
+    .page-header {
+        padding: 30px 20px 10px;
+    }
+
+    .divisions-grid,
+    .clients-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .contact-card,
+    .leadership-profile {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .site-footer {
+        padding: 20px;
+    }
+
+    .footer-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .footer-links a {
+        margin-left: 0;
+        margin-right: 12px;
+    }
+}

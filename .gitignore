@@ -1,0 +1,14 @@
+.venv/
+venv/
+.tools/
+
+**/node_modules/
+**/pwabuilder-output/
+**/dist/
+**/*.log
+**/tunnel-url.txt
+**/tunnel-log.txt
+**/ssh-tunnel.log
+**/msix-api-test.txt
+**/manifest.package.webmanifest
+**/pwabuilder-msix-request.runtime.json
