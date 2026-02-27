@@ -526,7 +526,16 @@ function showInstallButtons(show) {
 
 function installPromptClickHandler() {
     if (!deferredInstallPrompt) {
-        setStatus("Install option is not available in this browser yet.");
+        const profile = getInstallProfile();
+        setupManualInstallGuidance();
+
+        if (profile.isIOS) {
+            setStatus("Use Safari Share menu and tap Add to Home Screen.");
+        } else if (profile.isAndroid || profile.isHuawei) {
+            setStatus("Open browser menu and tap Install or Add to Home screen.");
+        } else {
+            setStatus("Use your browser menu to install this app (Install app/Add to dock). ");
+        }
         return;
     }
 
@@ -538,7 +547,12 @@ function setupManualInstallGuidance() {
     const profile = getInstallProfile();
 
     if (isRunningStandalone()) {
-        hideInstallGuide();
+        renderInstallGuide(
+            [
+                "This app is already installed on your device."
+            ],
+            "BAB Language Hub is already running as an installed app."
+        );
         showInstallButtons(false);
         return;
     }
@@ -552,7 +566,7 @@ function setupManualInstallGuidance() {
             ],
             "iPhone/iPad install uses Safari's Add to Home Screen option."
         );
-        showInstallButtons(false);
+        showInstallButtons(true);
         return;
     }
 
@@ -567,12 +581,19 @@ function setupManualInstallGuidance() {
                 ? "On Huawei devices, use browser menu install options in Chrome/Edge/Huawei Browser."
                 : "Android browsers may show Install in the menu if prompt is not automatic."
         );
-        showInstallButtons(false);
+        showInstallButtons(true);
         return;
     }
 
-    hideInstallGuide();
-    showInstallButtons(false);
+    renderInstallGuide(
+        [
+            "Open browser menu.",
+            "Select Install, Install App, or Add to Dock/Home Screen.",
+            "Confirm installation when prompted."
+        ],
+        "Install is supported in modern browsers even when prompt is not automatic."
+    );
+    showInstallButtons(true);
 }
 
 function setupInstallPrompt() {
@@ -597,7 +618,12 @@ function setupInstallPrompt() {
         showInstallButtons(false);
         deferredInstallPrompt = null;
         setStatus("App installed successfully.");
-        hideInstallGuide();
+        renderInstallGuide(
+            [
+                "Installation completed successfully."
+            ],
+            "BAB Language Hub is now installed on this device."
+        );
     });
 
     if (installAppBtn) {
