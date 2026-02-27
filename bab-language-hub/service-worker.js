@@ -1,4 +1,4 @@
-const CACHE_NAME = "bab-language-hub-v2";
+const CACHE_NAME = "bab-language-hub-v3";
 const APP_SHELL = [
     "./",
     "./index.html",
