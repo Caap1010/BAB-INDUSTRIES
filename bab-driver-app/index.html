@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Driver App | Advanced Driver Platform</title>
+    <meta name="description"
+        content="BAB Driver App is an advanced driver operations platform with smart dispatch, safety tools, demand intelligence, and performance optimization." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand-wrap">
+            <img id="brandLogo" class="brand-logo" src="images/bab-driver-logo.png" alt="BAB Driver App logo" />
+            <div class="brand-fallback" id="brandFallback" aria-hidden="true">BAB</div>
+            <div>
+                <h1>BAB Driver App</h1>
+                <p>AI-assisted dispatch • Multi-stop routing • Safety-first operations</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <button id="onlineToggle" class="btn success" type="button">Go Online</button>
+            <button id="themeToggle" class="btn ghost" type="button">Toggle Theme</button>
+        </div>
+    </header>
+
+    <main class="layout">
+        <section class="panel status-panel">
+            <h2>Live Driver Status</h2>
+            <div class="status-grid">
+                <article>
+                    <span>Availability</span>
+                    <strong id="availabilityValue">Offline</strong>
+                </article>
+                <article>
+                    <span>Current Zone</span>
+                    <strong id="zoneValue">Johannesburg CBD</strong>
+                </article>
+                <article>
+                    <span>Acceptance Rate</span>
+                    <strong id="acceptanceValue">98%</strong>
+                </article>
+                <article>
+                    <span>Safety Score</span>
+                    <strong id="safetyValue">99 / 100</strong>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel request-panel">
+            <div class="panel-head">
+                <h2>Smart Ride Queue</h2>
+                <span id="queueCount">0 pending</span>
+            </div>
+            <ul id="requestList" class="request-list"></ul>
+            <div class="request-actions">
+                <button id="simulateRequestBtn" class="btn primary" type="button">Simulate New Request</button>
+                <button id="autoAcceptBtn" class="btn ghost" type="button">Auto Accept: Off</button>
+            </div>
+        </section>
+
+        <section class="panel trip-panel">
+            <div class="panel-head">
+                <h2>Active Trip Control</h2>
+                <span id="tripPhase">No active trip</span>
+            </div>
+            <div id="tripCard" class="trip-card empty">
+                <p>Accept a request to activate advanced trip controls.</p>
+            </div>
+            <div class="trip-actions">
+                <button id="nextStepBtn" class="btn primary" type="button" disabled>Next Trip Step</button>
+                <button id="completeTripBtn" class="btn success" type="button" disabled>Complete Trip</button>
+            </div>
+        </section>
+
+        <section class="panel demand-panel">
+            <div class="panel-head">
+                <h2>Demand Intelligence</h2>
+                <span id="lastRefresh">Updated now</span>
+            </div>
+            <div class="zone-grid" id="zoneGrid"></div>
+            <button id="refreshDemandBtn" class="btn ghost" type="button">Refresh Demand Heat</button>
+        </section>
+
+        <section class="panel earnings-panel">
+            <div class="panel-head">
+                <h2>Earnings & Incentives</h2>
+                <span id="earningsValue">R 0.00 today</span>
+            </div>
+            <div class="earnings-grid">
+                <article>
+                    <h3>Trips</h3>
+                    <strong id="tripsDone">0</strong>
+                </article>
+                <article>
+                    <h3>Surge Bonus</h3>
+                    <strong id="surgeBonus">R 0.00</strong>
+                </article>
+                <article>
+                    <h3>Quest Progress</h3>
+                    <strong id="questProgress">0 / 12</strong>
+                </article>
+            </div>
+            <div class="progress-wrap">
+                <label for="questBar">Weekly Quest</label>
+                <progress id="questBar" max="12" value="0"></progress>
+            </div>
+        </section>
+
+        <section class="panel safety-panel">
+            <h2>Safety Command Center</h2>
+            <div class="safety-actions">
+                <button id="sosBtn" class="btn danger" type="button">SOS Emergency</button>
+                <button id="shareTripBtn" class="btn ghost" type="button">Share Live Trip</button>
+                <button id="incidentBtn" class="btn ghost" type="button">Report Incident</button>
+            </div>
+            <p id="safetyStatus">All systems normal.</p>
+        </section>
+
+        <section class="panel advanced-panel">
+            <h2>Advanced Features Layer</h2>
+            <ul class="feature-list">
+                <li>Predictive destination hints and demand-aware positioning</li>
+                <li>Route quality scoring with pickup reliability metrics</li>
+                <li>Fuel/EV efficiency insights and shift optimization</li>
+                <li>Voice quick-actions for hands-free dispatch controls</li>
+                <li>Fraud/risk signal warnings for suspicious ride patterns</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© <span id="year"></span> BAB Driver App • Built for pro drivers and fleet partners.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
