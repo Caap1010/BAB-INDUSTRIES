@@ -55,10 +55,16 @@
         <section id="installSection" class="install-section" hidden>
             <div class="container">
                 <div class="install-card">
-                    <h2>Install BAB Language Hub on your phone</h2>
+                    <h2>Install BAB Language Hub on any device</h2>
                     <p id="installHint" class="install-hint">Install the app for faster access and a fullscreen
                         experience.</p>
-                    <button id="installPrimaryBtn" class="button" type="button" hidden>Install</button>
+                    <div class="install-actions">
+                        <button id="installPrimaryBtn" class="button" type="button" hidden>Install App</button>
+                        <a id="apkDownloadBtn" class="button outline apk-download-btn"
+                            href="downloads/bab-language-hub.apk" download="BAB-Language-Hub.apk">Download APK</a>
+                    </div>
+                    <p id="apkDownloadNote" class="apk-download-note">Use the APK on Android devices. iOS users should
+                        install from Safari using Add to Home Screen.</p>
                     <ol id="installSteps" class="install-steps"></ol>
                 </div>
             </div>

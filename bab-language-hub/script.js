@@ -128,6 +128,8 @@ const installSection = document.getElementById("installSection");
 const installPrimaryBtn = document.getElementById("installPrimaryBtn");
 const installHint = document.getElementById("installHint");
 const installSteps = document.getElementById("installSteps");
+const apkDownloadBtn = document.getElementById("apkDownloadBtn");
+const apkDownloadNote = document.getElementById("apkDownloadNote");
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
@@ -135,6 +137,7 @@ let isListening = false;
 let autoTranslateTimer = null;
 let hasAutoStartedVoice = false;
 let deferredInstallPrompt = null;
+const APK_FILE_NAME = "BAB-Language-Hub.apk";
 
 function setStatus(message) {
     statusMessage.textContent = message;
@@ -524,6 +527,38 @@ function showInstallButtons(show) {
     }
 }
 
+function configureApkDownload(profile = getInstallProfile()) {
+    if (!apkDownloadBtn || !apkDownloadNote) {
+        return;
+    }
+
+    const apkHref = apkDownloadBtn.getAttribute("href");
+    const hasApkLink = Boolean(apkHref && apkHref.trim() && apkHref.trim() !== "#");
+
+    if (!hasApkLink) {
+        apkDownloadBtn.style.pointerEvents = "none";
+        apkDownloadBtn.style.opacity = "0.65";
+        apkDownloadNote.textContent = "APK download link is not configured yet.";
+        return;
+    }
+
+    apkDownloadBtn.setAttribute("download", APK_FILE_NAME);
+    apkDownloadBtn.style.pointerEvents = "auto";
+    apkDownloadBtn.style.opacity = "1";
+
+    if (profile.isAndroid || profile.isHuawei) {
+        apkDownloadNote.textContent = "Android/Huawei: download APK, then allow install from this browser if prompted.";
+        return;
+    }
+
+    if (profile.isIOS) {
+        apkDownloadNote.textContent = "APK is Android-only. iPhone/iPad users should use Safari and tap Add to Home Screen.";
+        return;
+    }
+
+    apkDownloadNote.textContent = "Desktop: download APK and transfer it to an Android device, or install the web app in this browser.";
+}
+
 function installPromptClickHandler() {
     if (!deferredInstallPrompt) {
         const profile = getInstallProfile();
@@ -554,46 +589,21 @@ function setupManualInstallGuidance() {
             "BAB Language Hub is already running as an installed app."
         );
         showInstallButtons(false);
-        return;
-    }
-
-    if (profile.isIOS) {
-        renderInstallGuide(
-            [
-                "Open this site in Safari.",
-                "Tap the Share button.",
-                "Tap Add to Home Screen, then tap Add."
-            ],
-            "iPhone/iPad install uses Safari's Add to Home Screen option."
-        );
-        showInstallButtons(true);
-        return;
-    }
-
-    if (profile.isAndroid || profile.isHuawei) {
-        renderInstallGuide(
-            [
-                "Open browser menu (⋮).",
-                "Tap Install or Add to Home screen.",
-                "Confirm by tapping Install/Add."
-            ],
-            profile.isHuawei
-                ? "On Huawei devices, use browser menu install options in Chrome/Edge/Huawei Browser."
-                : "Android browsers may show Install in the menu if prompt is not automatic."
-        );
-        showInstallButtons(true);
+        configureApkDownload(profile);
         return;
     }
 
     renderInstallGuide(
         [
-            "Open browser menu.",
-            "Select Install, Install App, or Add to Dock/Home Screen.",
-            "Confirm installation when prompted."
+            "Android/Huawei: open browser menu (⋮) and tap Install or Add to Home screen.",
+            "Android alternative: tap Download APK, open the file, and follow install prompts.",
+            "iPhone/iPad: open this site in Safari, tap Share, then Add to Home Screen.",
+            "Desktop: open browser menu and select Install App/Install/Add to Dock."
         ],
-        "Install is supported in modern browsers even when prompt is not automatic."
+        "Use the option that matches your device to install BAB Language Hub."
     );
     showInstallButtons(true);
+    configureApkDownload(profile);
 }
 
 function setupInstallPrompt() {
@@ -603,14 +613,12 @@ function setupInstallPrompt() {
         event.preventDefault();
         deferredInstallPrompt = event;
         showInstallButtons(true);
+        configureApkDownload(getInstallProfile());
         if (!isRunningStandalone() && installSection) {
             installSection.hidden = false;
         }
         if (installHint) {
-            installHint.textContent = "Install is available. Tap Install below.";
-        }
-        if (installSteps) {
-            installSteps.innerHTML = "";
+            installHint.textContent = "Install is available. Tap Install App below.";
         }
     });
 
