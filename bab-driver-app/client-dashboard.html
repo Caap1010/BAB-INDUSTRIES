@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard | BAB Driver App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-dashboard="true" data-role="client">
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="images/bab-driver-app-logo.png" alt="BAB Driver App logo">
+            <span>BAB Driver App</span>
+        </a>
+        <nav class="nav-links">
+            <a href="about.html">About</a>
+            <a href="earn.html">Earn</a>
+            <a href="contact.html">Contact</a>
+            <button class="btn btn-small" type="button" data-logout>Logout</button>
+        </nav>
+    </header>
+
+    <main class="container page">
+        <section class="card">
+            <h1>Client Dashboard</h1>
+            <p id="welcomeMessage" class="status">Welcome, Client.</p>
+            <ul>
+                <li>Request a driver</li>
+                <li>View your recent rides</li>
+                <li>Manage your profile details</li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">BAB Reduce Reuse Recycle Logo Placeholder</title>
+  <desc id="logoDesc">A circular green placeholder logo with the letters BAB and recycle text.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f8a52"/>
+      <stop offset="1" stop-color="#166a3e"/>
+    </linearGradient>
+  </defs>
+  <circle cx="160" cy="160" r="156" fill="url(#g)"/>
+  <circle cx="160" cy="160" r="126" fill="#ffffff" opacity="0.12"/>
+  <text x="160" y="148" text-anchor="middle" fill="#ffffff" font-size="62" font-family="Inter, Arial, sans-serif" font-weight="800">BAB</text>
+  <text x="160" y="190" text-anchor="middle" fill="#e9fff2" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="600">RECYCLE</text>
+</svg>

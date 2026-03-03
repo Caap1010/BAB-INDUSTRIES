@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | BAB Driver App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="images/bab-driver-app-logo.png" alt="BAB Driver App logo">
+            <span>BAB Driver App</span>
+        </a>
+        <nav class="nav-links">
+            <a href="about.html">About</a>
+            <a href="earn.html">Earn</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+
+    <main class="container form-page">
+        <section class="card">
+            <h1>Create your account</h1>
+            <p>You must choose your role first.</p>
+
+            <div class="role-grid" id="roleGrid">
+                <button type="button" class="role-btn" data-role="driver">I am a Driver</button>
+                <button type="button" class="role-btn" data-role="client">I am a Client</button>
+            </div>
+
+            <p id="selectedRole" class="status" aria-live="polite">No role selected.</p>
+
+            <form id="signupForm" autocomplete="on">
+                <input type="hidden" id="accountRole" name="accountRole" required>
+
+                <label for="signupName">Full Name</label>
+                <input id="signupName" name="fullName" type="text" required disabled>
+
+                <label for="signupEmail">Email</label>
+                <input id="signupEmail" name="email" type="email" required disabled>
+
+                <label for="signupPassword">Password</label>
+                <input id="signupPassword" name="password" type="password" minlength="6" required disabled>
+
+                <button class="btn" type="submit" id="signupSubmit" disabled>Sign Up</button>
+            </form>
+
+            <p class="small-text">Already have an account? <a href="login.html">Login</a></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+AI VIDEO PROMPT (30-45 seconds)
+Create a cinematic, uplifting environmental awareness video set in South Africa.
+Show a sequence of scenes:
+1) Littered street and plastic waste near drainage.
+2) Community members cleaning up together.
+3) Sorting waste into recycling bins labeled plastic, paper, glass, metal.
+4) Children planting trees and smiling.
+5) Clean parks, clear water, and a thriving green neighborhood.
+Style: realistic, warm natural light, hopeful tone, smooth camera motion, documentary-inspired.
+Text overlay suggestions:
+- "A clean environment is a healthy future"
+- "Reduce. Reuse. Recycle."
+- "Join BAB Reduce Reuse Recycle"
+Ending frame: "Keep our environment clean. Start today."
+
+VOICEOVER SCRIPT
+"A clean environment is not a luxury. It is our responsibility.
+Every bottle recycled, every piece of litter removed, and every habit we change creates a healthier community.
+When we reduce waste, reuse what we can, and recycle correctly, we protect our land, our water, and our future.
+Together, we can build cleaner streets, greener neighborhoods, and a better tomorrow for our children.
+Join BAB Reduce Reuse Recycle. Keep our environment clean. Start today."
+
+EXPORT SETTINGS
+- Format: MP4 (H.264)
+- Resolution: 1920x1080
+- Frame rate: 30fps
+- Audio: AAC, 48kHz
+- Max length: 45 seconds
+
+HOW TO USE ON SITE
+1) Save your final video as: clean-environment-ai.mp4
+2) Place it in: bab-reduce-reuse-recycle/assets/
+3) Refresh the page and play the video in the Video section.

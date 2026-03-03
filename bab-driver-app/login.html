@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BAB Driver App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="images/bab-driver-app-logo.png" alt="BAB Driver App logo">
+            <span>BAB Driver App</span>
+        </a>
+        <nav class="nav-links">
+            <a href="about.html">About</a>
+            <a href="earn.html">Earn</a>
+            <a href="contact.html">Contact</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <main class="container form-page">
+        <section class="card">
+            <h1>Login</h1>
+            <p>Use the account you created on sign up.</p>
+
+            <form id="loginForm" autocomplete="on">
+                <label for="loginEmail">Email</label>
+                <input id="loginEmail" name="email" type="email" required>
+
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" name="password" type="password" required>
+
+                <button class="btn" type="submit">Login</button>
+            </form>
+
+            <p id="loginMessage" class="status" aria-live="polite"></p>
+            <p class="small-text">Need an account? <a href="signup.html">Sign Up</a></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
