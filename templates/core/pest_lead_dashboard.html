@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Pest Control Leads Dashboard</title>
+    <style>
+        body {
+            font-family: Inter, Arial, sans-serif;
+            margin: 0;
+            background: #020617;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        h1 {
+            margin-bottom: 0.4rem;
+        }
+
+        p {
+            margin-top: 0;
+            color: #94a3b8;
+        }
+
+        .meta {
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #1e293b;
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #111c32;
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        tr:hover td {
+            background: #13203a;
+        }
+
+        a {
+            color: #38bdf8;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>BAB Pest Control Leads</h1>
+        <p class="meta">Showing latest {{ leads|length }} lead(s). API endpoint: <a
+                href="/api/pest-leads/list/">/api/pest-leads/list/</a></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Request Type</th>
+                    <th>Preferred Time</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>{{ lead.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ lead.name }}</td>
+                    <td><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></td>
+                    <td>{{ lead.subject }}</td>
+                    <td>{{ lead.request_type|default:"-" }}</td>
+                    <td>{{ lead.preferred_contact_time|default:"-" }}</td>
+                    <td>{{ lead.source|default:"website" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No leads captured yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+
+</html>
