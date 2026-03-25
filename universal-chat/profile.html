@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile — NEXUS</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .profile-page-body {
+            padding: 0;
+        }
+
+        .profile-content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .micro-post-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--c-border);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .micro-post-body {
+            font-size: 0.925rem;
+            color: var(--c-text);
+            line-height: 1.6;
+        }
+
+        .micro-post-time {
+            font-size: 0.75rem;
+            color: var(--c-text-subtle);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-shell">
+        <aside class="sidebar" id="app-sidebar"></aside>
+
+        <div class="main-content">
+            <header class="main-header">
+                <button class="btn-icon" id="menu-toggle" style="display:none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                </button>
+                <h2 id="header-username">Profile</h2>
+                <button class="btn-icon" id="back-btn" onclick="history.back()" title="Back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12" />
+                        <polyline points="12 19 5 12 12 5" />
+                    </svg>
+                </button>
+            </header>
+
+            <div class="page-body profile-page-body">
+                <!-- Loading state -->
+                <div id="profile-loading" style="display:flex;align-items:center;justify-content:center;height:40vh">
+                    <div class="spinner"></div>
+                </div>
+
+                <!-- Profile content (shown after load) -->
+                <div id="profile-content" style="display:none">
+
+                    <!-- Cover & header -->
+                    <div class="profile-cover" id="profile-cover">
+                        <div class="profile-cover-overlay"></div>
+                    </div>
+
+                    <div class="profile-content">
+                        <div class="profile-header">
+                            <div class="profile-avatar-wrap">
+                                <div id="profile-avatar-el"></div>
+                            </div>
+                            <h2 class="profile-name" id="profile-name"></h2>
+                            <div class="profile-handle" id="profile-handle"></div>
+                            <p class="profile-bio" id="profile-bio"></p>
+                            <div id="profile-website"></div>
+
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="stat-posts">0</div>
+                                    <div class="stat-label">Posts</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="stat-followers">0</div>
+                                    <div class="stat-label">Followers</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="stat-following">0</div>
+                                    <div class="stat-label">Following</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-actions" id="profile-actions"></div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="profile-tabs">
+                            <div class="profile-tab active" data-tab="posts" onclick="Profile.switchTab('posts')">Posts
+                            </div>
+                            <div class="profile-tab" data-tab="micro" onclick="Profile.switchTab('micro')">Thoughts
+                            </div>
+                            <div class="profile-tab" data-tab="about" onclick="Profile.switchTab('about')">About</div>
+                        </div>
+
+                        <!-- Tab content -->
+                        <div id="tab-posts">
+                            <div class="posts-grid" id="posts-grid">
+                                <!-- JS injected -->
+                            </div>
+                        </div>
+
+                        <div id="tab-micro" style="display:none">
+                            <div id="micro-composer" style="display:none;margin:16px 0">
+                                <textarea class="input" id="micro-input" placeholder="Share a thought…"
+                                    style="margin-bottom:10px" rows="3"></textarea>
+                                <button class="btn btn-primary btn-sm" id="micro-submit">Post thought</button>
+                            </div>
+                            <div id="micro-list"></div>
+                        </div>
+
+                        <div id="tab-about" style="display:none;padding:20px 0">
+                            <div id="about-details"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Not found -->
+                <div id="profile-not-found" style="display:none">
+                    <div class="empty-state" style="height:60vh">
+                        <div class="empty-state-icon">👤</div>
+                        <h3>User not found</h3>
+                        <p>This profile doesn't exist or has been removed.</p>
+                        <a href="feed.html" class="btn btn-primary">Back to Feed</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav" id="bottom-nav"></div>
+    </div>
+
+    <!-- Edit profile modal -->
+    <div id="edit-profile-modal" class="modal-overlay" style="display:none">
+        <div class="card modal">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <span class="modal-close" id="edit-modal-close">✕</span>
+            </div>
+            <div class="auth-form">
+                <div>
+                    <label class="form-label">Display name</label>
+                    <input type="text" id="edit-name" class="input">
+                </div>
+                <div>
+                    <label class="form-label">Bio</label>
+                    <textarea id="edit-bio" class="input" rows="3"></textarea>
+                </div>
+                <div>
+                    <label class="form-label">Website</label>
+                    <input type="url" id="edit-website" class="input" placeholder="https://yoursite.com">
+                </div>
+                <div>
+                    <label class="form-label">Avatar image</label>
+                    <input type="file" id="edit-avatar-file" accept="image/*" class="input" style="padding:8px">
+                </div>
+                <button class="btn btn-primary" id="edit-save-btn" style="width:100%">Save changes</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @media (max-width: 900px) {
+            #menu-toggle {
+                display: flex !important;
+            }
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+
+</html>

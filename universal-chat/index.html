@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS — Where Worlds Connect</title>
+    <meta name="description"
+        content="NEXUS is the next-generation social platform. Chat, share reels, post stories, and connect with people who matter.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* Landing-specific reveal animations */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+        }
+
+        [data-reveal].visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        [data-reveal-delay="1"] {
+            transition-delay: 0.1s;
+        }
+
+        [data-reveal-delay="2"] {
+            transition-delay: 0.2s;
+        }
+
+        [data-reveal-delay="3"] {
+            transition-delay: 0.3s;
+        }
+
+        [data-reveal-delay="4"] {
+            transition-delay: 0.4s;
+        }
+
+        [data-reveal-delay="5"] {
+            transition-delay: 0.5s;
+        }
+
+        [data-reveal-delay="6"] {
+            transition-delay: 0.6s;
+        }
+
+        .screen-mockup {
+            width: 100%;
+            max-width: 680px;
+            margin: 60px auto 0;
+            position: relative;
+            animation: fade-slide-up 1s 0.5s var(--ease-out) both;
+        }
+
+        .screen-mockup-frame {
+            background: var(--bg-surface);
+            border: 1px solid var(--c-border-strong);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .mockup-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-raised);
+            border-bottom: 1px solid var(--c-border);
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .mockup-dot-r {
+            background: #f43f5e;
+        }
+
+        .mockup-dot-y {
+            background: #f59e0b;
+        }
+
+        .mockup-dot-g {
+            background: #10b981;
+        }
+
+        .mockup-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .mockup-story-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mockup-story {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .mockup-story:nth-child(1) {
+            background: linear-gradient(135deg, #7c3aed, #0ea5e9);
+        }
+
+        .mockup-story:nth-child(2) {
+            background: linear-gradient(135deg, #ec4899, #f59e0b);
+        }
+
+        .mockup-story:nth-child(3) {
+            background: linear-gradient(135deg, #10b981, #0ea5e9);
+        }
+
+        .mockup-story:nth-child(4) {
+            background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+        }
+
+        .mockup-story:nth-child(5) {
+            background: linear-gradient(135deg, #f59e0b, #10b981);
+        }
+
+        .mockup-post {
+            background: var(--bg-raised);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid var(--c-border);
+        }
+
+        .mockup-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .mockup-av {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+        }
+
+        .mockup-av-1 {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+        }
+
+        .mockup-av-2 {
+            background: linear-gradient(135deg, #0ea5e9, #10b981);
+        }
+
+        .mockup-line {
+            height: 8px;
+            background: var(--c-border-strong);
+            border-radius: 4px;
+        }
+
+        .mockup-img {
+            height: 100px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--bg-raised) 0%, var(--c-border-strong) 100%);
+            margin: 8px 0;
+        }
+
+        .mockup-actions {
+            display: flex;
+            gap: 14px;
+        }
+
+        .mockup-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: var(--c-text-subtle);
+        }
+
+        .floating-card {
+            position: absolute;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: var(--shadow-md);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .fc-1 {
+            bottom: -24px;
+            left: -40px;
+            animation: float1 4s ease-in-out infinite;
+        }
+
+        .fc-2 {
+            top: 40px;
+            right: -40px;
+            animation: float2 5s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg)
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-2deg)
+            }
+        }
+
+        @keyframes float2 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(2deg)
+            }
+
+            50% {
+                transform: translateY(-14px) rotate(2deg)
+            }
+        }
+    </style>
+</head>
+
+<body class="landing-body">
+
+    <!-- NAV -->
+    <nav class="landing-nav">
+        <a href="index.html" class="landing-nav-logo">
+            <img class="landing-nav-logo-mark" src="assets/logo.png" alt="NEXUS logo"
+                onerror="this.onerror=null;this.src='icon.svg'">
+            <span class="sidebar-logo-text">NEXUS</span>
+        </a>
+        <div class="landing-nav-actions">
+            <a href="login.html" class="btn btn-ghost btn-sm">Sign in</a>
+            <a href="login.html?tab=signup" class="btn btn-primary btn-sm">Get started</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <span class="eyebrow-dot"></span>
+                The next-generation social platform is here
+            </div>
+            <h1>Where <span class="gradient-text">Every Connection</span><br>Becomes Magic</h1>
+            <p>Chat in real-time, share stunning reels, post stories that disappear, and build a community around what
+                you love. All in one cosmic space.</p>
+            <div class="hero-ctas">
+                <a href="login.html?tab=signup" class="btn btn-primary btn-lg">
+                    Start for free &nbsp;→
+                </a>
+                <a href="feed.html" class="btn btn-secondary btn-lg">
+                    Explore the feed
+                </a>
+            </div>
+            <div class="hero-social-proof">
+                <div class="proof-avatars">
+                    <div class="avatar avatar-sm avatar-placeholder"
+                        style="background:linear-gradient(135deg,#7c3aed,#ec4899)">A</div>
+                    <div class="avatar avatar-sm avatar-placeholder"
+                        style="background:linear-gradient(135deg,#0ea5e9,#10b981)">B</div>
+                    <div class="avatar avatar-sm avatar-placeholder"
+                        style="background:linear-gradient(135deg,#f59e0b,#f43f5e)">C</div>
+                    <div class="avatar avatar-sm avatar-placeholder"
+                        style="background:linear-gradient(135deg,#10b981,#0ea5e9)">D</div>
+                    <div class="avatar avatar-sm avatar-placeholder"
+                        style="background:linear-gradient(135deg,#ec4899,#8b5cf6)">+</div>
+                </div>
+                <p class="proof-text"><span>10,000+</span> connections made today</p>
+            </div>
+
+            <!-- App mockup -->
+            <div class="screen-mockup">
+                <div class="screen-mockup-frame">
+                    <div class="mockup-bar">
+                        <span class="mockup-dot mockup-dot-r"></span>
+                        <span class="mockup-dot mockup-dot-y"></span>
+                        <span class="mockup-dot mockup-dot-g"></span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="mockup-story-row">
+                            <div class="mockup-story"></div>
+                            <div class="mockup-story"></div>
+                            <div class="mockup-story"></div>
+                            <div class="mockup-story"></div>
+                            <div class="mockup-story"></div>
+                        </div>
+                        <div class="mockup-post">
+                            <div class="mockup-post-header">
+                                <div class="mockup-av mockup-av-1"></div>
+                                <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+                                    <div class="mockup-line" style="width:100px"></div>
+                                    <div class="mockup-line" style="width:60px;opacity:.5"></div>
+                                </div>
+                            </div>
+                            <div class="mockup-line" style="width:100%;margin-bottom:5px"></div>
+                            <div class="mockup-line" style="width:75%"></div>
+                            <div class="mockup-img"></div>
+                            <div class="mockup-actions">
+                                <div class="mockup-action">❤ 142</div>
+                                <div class="mockup-action">💬 38</div>
+                                <div class="mockup-action">↗ Share</div>
+                            </div>
+                        </div>
+                        <div class="mockup-post">
+                            <div class="mockup-post-header">
+                                <div class="mockup-av mockup-av-2"></div>
+                                <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+                                    <div class="mockup-line" style="width:80px"></div>
+                                    <div class="mockup-line" style="width:50px;opacity:.5"></div>
+                                </div>
+                            </div>
+                            <div class="mockup-line" style="width:90%;margin-bottom:5px"></div>
+                            <div class="mockup-line" style="width:55%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-card fc-1" style="font-size:0.8rem;white-space:nowrap">
+                    <div style="color:var(--c-emerald);font-weight:700;font-size:0.75rem;margin-bottom:2px">● LIVE</div>
+                    <div style="color:var(--c-text);font-weight:600">3 people are typing...</div>
+                </div>
+                <div class="floating-card fc-2" style="font-size:0.8rem">
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <div
+                            style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f43f5e,#8b5cf6)">
+                        </div>
+                        <div>
+                            <div style="color:var(--c-text);font-weight:600;font-size:0.8rem">Sarah liked your post
+                            </div>
+                            <div style="color:var(--c-text-subtle);font-size:0.7rem">Just now</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section">
+        <div class="section-header" data-reveal>
+            <div class="section-eyebrow">✦ Everything you need</div>
+            <h2>One platform.<br><span class="gradient-text">Infinite possibilities.</span></h2>
+            <p>From real-time chats to viral reels, NEXUS brings every social experience together in one beautifully
+                designed space.</p>
+        </div>
+        <div class="features-grid">
+            <div class="card feature-card card-glow" data-reveal data-reveal-delay="1">
+                <div class="feature-icon fi-violet" id="icon-feed"></div>
+                <h3>Smart Feed</h3>
+                <p>A personalized feed that learns what you love. Posts, images, videos — all in one beautifully flowing
+                    stream with real-time updates.</p>
+            </div>
+            <div class="card feature-card card-glow" data-reveal data-reveal-delay="2">
+                <div class="feature-icon fi-cyan" id="icon-chat"></div>
+                <h3>Live Messaging</h3>
+                <p>Real-time direct messages and group chats with delivery receipts, media sharing, and typing
+                    indicators. Powered by Firebase cloud services.</p>
+            </div>
+            <div class="card feature-card card-glow" data-reveal data-reveal-delay="3">
+                <div class="feature-icon fi-rose" id="icon-reels"></div>
+                <h3>Viral Reels</h3>
+                <p>Create and discover short-form videos. Snap-scroll through an endless stream of creativity with
+                    one-tap reactions.</p>
+            </div>
+            <div class="card feature-card card-glow" data-reveal data-reveal-delay="4">
+                <div class="feature-icon fi-amber" id="icon-stories"></div>
+                <h3>Disappearing Stories</h3>
+                <p>Share moments that live for 24 hours. Watch rings, progress bars, and tap your way through friends'
+                    stories in style.</p>
+            </div>
+            <div class="card feature-card card-glow" data-reveal data-reveal-delay="5">
+                <div class="feature-icon fi-teal" id="icon-profile"></div>
+                <h3>Rich Profiles</h3>
+                <p>A profile that tells your whole story. Cover photo, bio, post grid, micro-posts — build your personal
+                    brand.</p>
+            </div>
+            <div class="card feature-card card-glow" data-reveal data-reveal-delay="6">
+                <div class="feature-icon fi-pink" id="icon-notify"></div>
+                <h3>Push Notifications</h3>
+                <p>Never miss a beat. Instant push notifications for likes, comments, follows, and messages — even when
+                    the app is closed.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div data-reveal>
+                <div class="stat-number" data-count="50000">0</div>
+                <div class="stat-desc">Active users</div>
+            </div>
+            <div data-reveal data-reveal-delay="1">
+                <div class="stat-number" data-count="2400000">0</div>
+                <div class="stat-desc">Posts shared</div>
+            </div>
+            <div data-reveal data-reveal-delay="2">
+                <div class="stat-number" data-count="980000">0</div>
+                <div class="stat-desc">Messages sent</div>
+            </div>
+            <div data-reveal data-reveal-delay="3">
+                <div class="stat-number" data-count="99">0</div>
+                <div class="stat-desc">% uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <div class="orb orb-1" style="opacity:0.25"></div>
+        <div class="orb orb-2" style="opacity:0.25"></div>
+        <div style="position:relative;z-index:1" data-reveal>
+            <div class="section-eyebrow">✦ Join today — it's free</div>
+            <h2 style="margin: 12px 0 16px">Ready to find your <span class="gradient-text-warm">people?</span></h2>
+            <p style="font-size:1.05rem;max-width:460px;margin:0 auto 36px">No credit card. No downloads. Just sign up
+                and start connecting with the world.</p>
+            <div class="hero-ctas">
+                <a href="login.html?tab=signup" class="btn btn-primary btn-lg">Create your free account →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="landing-footer">
+        <p>© 2026 NEXUS — Built with ❤ and Firebase.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/icons.js"></script>
+    <script>
+        // Inject icons into feature cards
+        document.getElementById('icon-feed').innerHTML = Icons.get('home');
+        document.getElementById('icon-chat').innerHTML = Icons.get('message');
+        document.getElementById('icon-reels').innerHTML = Icons.get('film');
+        document.getElementById('icon-stories').innerHTML = Icons.get('camera');
+        document.getElementById('icon-profile').innerHTML = Icons.get('user');
+        document.getElementById('icon-notify').innerHTML = Icons.get('bell');
+
+        // Reveal animations
+        observeReveal('[data-reveal]');
+
+        // Counter animation — trigger when stats section visible
+        const statsObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statsObserver.disconnect(); } });
+        }, { threshold: 0.3 });
+        statsObserver.observe(document.querySelector('.stats-section'));
+
+        // Redirect logged-in users away from landing
+        fbAuth?.onAuthStateChanged(user => {
+            if (user) {
+                const signInBtn = document.querySelector('.landing-nav-actions a:first-child');
+                const startBtn = document.querySelector('.landing-nav-actions a:last-child');
+                if (signInBtn) { signInBtn.textContent = 'My Feed'; signInBtn.href = 'feed.html'; }
+                if (startBtn) { startBtn.textContent = 'Open app'; startBtn.href = 'feed.html'; }
+            }
+        });
+
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { });
+    </script>
+</body>
+
+</html>

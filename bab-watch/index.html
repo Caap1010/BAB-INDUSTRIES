@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Watch | Home</title>
+    <meta name="description" content="BAB Watch - Premium movie and series streaming experience." />
+    <link rel="icon" type="image/png" href="images/bab-watch-logo.png" />
+    <link rel="icon" type="image/svg+xml" href="images/bab-watch-logo.svg" />
+    <link rel="apple-touch-icon" href="images/bab-watch-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="#">
+                <img class="brand-logo" src="images/bab-watch-logo.png" alt="BAB Watch logo"
+                    onerror="this.onerror=null;this.src='images/bab-watch-logo.svg';" />
+                <span class="brand-name">BAB WATCH</span>
+            </a>
+
+            <nav class="nav-desktop">
+                <a href="#home">Home</a>
+                <a href="#discover">Discover</a>
+                <a href="#trailers">Trailers</a>
+                <a href="#community">Community</a>
+                <a href="#cinema">Cinema Now</a>
+            </nav>
+
+            <button class="btn btn-primary" id="communityCta" type="button">Join Community</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <p class="eyebrow">BAB ORIGINALS • PREMIUM STREAMING</p>
+                <h1>Watch Trailers, Share Recommendations, Build the Ultimate Geek Community</h1>
+                <p class="hero-subtitle">
+                    BAB Watch is now trailer-first: discover movies, series, and anime trailers, then help others with
+                    your best recommendations.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-accent" href="#trailers">Watch Trailers</a>
+                    <a class="btn btn-ghost" href="#community">Post Recommendation</a>
+                </div>
+                <p class="hero-note">Trailers are sourced from official YouTube listings via legal metadata providers.
+                </p>
+            </div>
+        </section>
+
+        <section id="discover" class="section section-alt">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Global Catalog Discovery</h2>
+                </div>
+
+                <p class="section-copy">
+                    Explore global catalog data (from the earliest era to the latest titles), then filter by year,
+                    genre, provider, and region.
+                </p>
+
+                <form id="discoverForm" class="filters-grid">
+                    <input id="queryInput" class="input-control" type="text" placeholder="Search title..." />
+
+                    <select id="mediaType" class="input-control">
+                        <option value="movie">Movies</option>
+                        <option value="tv">Series</option>
+                    </select>
+
+                    <select id="region" class="input-control">
+                        <option value="ZA">South Africa (ZA)</option>
+                        <option value="US">United States (US)</option>
+                        <option value="GB">United Kingdom (GB)</option>
+                        <option value="IN">India (IN)</option>
+                    </select>
+
+                    <select id="year" class="input-control">
+                        <option value="">All Years</option>
+                    </select>
+
+                    <select id="genre" class="input-control">
+                        <option value="">All Genres</option>
+                    </select>
+
+                    <select id="provider" class="input-control">
+                        <option value="">All Providers</option>
+                    </select>
+
+                    <button class="btn btn-accent" type="submit">Apply Filters</button>
+                </form>
+
+                <p id="statusText" class="status-text">Loading live catalog...</p>
+
+                <div class="content-grid content-grid-live" id="catalogGrid"></div>
+
+                <div class="pagination">
+                    <button id="prevPage" class="btn btn-primary" type="button">Previous</button>
+                    <span id="pageInfo">Page 1</span>
+                    <button id="nextPage" class="btn btn-primary" type="button">Next</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="trailers" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Trending Trailers</h2>
+                </div>
+                <p class="section-copy">
+                    Explore trending trailers for movies, series, and anime. Tap any trailer to watch inside BAB Watch.
+                </p>
+                <div class="content-grid content-grid-live" id="trailerGrid"></div>
+            </div>
+        </section>
+
+        <section id="movies" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Trending Movies (Live)</h2>
+                </div>
+                <div class="content-grid" id="movieGrid"></div>
+            </div>
+        </section>
+
+        <section id="series" class="section section-alt">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Top Series (Live)</h2>
+                </div>
+                <div class="content-grid" id="seriesGrid"></div>
+            </div>
+        </section>
+
+        <section id="cinema" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Cinema Now</h2>
+                </div>
+                <p class="section-copy">
+                    In-cinema titles are shown for discovery, trailers, and release information. Full streaming is only
+                    available when official distribution rights are granted.
+                </p>
+                <div class="cinema-grid" id="cinemaGrid"></div>
+            </div>
+        </section>
+
+        <section id="community" class="section section-alt">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Community Recommendations</h2>
+                </div>
+                <p class="section-copy">Drop your best movie, series, and anime recommendations for the BAB Watch
+                    community.</p>
+
+                <form id="recForm" class="community-form">
+                    <input id="recName" class="input-control" type="text" placeholder="Your name" required />
+                    <input id="recTitle" class="input-control" type="text" placeholder="Title recommendation"
+                        required />
+                    <select id="recMediaType" class="input-control">
+                        <option value="movie">Movie</option>
+                        <option value="series">Series</option>
+                        <option value="anime">Anime</option>
+                    </select>
+                    <input id="recTrailerUrl" class="input-control" type="url" placeholder="Optional trailer URL" />
+                    <textarea id="recText" class="input-control" rows="4" placeholder="Why should we watch this?"
+                        required></textarea>
+                    <button class="btn btn-accent" type="submit">Post Recommendation</button>
+                </form>
+
+                <p id="communityStatus" class="status-text">Loading community recommendations...</p>
+                <div id="communityList" class="community-list"></div>
+            </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <p class="footer-brand">BAB Watch</p>
+                <p class="footer-copy">Premium entertainment platform for licensed movies and series.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="playerModal" class="modal" aria-hidden="true">
+        <div class="modal-panel modal-panel-wide">
+            <button id="closePlayer" class="modal-close" type="button">×</button>
+            <h3 id="playerTitle">Now Watching Trailer</h3>
+            <div class="player-wrap">
+                <iframe id="iframePlayer" title="External player" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in — NEXUS</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .auth-art-bg {
+            position: absolute;
+            inset: 0;
+        }
+
+        .auth-art-bg .orb {
+            opacity: 0.5;
+        }
+
+        .auth-features {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+        }
+
+        .auth-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .auth-feature-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--grad-primary);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .auth-feature-item span {
+            font-size: 0.9rem;
+            color: var(--c-text-muted);
+        }
+    </style>
+</head>
+
+<body style="background:var(--bg-void)">
+
+    <div class="auth-page">
+
+        <!-- Left art panel -->
+        <div class="auth-art">
+            <div class="auth-art-bg">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+            </div>
+            <div class="auth-art-content">
+                <a href="index.html"
+                    style="text-decoration:none;display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:32px">
+                    <img src="assets/logo.png" alt="NEXUS logo"
+                        style="width:52px;height:52px;border-radius:14px;object-fit:cover;box-shadow:0 8px 24px var(--c-primary-glow)"
+                        onerror="this.onerror=null;this.src='icon.svg'">
+                    <span
+                        style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:2rem;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">NEXUS</span>
+                </a>
+                <h2>Your universe.<br><span class="gradient-text">Awaits you.</span></h2>
+                <p style="margin-top:12px;">Join a community of creators, thinkers, and connectors on the most
+                    beautifully designed social platform.</p>
+                <div class="auth-features">
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-dot"></div><span>Real-time chat with anyone, anywhere</span>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-dot"></div><span>Share posts, stories & viral reels</span>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-dot"></div><span>Build your personal brand + following</span>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-dot"></div><span>Push notifications — never miss a moment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right form panel -->
+        <div class="auth-form-side">
+            <div class="auth-form-wrap">
+                <div class="auth-logo">
+                    <img src="assets/logo.png" alt="NEXUS logo" class="auth-logo-mark"
+                        onerror="this.onerror=null;this.src='icon.svg'">
+                    <div class="auth-logo-title">Welcome to NEXUS</div>
+                </div>
+
+                <!-- Tabs: Sign In / Sign Up -->
+                <div class="auth-tabs">
+                    <div class="auth-tab" id="tab-signin" onclick="switchTab('signin')">Sign in</div>
+                    <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create account</div>
+                </div>
+
+                <!-- Alert area -->
+                <div id="auth-alert" style="display:none;margin-bottom:12px"></div>
+
+                <!-- SIGN IN FORM -->
+                <form id="signin-form" class="auth-form" onsubmit="handleSignIn(event)">
+                    <div>
+                        <label class="form-label">Email address</label>
+                        <input type="email" id="si-email" class="input" placeholder="you@example.com" required
+                            autocomplete="email">
+                    </div>
+                    <div>
+                        <label class="form-label">Password</label>
+                        <input type="password" id="si-password" class="input" placeholder="••••••••" required
+                            autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full" id="si-btn" style="width:100%;padding:13px">
+                        Sign in
+                    </button>
+                    <div class="auth-divider">or</div>
+                    <button type="button" class="btn btn-secondary w-full" onclick="handleMagicLink()"
+                        style="width:100%;padding:13px">
+                        ✉ Send magic link
+                    </button>
+                    <p style="text-align:center;font-size:0.8rem;color:var(--c-text-subtle)">
+                        No account? <a href="#" onclick="switchTab('signup')" style="color:var(--c-primary)">Sign up
+                            free →</a>
+                    </p>
+                </form>
+
+                <!-- SIGN UP FORM -->
+                <form id="signup-form" class="auth-form" onsubmit="handleSignUp(event)" style="display:none">
+                    <div>
+                        <label class="form-label">Display name</label>
+                        <input type="text" id="su-name" class="input" placeholder="Your full name" required
+                            autocomplete="name">
+                    </div>
+                    <div>
+                        <label class="form-label">Username</label>
+                        <div style="position:relative">
+                            <span
+                                style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--c-text-subtle)">@</span>
+                            <input type="text" id="su-username" class="input" style="padding-left:28px"
+                                placeholder="yourhandle" required autocomplete="username" pattern="[a-z0-9_]+"
+                                title="Lowercase letters, numbers, underscores only">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">Email address</label>
+                        <input type="email" id="su-email" class="input" placeholder="you@example.com" required
+                            autocomplete="email">
+                    </div>
+                    <div>
+                        <label class="form-label">Password</label>
+                        <input type="password" id="su-password" class="input" placeholder="At least 8 characters"
+                            required minlength="8" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="su-btn" style="width:100%;padding:13px">
+                        Create my account →
+                    </button>
+                    <p style="text-align:center;font-size:0.8rem;color:var(--c-text-subtle)">
+                        Already have an account? <a href="#" onclick="switchTab('signin')"
+                            style="color:var(--c-primary)">Sign in →</a>
+                    </p>
+                    <p style="text-align:center;font-size:0.72rem;color:var(--c-text-subtle);margin-top:-4px">
+                        By signing up you agree to our Terms of Service.
+                    </p>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const params = new URLSearchParams(location.search);
+        const nextUrl = params.get('next') || 'feed.html';
+
+        // Switch active tab
+        function switchTab(tab) {
+            const signin = document.getElementById('signin-form');
+            const signup = document.getElementById('signup-form');
+            const tsi = document.getElementById('tab-signin');
+            const tsu = document.getElementById('tab-signup');
+            const alert = document.getElementById('auth-alert');
+            alert.style.display = 'none';
+            if (tab === 'signin') {
+                signin.style.display = 'flex';
+                signup.style.display = 'none';
+                tsi.classList.add('active');
+                tsu.classList.remove('active');
+            } else {
+                signin.style.display = 'none';
+                signup.style.display = 'flex';
+                tsi.classList.remove('active');
+                tsu.classList.add('active');
+            }
+        }
+
+        function showAlert(msg, type = 'error') {
+            const el = document.getElementById('auth-alert');
+            el.className = type === 'error' ? 'auth-error' : 'auth-success';
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function setBtnLoading(id, loading, text) {
+            const btn = document.getElementById(id);
+            btn.disabled = loading;
+            btn.textContent = loading ? 'Please wait...' : text;
+        }
+
+        async function handleSignIn(e) {
+            e.preventDefault();
+            const email = document.getElementById('si-email').value.trim();
+            const password = document.getElementById('si-password').value;
+            setBtnLoading('si-btn', true, 'Sign in');
+            try {
+                await Auth.signIn(email, password);
+                location.href = nextUrl;
+            } catch (err) {
+                showAlert(err.message || 'Sign in failed. Please check your credentials.');
+            } finally {
+                setBtnLoading('si-btn', false, 'Sign in');
+            }
+        }
+
+        async function handleSignUp(e) {
+            e.preventDefault();
+            const name = document.getElementById('su-name').value.trim();
+            const username = document.getElementById('su-username').value.trim().toLowerCase();
+            const email = document.getElementById('su-email').value.trim();
+            const password = document.getElementById('su-password').value;
+            if (!/^[a-z0-9_]+$/.test(username)) {
+                showAlert('Username can only contain lowercase letters, numbers, and underscores.');
+                return;
+            }
+            setBtnLoading('su-btn', true, 'Create my account →');
+            try {
+                const { data } = await Auth.signUp(email, password, username);
+                if (data.user && !data.session) {
+                    showAlert('Check your email to confirm your account, then sign in.', 'success');
+                    switchTab('signin');
+                } else {
+                    await fbDb.collection('profiles').doc(data.user.uid).set({
+                        display_name: name,
+                        updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+                    }, { merge: true });
+                    location.href = nextUrl;
+                }
+            } catch (err) {
+                showAlert(err.message || 'Sign up failed. Please try again.');
+            } finally {
+                setBtnLoading('su-btn', false, 'Create my account →');
+            }
+        }
+
+        async function handleMagicLink() {
+            const email = document.getElementById('si-email').value.trim();
+            if (!email) { showAlert('Enter your email address first.'); return; }
+            try {
+                await Auth.signInWithMagicLink(email);
+                showAlert('Magic link sent! Check your inbox.', 'success');
+            } catch (err) {
+                showAlert(err.message || 'Could not send magic link.');
+            }
+        }
+
+        // Init tab from URL param
+        switchTab(params.get('tab') === 'signup' ? 'signup' : 'signin');
+
+        if (!window.fbAuth || !window.fbDb) {
+            showAlert(window.NEXUS_CONFIG_ERROR || 'Firebase client is not available.');
+        }
+
+        // Redirect already-logged-in users
+        if (window.fbAuth) {
+            fbAuth.onAuthStateChanged(user => {
+                if (user) location.href = nextUrl;
+            });
+        }
+    </script>
+</body>
+
+</html>

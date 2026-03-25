@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages — NEXUS</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+    <div class="app-shell">
+        <aside class="sidebar" id="app-sidebar"></aside>
+
+        <div class="main-content">
+            <header class="main-header">
+                <button class="btn-icon" id="menu-toggle" style="display:none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                </button>
+                <h2>Messages</h2>
+                <button class="btn btn-primary btn-sm" id="new-chat-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    New chat
+                </button>
+            </header>
+
+            <div class="chat-layout" id="chat-layout">
+                <!-- Conversations list -->
+                <div class="conversations-panel" id="conv-panel">
+                    <div class="conversations-header">
+                        <div class="input-group flex-1">
+                            <span class="input-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                            </span>
+                            <input type="text" class="input" id="conv-search" placeholder="Search messages…">
+                        </div>
+                    </div>
+                    <div class="conv-list" id="conv-list">
+                        <!-- JS injected -->
+                        <div style="padding:20px">
+                            <div class="skeleton skeleton-text" style="margin-bottom:12px"></div>
+                            <div class="skeleton skeleton-text" style="margin-bottom:12px"></div>
+                            <div class="skeleton skeleton-text"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat window (empty state) -->
+                <div class="chat-window" id="chat-window">
+                    <div class="chat-empty" id="chat-empty-state">
+                        <div class="chat-empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" style="color:var(--c-primary)">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                        </div>
+                        <h3>Select a conversation</h3>
+                        <p>Choose a chat from the list or start a new one</p>
+                        <button class="btn btn-primary" id="new-chat-btn-2">Start a new chat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav" id="bottom-nav"></div>
+    </div>
+
+    <!-- New chat modal -->
+    <div id="new-chat-modal" class="modal-overlay" style="display:none">
+        <div class="card modal">
+            <div class="modal-header">
+                <h3>New Conversation</h3>
+                <span class="modal-close" id="new-chat-modal-close">✕</span>
+            </div>
+            <div>
+                <div class="input-group" style="margin-bottom:12px">
+                    <span class="input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </span>
+                    <input type="text" class="input" id="people-search" placeholder="Search people by username…">
+                </div>
+                <div id="people-results" style="max-height:300px;overflow-y:auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @media (max-width: 900px) {
+            #menu-toggle {
+                display: flex !important;
+            }
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/chat.js"></script>
+</body>
+
+</html>
