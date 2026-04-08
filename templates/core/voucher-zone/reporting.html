@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voucher Reporting</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;600;700&display=swap");
+
+        :root {
+            --bg: #020617;
+            --card: rgba(15, 23, 42, 0.9);
+            --ink: #e2e8f0;
+            --muted: #94a3b8;
+            --line: #1e293b;
+            --brand: #38bdf8;
+            --accent: #22d3ee;
+            --danger: #ef4444;
+            --shadow: 0 20px 50px rgba(2, 6, 23, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.2), transparent 30%),
+                radial-gradient(circle at 90% 5%, rgba(34, 211, 238, 0.16), transparent 24%),
+                var(--bg);
+        }
+
+        .shell {
+            width: min(calc(100% - 2rem), 1240px);
+            margin: 0 auto;
+            padding: 1.2rem 0 2.5rem;
+        }
+
+        .topbar,
+        .card,
+        .table-wrap {
+            background: var(--card);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border-radius: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+        }
+
+        .brand {
+            font-family: "Space Grotesk", sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            font-size: 1.15rem;
+        }
+
+        .brand small,
+        .muted {
+            color: var(--muted);
+        }
+
+        .stats {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.8rem;
+        }
+
+        .card {
+            padding: 1rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.72rem;
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .value {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.6rem;
+            margin-top: 0.3rem;
+        }
+
+        .grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .table-wrap {
+            padding: 1rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            letter-spacing: -0.03em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.8rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.7rem 0.6rem;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+            font-size: 0.92rem;
+        }
+
+        th {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.78rem;
+            color: var(--brand);
+        }
+
+        .pill {
+            display: inline-flex;
+            padding: 0.24rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--brand);
+        }
+
+        .pill.danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fecaca;
+        }
+
+        .actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 0.72rem 1rem;
+            font-weight: 700;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            background: rgba(2, 6, 23, 0.8);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--brand), #0ea5e9);
+            border: none;
+            color: #020617;
+        }
+
+        @media (max-width: 980px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="shell">
+        <section class="topbar">
+            <div class="brand">Voucher Reporting <small>last {{ payload.rangeDays }} days</small></div>
+            <div class="muted">Generated {{ payload.generatedAt }}</div>
+        </section>
+
+        <section class="stats">
+            <article class="card">
+                <div class="eyebrow">Vouchers</div>
+                <div class="value">{{ payload.voucher.total }}</div>
+                <div class="muted">{{ payload.voucher.active }} active, {{ payload.voucher.storedValue }} stored-value
+                </div>
+            </article>
+            <article class="card">
+                <div class="eyebrow">Purchases</div>
+                <div class="value">{{ payload.purchase.total }}</div>
+                <div class="muted">Fulfilled {{ payload.purchase.fulfilled }} / Failed {{ payload.purchase.failed }}
+                </div>
+            </article>
+            <article class="card">
+                <div class="eyebrow">Purchase Amount</div>
+                <div class="value">{{ payload.purchase.amount }}</div>
+                <div class="muted">Total value processed</div>
+            </article>
+            <article class="card">
+                <div class="eyebrow">Remaining Balance</div>
+                <div class="value">{{ payload.voucher.remainingBalance }}</div>
+                <div class="muted">Stored-value voucher credit</div>
+            </article>
+        </section>
+
+        <section class="grid">
+            <article class="table-wrap">
+                <h2>Top Providers</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Provider</th>
+                            <th>Purchases</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in payload.providers %}
+                        <tr>
+                            <td>{{ row.provider }}</td>
+                            <td>{{ row.count }}</td>
+                            <td>{{ row.amount }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3">No provider data yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </article>
+
+            <article class="table-wrap">
+                <h2>Daily Trend</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Purchases</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in payload.trend %}
+                        <tr>
+                            <td>{{ row.day }}</td>
+                            <td>{{ row.count }}</td>
+                            <td>{{ row.amount }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3">No purchase trend data yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </article>
+
+            <article class="table-wrap" style="grid-column: 1 / -1;">
+                <h2>Recent Failed Purchases</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Voucher</th>
+                            <th>Provider</th>
+                            <th>Reference</th>
+                            <th>Status</th>
+                            <th>Error</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for purchase in recent_failed %}
+                        <tr>
+                            <td>{{ purchase.voucher.code }}</td>
+                            <td>{{ purchase.product.provider }}</td>
+                            <td>{{ purchase.reference|default:"-" }}</td>
+                            <td><span class="pill danger">{{ purchase.status }}</span></td>
+                            <td>{{ purchase.fulfillment_details.error|default:"Provider failure" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No failed purchases in this period.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </article>
+        </section>
+
+        <section class="actions">
+            <a class="btn primary" href="/Voucher-Zone/">Back To Voucher-Zone</a>
+            <a class="btn" href="/api/vouchers/reporting/?days={{ payload.rangeDays }}">Open Reporting API</a>
+        </section>
+    </main>
+</body>
+
+</html>

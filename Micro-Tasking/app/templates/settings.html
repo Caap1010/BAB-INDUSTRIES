@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="panel">
+    <div class="panel-head">
+        <h2>Settings & Platform Links</h2>
+    </div>
+    <p class="notice-banner">Default payout destination: {{ default_paypal_email }}</p>
+    <p class="notice-banner">PayPal payout connection: {% if paypal_status.configured %}Configured for {{
+        paypal_status.environment }}{% else %}Not configured{% endif %}</p>
+    <p class="text-muted">This dashboard is for personal task management. Open your work platforms directly from this
+        page.</p>
+    <p class="text-muted">The built-in task agent only prioritizes, summarizes, and logs focus sessions locally. It does
+        not sign in, submit work, or act on external platforms for you.</p>
+    <div class="platform-grid">
+        {% for platform in platforms %}
+        <article class="platform-card">
+            <h3>{{ platform }}</h3>
+            <p class="text-muted">Keep platform credentials in your secure password manager.</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h2>Real Payout Setup</h2>
+    </div>
+    <p class="text-muted">To make withdrawals real, set these environment variables before starting the app:
+        `MICRO_TASKING_PAYPAL_CLIENT_ID`, `MICRO_TASKING_PAYPAL_CLIENT_SECRET`, and optionally
+        `MICRO_TASKING_PAYPAL_ENVIRONMENT` as `sandbox` or `live`.</p>
+    <p class="text-muted">Current PayPal API base: {{ paypal_status.api_base_url }}</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <h3>Total Tasks</h3>
+        <p class="metric">{{ totals.task_count }}</p>
+    </article>
+    <article class="stat-card">
+        <h3>Total Earnings Entries</h3>
+        <p class="metric">{{ totals.earning_count }}</p>
+    </article>
+    <article class="stat-card">
+        <h3>Productivity Sessions</h3>
+        <p class="metric">{{ totals.session_count }}</p>
+    </article>
+</section>
+{% endblock %}

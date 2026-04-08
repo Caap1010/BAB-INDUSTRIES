@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BAB Credit Check | Debt Lookup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #1a3c5e;
+            --accent: #e03c31;
+            --gold: #c9a84c;
+            --bg: #f4f6fa;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --muted: #6b7280;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --info: #2563eb;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR ── */
+        header {
+            background: var(--primary);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand .badge {
+            background: var(--gold);
+            color: #000;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-brand h1 {
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .nav-sub {
+            color: rgba(255, 255, 255, .55);
+            font-size: 0.75rem;
+        }
+
+        /* ── LAYOUT ── */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all .2s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--text);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+        }
+
+        .card h2 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── FORM ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: #fff;
+            transition: border-color .2s;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ── DIVIDER ── */
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── BUTTON ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 28px;
+            border-radius: 8px;
+            border: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #142d47;
+        }
+
+        .btn-danger {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c0352a;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #138d3e;
+        }
+
+        .btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        /* ── ALERT ── */
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .alert.visible {
+            display: flex;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        /* ── RESULTS ── */
+        #results-section {
+            display: none;
+        }
+
+        .debtor-card {
+            background: #f8fafc;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .debtor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .debtor-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .debtor-id {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .total-badge {
+            background: var(--accent);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .total-zero {
+            background: var(--success);
+        }
+
+        .debtor-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .debtor-meta span {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .debtor-meta span strong {
+            color: var(--text);
+        }
+
+        /* ── DEBT TABLE ── */
+        .debt-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        .debt-table th {
+            background: var(--primary);
+            color: #fff;
+            padding: 9px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: .4px;
+        }
+
+        .debt-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .debt-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .debt-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .debt-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .debt-table tr:hover td {
+            background: #f1f5f9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .s-current {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .s-overdue {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .s-paid {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .s-written_off {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .s-in_dispute {
+            background: #fefce8;
+            color: #854d0e;
+        }
+
+        .no-debts {
+            text-align: center;
+            padding: 24px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* ── SPINNER ── */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .searching .spinner {
+            display: block;
+        }
+
+        .searching .btn-text {
+            display: none;
+        }
+
+        /* ── STEP INDICATOR (add debt form) ── */
+        .step-desc {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* ── RESPONSIVE TABLE ── */
+        .table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 32px 20px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer strong {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-brand">
+            <div>
+                <h1>BAB Credit Check</h1>
+                <div class="nav-sub">A division of BAB Industries</div>
+            </div>
+            <span class="badge">Debt Lookup</span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('lookup', this)">&#128269; Lookup Debts</button>
+            <button class="tab-btn" onclick="switchTab('add-debtor', this)">&#43; Add Debtor</button>
+            <button class="tab-btn" onclick="switchTab('add-debt', this)">&#43; Add Debt</button>
+        </div>
+
+        <!-- ═══════════════════════════════════ LOOKUP ═══════════════════════════════════ -->
+        <div id="tab-lookup" class="tab-panel active">
+
+            <div class="card">
+                <h2>&#128100; Search by ID Number</h2>
+                <div class="form-group">
+                    <label>South African ID Number (13 digits)</label>
+                    <input type="text" id="id-number" placeholder="e.g. 9001015800085" maxlength="13"
+                        inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" />
+                </div>
+                <br />
+                <button class="btn btn-primary" id="lookup-id-btn" onclick="lookupById()">
+                    <span class="btn-text">Search by ID</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+
+            <div class="or-divider">OR</div>
+
+            <div class="card">
+                <h2>&#128211; Search by Name &amp; Surname</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="search-first" placeholder="e.g. Sipho" />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name / Surname</label>
+                        <input type="text" id="search-last" placeholder="e.g. Dlamini" />
+                    </div>
+                </div>
+                <br />
+                <button class="btn btn-primary" id="lookup-name-btn" onclick="lookupByName()">
+                    <span class="btn-text">Search by Name</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+
+            <div id="lookup-alert" class="alert"></div>
+
+            <!-- RESULTS -->
+            <div id="results-section">
+                <div id="results-container"></div>
+            </div>
+
+        </div><!-- /tab-lookup -->
+
+        <!-- ═══════════════════════════════════ ADD DEBTOR ═══════════════════════════════════ -->
+        <div id="tab-add-debtor" class="tab-panel">
+            <div class="card">
+                <h2>&#43; Register New Debtor</h2>
+                <p class="step-desc">Fill in the debtor's details. Once registered, you can attach debt records to them.
+                </p>
+
+                <div id="add-debtor-alert" class="alert"></div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name *</label>
+                        <input type="text" id="d-first" placeholder="First name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name / Surname *</label>
+                        <input type="text" id="d-last" placeholder="Surname" />
+                    </div>
+                    <div class="form-group">
+                        <label>SA ID Number * (13 digits)</label>
+                        <input type="text" id="d-id" placeholder="e.g. 9001015800085" maxlength="13" inputmode="numeric"
+                            oninput="this.value=this.value.replace(/\D/g,'')" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="d-phone" placeholder="e.g. 0821234567" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="d-email" placeholder="email@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="d-address" placeholder="Physical address" />
+                    </div>
+                    <div class="form-group full">
+                        <label>Notes</label>
+                        <textarea id="d-notes" placeholder="Any additional notes…"></textarea>
+                    </div>
+                </div>
+
+                <br />
+                <button class="btn btn-success" onclick="addDebtor()">
+                    &#10003; Register Debtor
+                </button>
+            </div>
+        </div><!-- /tab-add-debtor -->
+
+        <!-- ═══════════════════════════════════ ADD DEBT ═══════════════════════════════════ -->
+        <div id="tab-add-debt" class="tab-panel">
+            <div class="card">
+                <h2>&#43; Attach Debt to Debtor</h2>
+                <p class="step-desc">First find the debtor by their ID number, then fill in the debt details below.</p>
+
+                <div id="add-debt-alert" class="alert"></div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Debtor ID Number *</label>
+                        <input type="text" id="dt-id" placeholder="13-digit SA ID number" maxlength="13"
+                            inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')" />
+                    </div>
+                    <div class="form-group" style="align-self:flex-end;">
+                        <button class="btn btn-primary" onclick="resolveDebtor()" style="width:100%;">Find
+                            Debtor</button>
+                    </div>
+                </div>
+
+                <div id="resolved-debtor"
+                    style="display:none; margin: 12px 0; padding: 12px 16px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:0.85rem;">
+                    &#128100; Debtor found: <strong id="resolved-name"></strong>
+                    <input type="hidden" id="resolved-debtor-id" />
+                </div>
+
+                <hr style="border:none; border-top:1px solid var(--border); margin: 20px 0;" />
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Creditor (Lender) *</label>
+                        <input type="text" id="dt-creditor" placeholder="e.g. BAB Credit Solutions" />
+                    </div>
+                    <div class="form-group">
+                        <label>Debt Type</label>
+                        <select id="dt-type">
+                            <option value="personal_loan">Personal Loan</option>
+                            <option value="store_credit">Store Credit</option>
+                            <option value="vehicle_finance">Vehicle Finance</option>
+                            <option value="home_loan">Home Loan</option>
+                            <option value="medical">Medical</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="student_loan">Student Loan</option>
+                            <option value="business_loan">Business Loan</option>
+                            <option value="utility">Utility / Municipal</option>
+                            <option value="other" selected>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Original Amount (R) *</label>
+                        <input type="number" id="dt-original" placeholder="0.00" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label>Outstanding Balance (R) *</label>
+                        <input type="number" id="dt-balance" placeholder="0.00" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label>Monthly Installment (R)</label>
+                        <input type="number" id="dt-monthly" placeholder="0.00" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label>Interest Rate (% p.a.)</label>
+                        <input type="number" id="dt-rate" placeholder="0.00" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="dt-status">
+                            <option value="current">Current</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="paid">Paid</option>
+                            <option value="written_off">Written Off</option>
+                            <option value="in_dispute">In Dispute</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Months Overdue</label>
+                        <input type="number" id="dt-months-overdue" placeholder="0" min="0" />
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" id="dt-due-date" />
+                    </div>
+                    <div class="form-group">
+                        <label>Reference / Account No.</label>
+                        <input type="text" id="dt-reference" placeholder="Optional reference" />
+                    </div>
+                    <div class="form-group full">
+                        <label>Notes</label>
+                        <textarea id="dt-notes" placeholder="Additional notes…"></textarea>
+                    </div>
+                </div>
+
+                <br />
+                <button class="btn btn-danger" onclick="addDebt()">
+                    &#10003; Save Debt Record
+                </button>
+            </div>
+        </div><!-- /tab-add-debt -->
+
+    </div><!-- /container -->
+
+    <footer>
+        <strong>BAB Credit Check</strong> &mdash; BAB Industries &copy; 2026. Internal use only. All lookups are logged.
+    </footer>
+
+    <script>
+        /* ── TABS ── */
+        function switchTab(name, btn) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        /* ── ALERT ── */
+        function showAlert(id, type, message) {
+            const el = document.getElementById(id);
+            el.className = 'alert alert-' + type + ' visible';
+            el.textContent = message;
+        }
+        function clearAlert(id) {
+            const el = document.getElementById(id);
+            el.className = 'alert';
+            el.textContent = '';
+        }
+
+        /* ── SPINNER ── */
+        function setLoading(btn, on) {
+            if (on) btn.classList.add('searching');
+            else btn.classList.remove('searching');
+            btn.disabled = on;
+        }
+
+        /* ── STATUS CSS CLASS ── */
+        function statusClass(s) {
+            const map = { 'Current': 's-current', 'Overdue': 's-overdue', 'Paid': 's-paid', 'Written Off': 's-written_off', 'In Dispute': 's-in_dispute' };
+            return map[s] || '';
+        }
+
+        /* ── RENDER RESULTS ── */
+        function renderResults(data) {
+            const sec = document.getElementById('results-section');
+            const con = document.getElementById('results-container');
+            con.innerHTML = '';
+
+            if (!data.found || !data.results.length) {
+                showAlert('lookup-alert', 'info', 'No debtor record found matching your search. Please verify the details and try again.');
+                sec.style.display = 'none';
+                return;
+            }
+
+            clearAlert('lookup-alert');
+            sec.style.display = 'block';
+
+            data.results.forEach(debtor => {
+                const totalNum = parseFloat(debtor.total_outstanding);
+                const totalFormatted = 'R ' + Number(debtor.total_outstanding).toLocaleString('en-ZA', { minimumFractionDigits: 2 });
+
+                let debtRows = '';
+                if (debtor.debts.length === 0) {
+                    debtRows = '<tr><td colspan="7" class="no-debts">No debt records found for this debtor.</td></tr>';
+                } else {
+                    debtor.debts.forEach(d => {
+                        const overdue = d.months_overdue > 0 ? ` <small style="color:var(--danger)">(${d.months_overdue}mo)</small>` : '';
+                        debtRows += `
+              <tr>
+                <td><strong>${d.creditor}</strong>${d.reference ? '<br/><span style="color:var(--muted);font-size:.75rem">Ref: ' + d.reference + '</span>' : ''}</td>
+                <td>${d.debt_type}</td>
+                <td>R ${Number(d.original_amount).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</td>
+                <td><strong>R ${Number(d.outstanding_balance).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</strong></td>
+                <td>R ${Number(d.monthly_installment).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</td>
+                <td><span class="status-badge ${statusClass(d.status)}">${d.status}</span>${overdue}</td>
+                <td>${d.due_date || '—'}</td>
+              </tr>`;
+                    });
+                }
+
+                const phoneStr = debtor.phone ? `<span><strong>Phone:</strong> ${debtor.phone}</span>` : '';
+                const emailStr = debtor.email ? `<span><strong>Email:</strong> ${debtor.email}</span>` : '';
+                const addrStr = debtor.address ? `<span><strong>Address:</strong> ${debtor.address}</span>` : '';
+
+                con.innerHTML += `
+          <div class="debtor-card">
+            <div class="debtor-header">
+              <div>
+                <div class="debtor-name">${debtor.full_name}</div>
+                <div class="debtor-id">ID: ${debtor.id_number}</div>
+              </div>
+              <div class="total-badge ${totalNum === 0 ? 'total-zero' : ''}">
+                Total Outstanding: ${totalFormatted}
+              </div>
+            </div>
+            <div class="debtor-meta">
+              ${phoneStr}${emailStr}${addrStr}
+              <span><strong>Active Debts:</strong> ${debtor.debts.filter(d => d.status === 'Current' || d.status === 'Overdue').length}</span>
+            </div>
+            <div class="table-wrap">
+              <table class="debt-table">
+                <thead>
+                  <tr>
+                    <th>Creditor</th>
+                    <th>Type</th>
+                    <th>Original</th>
+                    <th>Outstanding</th>
+                    <th>Monthly</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                  </tr>
+                </thead>
+                <tbody>${debtRows}</tbody>
+              </table>
+            </div>
+          </div>`;
+            });
+        }
+
+        /* ── LOOKUP BY ID ── */
+        async function lookupById() {
+            const idNum = document.getElementById('id-number').value.trim();
+            if (!idNum) { showAlert('lookup-alert', 'error', 'Please enter an ID number.'); return; }
+            if (idNum.length !== 13) { showAlert('lookup-alert', 'error', 'ID number must be exactly 13 digits.'); return; }
+
+            clearAlert('lookup-alert');
+            const btn = document.getElementById('lookup-id-btn');
+            setLoading(btn, true);
+            document.getElementById('results-section').style.display = 'none';
+
+            try {
+                const res = await fetch('/api/credit-check/lookup/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_number: idNum })
+                });
+                const data = await res.json();
+                if (!data.ok) { showAlert('lookup-alert', 'error', data.error || 'Lookup failed.'); return; }
+                renderResults(data);
+            } catch (e) {
+                showAlert('lookup-alert', 'error', 'Network error. Please try again.');
+            } finally {
+                setLoading(btn, false);
+            }
+        }
+
+        /* ── LOOKUP BY NAME ── */
+        async function lookupByName() {
+            const fn = document.getElementById('search-first').value.trim();
+            const ln = document.getElementById('search-last').value.trim();
+            if (!fn && !ln) { showAlert('lookup-alert', 'error', 'Enter at least a first name or surname.'); return; }
+
+            clearAlert('lookup-alert');
+            const btn = document.getElementById('lookup-name-btn');
+            setLoading(btn, true);
+            document.getElementById('results-section').style.display = 'none';
+
+            try {
+                const res = await fetch('/api/credit-check/lookup/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ first_name: fn, last_name: ln })
+                });
+                const data = await res.json();
+                if (!data.ok) { showAlert('lookup-alert', 'error', data.error || 'Lookup failed.'); return; }
+                renderResults(data);
+            } catch (e) {
+                showAlert('lookup-alert', 'error', 'Network error. Please try again.');
+            } finally {
+                setLoading(btn, false);
+            }
+        }
+
+        /* ── ENTER KEY TRIGGERS SEARCH ── */
+        document.getElementById('id-number').addEventListener('keydown', e => { if (e.key === 'Enter') lookupById(); });
+        document.getElementById('search-first').addEventListener('keydown', e => { if (e.key === 'Enter') lookupByName(); });
+        document.getElementById('search-last').addEventListener('keydown', e => { if (e.key === 'Enter') lookupByName(); });
+
+        /* ── ADD DEBTOR ── */
+        async function addDebtor() {
+            const payload = {
+                first_name: document.getElementById('d-first').value.trim(),
+                last_name: document.getElementById('d-last').value.trim(),
+                id_number: document.getElementById('d-id').value.trim(),
+                phone: document.getElementById('d-phone').value.trim(),
+                email: document.getElementById('d-email').value.trim(),
+                address: document.getElementById('d-address').value.trim(),
+                notes: document.getElementById('d-notes').value.trim(),
+            };
+            if (!payload.first_name || !payload.last_name || !payload.id_number) {
+                showAlert('add-debtor-alert', 'error', 'First name, last name and ID number are required.'); return;
+            }
+            if (payload.id_number.length !== 13) {
+                showAlert('add-debtor-alert', 'error', 'ID number must be exactly 13 digits.'); return;
+            }
+            try {
+                const res = await fetch('/api/credit-check/debtors/add/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!data.ok) { showAlert('add-debtor-alert', 'error', data.error || 'Failed to add debtor.'); return; }
+                showAlert('add-debtor-alert', 'success', `Debtor "${data.full_name}" registered successfully (ID #${data.debtor_id}).`);
+                ['d-first', 'd-last', 'd-id', 'd-phone', 'd-email', 'd-address', 'd-notes'].forEach(id => document.getElementById(id).value = '');
+            } catch (e) {
+                showAlert('add-debtor-alert', 'error', 'Network error. Please try again.');
+            }
+        }
+
+        /* ── RESOLVE DEBTOR for Add Debt tab ── */
+        async function resolveDebtor() {
+            const idNum = document.getElementById('dt-id').value.trim();
+            if (!idNum || idNum.length !== 13) {
+                showAlert('add-debt-alert', 'error', 'Enter a valid 13-digit ID number.'); return;
+            }
+            clearAlert('add-debt-alert');
+            try {
+                const res = await fetch('/api/credit-check/lookup/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_number: idNum })
+                });
+                const data = await res.json();
+                if (!data.ok || !data.found) {
+                    document.getElementById('resolved-debtor').style.display = 'none';
+                    showAlert('add-debt-alert', 'error', 'Debtor not found. Register them first in the "Add Debtor" tab.');
+                    return;
+                }
+                const debtor = data.results[0];
+                document.getElementById('resolved-name').textContent = debtor.full_name;
+                document.getElementById('resolved-debtor-id').value = debtor.debtor_id;
+                document.getElementById('resolved-debtor').style.display = 'block';
+            } catch (e) {
+                showAlert('add-debt-alert', 'error', 'Network error.');
+            }
+        }
+
+        /* ── ADD DEBT ── */
+        async function addDebt() {
+            const debtorId = document.getElementById('resolved-debtor-id').value;
+            if (!debtorId) { showAlert('add-debt-alert', 'error', 'Please find a debtor first.'); return; }
+
+            const payload = {
+                debtor_id: parseInt(debtorId),
+                creditor: document.getElementById('dt-creditor').value.trim(),
+                debt_type: document.getElementById('dt-type').value,
+                original_amount: parseFloat(document.getElementById('dt-original').value) || 0,
+                outstanding_balance: parseFloat(document.getElementById('dt-balance').value) || 0,
+                monthly_installment: parseFloat(document.getElementById('dt-monthly').value) || 0,
+                interest_rate: parseFloat(document.getElementById('dt-rate').value) || 0,
+                status: document.getElementById('dt-status').value,
+                months_overdue: parseInt(document.getElementById('dt-months-overdue').value) || 0,
+                due_date: document.getElementById('dt-due-date').value || null,
+                reference: document.getElementById('dt-reference').value.trim(),
+                notes: document.getElementById('dt-notes').value.trim(),
+            };
+
+            if (!payload.creditor) { showAlert('add-debt-alert', 'error', 'Creditor/lender name is required.'); return; }
+            if (!payload.original_amount) { showAlert('add-debt-alert', 'error', 'Original amount is required.'); return; }
+
+            try {
+                const res = await fetch('/api/credit-check/debts/add/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (!data.ok) { showAlert('add-debt-alert', 'error', data.error || 'Failed to save debt.'); return; }
+                showAlert('add-debt-alert', 'success', `Debt record saved for ${data.debtor} — ${data.creditor} (ID #${data.debt_id}).`);
+                ['dt-creditor', 'dt-original', 'dt-balance', 'dt-monthly', 'dt-rate', 'dt-reference', 'dt-notes', 'dt-due-date', 'dt-months-overdue'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('dt-type').value = 'other';
+                document.getElementById('dt-status').value = 'current';
+            } catch (e) {
+                showAlert('add-debt-alert', 'error', 'Network error. Please try again.');
+            }
+        }
+    </script>
+</body>
+
+</html>

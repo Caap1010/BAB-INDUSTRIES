@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyTime | Microsoft Certification Practice Exams</title>
+    <meta name="description"
+        content="StudyTime helps learners practice for Microsoft certifications with timed mock exams, detailed explanations, and role-based learning paths.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="site-shell">
+        <header class="hero">
+            <nav class="topbar">
+                <a class="brand" href="#top">StudyTime</a>
+                <div class="topbar-links">
+                    <a href="#paths">Learning Paths</a>
+                    <a href="#simulator">Exam Simulator</a>
+                    <a href="#approach">How It Works</a>
+                </div>
+            </nav>
+
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow">Practice for Microsoft role-based certifications</p>
+                    <h1>Write realistic practice exams for Azure, AI, Security, Data, and DevOps tracks.</h1>
+                    <p class="hero-text">
+                        StudyTime is a browser-based exam lab for certification prep. Choose a learning path,
+                        start a timed mock assessment, and review original scenario questions with explanations.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="#simulator">Start Practising</a>
+                        <a class="button button-secondary" href="#paths">Browse Certifications</a>
+                    </div>
+                    <ul class="hero-points">
+                        <li>Timed exam mode and instant-feedback practice mode</li>
+                        <li>Original questions aligned to certification objectives</li>
+                        <li>Progress, scoring, and answer review in one place</li>
+                    </ul>
+                </div>
+
+                <aside class="hero-panel">
+                    <div class="metric-card">
+                        <span class="metric-label">Available paths</span>
+                        <strong id="pathCount">6</strong>
+                        <span class="metric-note">Azure fundamentals to expert tracks</span>
+                    </div>
+                    <div class="metric-card metric-accent">
+                        <span class="metric-label">Practice format</span>
+                        <strong>Scenario based</strong>
+                        <span class="metric-note">Multiple choice with detailed rationales</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Important note</span>
+                        <strong>Not exam dumps</strong>
+                        <span class="metric-note">All items are original practice content, not live Microsoft exam
+                            questions. StudyTime improves readiness but does not guarantee exact exam outcomes.</span>
+                    </div>
+                </aside>
+            </div>
+        </header>
+
+        <main>
+            <section class="section" id="paths">
+                <div class="section-heading">
+                    <p class="eyebrow">Learning paths</p>
+                    <h2>Train against the certification track you are targeting.</h2>
+                    <p>
+                        Each path includes a short mock assessment focused on core competencies commonly measured in
+                        that role.
+                    </p>
+                </div>
+                <div class="path-grid" id="pathGrid"></div>
+            </section>
+
+            <section class="section simulator" id="simulator">
+                <div class="section-heading">
+                    <p class="eyebrow">Exam simulator</p>
+                    <h2>Choose a certification and start a mock exam.</h2>
+                    <p>
+                        Practice mode reveals explanations immediately. Exam mode hides feedback until the end to
+                        simulate exam pressure.
+                    </p>
+                </div>
+
+                <div class="simulator-layout">
+                    <aside class="simulator-sidebar">
+                        <label class="field-label" for="examSelect">Certification</label>
+                        <select id="examSelect" class="field-input"></select>
+
+                        <label class="field-label" for="modeSelect">Mode</label>
+                        <select id="modeSelect" class="field-input">
+                            <option value="practice">Practice mode</option>
+                            <option value="exam">Exam mode</option>
+                            <option value="adaptive">Adaptive weak-area mode</option>
+                        </select>
+
+                        <label class="field-label" for="domainSelect">Domain focus</label>
+                        <select id="domainSelect" class="field-input">
+                            <option value="all">All domains</option>
+                        </select>
+
+                        <p class="field-hint">Each attempt uses the full original practice bank for the selected
+                            certification, with questions and answer options shuffled. Adaptive mode prioritizes weaker
+                            domains based on your past attempts.</p>
+
+                        <div class="history-tools">
+                            <button class="button button-secondary" id="exportProgressButton" type="button">Export
+                                Progress</button>
+                            <button class="button button-secondary" id="importProgressButton" type="button">Import
+                                Progress</button>
+                            <input id="importProgressInput" type="file" accept="application/json" class="hidden">
+                        </div>
+
+                        <div class="history-tools">
+                            <button class="button button-secondary" id="toggleHighContrastButton" type="button">High
+                                Contrast</button>
+                            <button class="button button-secondary" id="toggleDyslexiaFontButton" type="button">Dyslexia
+                                Font</button>
+                        </div>
+
+                        <div class="summary-card" id="examOverview"></div>
+                        <div class="summary-card readiness-badge" id="liveReadinessBadge"></div>
+                        <div class="history-card">
+                            <p class="eyebrow">Recent attempts</p>
+                            <div id="historyList"></div>
+                        </div>
+                        <button class="button button-primary button-block" id="startExamButton" type="button">Start Mock
+                            Exam</button>
+                    </aside>
+
+                    <div class="exam-panel">
+                        <div class="exam-state exam-state-idle" id="emptyState">
+                            <h3>Ready when you are</h3>
+                            <p>Select a certification to load its mock exam blueprint, then launch your practice
+                                session.</p>
+                        </div>
+
+                        <div class="exam-interface hidden" id="examInterface">
+                            <div class="exam-toolbar">
+                                <div>
+                                    <p class="toolbar-label">Current exam</p>
+                                    <h3 id="examTitle"></h3>
+                                </div>
+                                <div class="toolbar-stats">
+                                    <div class="toolbar-stat">
+                                        <span>Question</span>
+                                        <strong id="questionIndicator">1 / 5</strong>
+                                    </div>
+                                    <div class="toolbar-stat">
+                                        <span>Timer</span>
+                                        <strong id="timerValue">00:00</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="progress-track">
+                                <div class="progress-bar" id="progressBar"></div>
+                            </div>
+
+                            <article class="question-card">
+                                <div class="question-meta-row">
+                                    <p class="question-domain" id="questionDomain"></p>
+                                    <div class="question-meta-chips">
+                                        <span class="chip" id="questionDifficulty">Medium</span>
+                                        <span class="chip" id="questionVersion">v1</span>
+                                        <button class="button button-ghost button-mini" id="flagQuestionButton"
+                                            type="button">Flag</button>
+                                    </div>
+                                </div>
+                                <div class="case-study-panel hidden" id="caseStudyPanel"></div>
+                                <h4 id="questionText"></h4>
+                                <div class="options-list" id="optionsList"></div>
+                                <div class="feedback-panel hidden" id="feedbackPanel"></div>
+                            </article>
+
+                            <div class="question-nav" id="questionNav"></div>
+
+                            <div class="exam-actions">
+                                <button class="button button-ghost" id="pauseExamButton" type="button">Pause</button>
+                                <button class="button button-ghost" id="markReviewButton" type="button">Mark for
+                                    Review</button>
+                                <button class="button button-ghost" id="reportIssueButton" type="button">Report
+                                    Issue</button>
+                                <button class="button button-secondary" id="checkAnswerButton" type="button">Check
+                                    Answer</button>
+                                <button class="button button-secondary" id="nextQuestionButton" type="button">Next
+                                    Question</button>
+                                <button class="button button-ghost hidden" id="finishExamButton" type="button">Finish
+                                    Exam</button>
+                            </div>
+                        </div>
+
+                        <div class="results-panel hidden" id="resultsPanel">
+                            <p class="eyebrow">Results</p>
+                            <h3 id="resultTitle">Exam complete</h3>
+                            <p class="result-score" id="resultScore"></p>
+                            <p class="result-summary" id="resultSummary"></p>
+                            <div class="pdf-export-panel">
+                                <h4>Save Exam Q&A</h4>
+                                <p>Export this completed attempt as a print-ready PDF with your answers, correct
+                                    answers, and explanations.</p>
+                                <button class="button button-secondary" id="savePdfButton" type="button">Save Q&A as
+                                    PDF</button>
+                            </div>
+                            <div class="readiness-panel" id="resultReadiness"></div>
+                            <div class="improvement-panel" id="resultImprovements"></div>
+                            <div class="review-list" id="reviewList"></div>
+                            <button class="button button-primary" id="restartButton" type="button">Try Another
+                                Exam</button>
+                        </div>
+                    </div>
+                </div>
+
+                <article class="study-notes-panel" id="studyNotesPanel"></article>
+
+                <article class="study-notes-panel" id="az900CoveragePanel"></article>
+
+                <article class="study-notes-panel" id="analyticsPanel">
+                    <p class="eyebrow">Analytics</p>
+                    <h3>Performance dashboard</h3>
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Domain trend</h4>
+                            <div id="domainTrendChart"></div>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Recent scores</h4>
+                            <div id="recentScoreTrend"></div>
+                        </article>
+                    </div>
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Spaced repetition queue</h4>
+                            <div id="reviewQueueList"></div>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Daily plan</h4>
+                            <div id="dailyPlanList"></div>
+                        </article>
+                    </div>
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Section progress by exam</h4>
+                            <div id="sectionProgressList"></div>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Weakest sections</h4>
+                            <div id="weakestSectionsList"></div>
+                        </article>
+                    </div>
+                </article>
+
+                <article class="study-notes-panel" id="teamHubPanel">
+                    <p class="eyebrow">Team and instructor hub</p>
+                    <h3>Assignments, leaderboard, and content workflow</h3>
+
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Learner profile</h4>
+                            <label class="field-label" for="learnerNameInput">Active learner name</label>
+                            <input class="field-input" id="learnerNameInput" type="text" placeholder="e.g. Lerato N.">
+                            <button class="button button-secondary" id="saveLearnerButton" type="button">Save
+                                learner</button>
+                            <p id="activeLearnerLabel"></p>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Instructor dashboard</h4>
+                            <div id="instructorStats"></div>
+                        </article>
+                    </div>
+
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Cohorts</h4>
+                            <label class="field-label" for="cohortNameInput">New cohort name</label>
+                            <input class="field-input" id="cohortNameInput" type="text"
+                                placeholder="e.g. AZ-900 March Group">
+                            <button class="button button-secondary" id="createCohortButton" type="button">Create
+                                cohort</button>
+                            <label class="field-label" for="cohortSelect">Select cohort</label>
+                            <select id="cohortSelect" class="field-input"></select>
+                            <label class="field-label" for="memberNameInput">Add learner to cohort</label>
+                            <input class="field-input" id="memberNameInput" type="text" placeholder="Learner full name">
+                            <button class="button button-secondary" id="addMemberButton" type="button">Add
+                                member</button>
+                            <div id="cohortMembersList"></div>
+                        </article>
+
+                        <article class="notes-card">
+                            <h4>Assignments</h4>
+                            <label class="field-label" for="assignmentExamSelect">Exam</label>
+                            <select id="assignmentExamSelect" class="field-input"></select>
+                            <label class="field-label" for="assignmentModeSelect">Mode</label>
+                            <select id="assignmentModeSelect" class="field-input">
+                                <option value="practice">Practice mode</option>
+                                <option value="exam">Exam mode</option>
+                                <option value="adaptive">Adaptive mode</option>
+                            </select>
+                            <label class="field-label" for="assignmentDomainSelect">Domain</label>
+                            <select id="assignmentDomainSelect" class="field-input">
+                                <option value="all">All domains</option>
+                            </select>
+                            <label class="field-label" for="assignmentDueDateInput">Due date</label>
+                            <input class="field-input" id="assignmentDueDateInput" type="date">
+                            <button class="button button-secondary" id="createAssignmentButton" type="button">Create
+                                assignment</button>
+                            <div id="assignmentList"></div>
+                        </article>
+                    </div>
+
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>My tasks</h4>
+                            <div id="myTasksList"></div>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Cohort leaderboard</h4>
+                            <div id="leaderboardList"></div>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Question reports</h4>
+                            <div id="questionReportsList"></div>
+                        </article>
+                    </div>
+
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Cohort domain heatmap</h4>
+                            <div id="cohortDomainHeatmap"></div>
+                        </article>
+                    </div>
+
+                    <div class="notes-grid">
+                        <article class="notes-card">
+                            <h4>Editorial revision</h4>
+                            <label class="field-label" for="revisionExamSelect">Exam</label>
+                            <select id="revisionExamSelect" class="field-input"></select>
+                            <label class="field-label" for="revisionQuestionIndexInput">Question number
+                                (1-based)</label>
+                            <input class="field-input" id="revisionQuestionIndexInput" type="number" min="1" step="1"
+                                placeholder="e.g. 12">
+                            <label class="field-label" for="revisionNoteInput">Revision note (appended to
+                                explanation)</label>
+                            <textarea class="field-input" id="revisionNoteInput" rows="4"
+                                placeholder="Clarify option rationale and add governance context."></textarea>
+                            <button class="button button-secondary" id="saveRevisionButton" type="button">Save
+                                revision</button>
+                        </article>
+                        <article class="notes-card">
+                            <h4>Revision history</h4>
+                            <div id="revisionHistoryList"></div>
+                        </article>
+                    </div>
+                </article>
+            </section>
+
+            <section class="section" id="approach">
+                <div class="section-heading">
+                    <p class="eyebrow">How it works</p>
+                    <h2>Built for practice, not memorising leaked content.</h2>
+                </div>
+                <div class="approach-grid">
+                    <article class="approach-card">
+                        <h3>Objective aligned</h3>
+                        <p>Questions are mapped to the kind of skills measured in each certification track.</p>
+                    </article>
+                    <article class="approach-card">
+                        <h3>Timed pressure</h3>
+                        <p>Each mock exam includes a countdown so learners can build pacing discipline before exam day.
+                        </p>
+                    </article>
+                    <article class="approach-card">
+                        <h3>Review with context</h3>
+                        <p>Every answer includes an explanation so learners understand why the best option fits the
+                            scenario.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="question-bank.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

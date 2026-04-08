@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Daily Overview</p>
+        <h2>Focus on high value micro-tasks first.</h2>
+        <p class="text-muted">Track legitimate tasks, stay consistent, and keep your earnings data clean.</p>
+    </div>
+    {% if suggested_task %}
+    <div class="suggestion">
+        <h3>Next Best Task</h3>
+        <p><strong>{{ suggested_task.title }}</strong></p>
+        <p>{{ suggested_task.platform }} · {{ suggested_task.priority }} Priority</p>
+        <a class="button button-outline" href="{{ suggested_task.task_url }}" target="_blank"
+            rel="noopener noreferrer">Open Task</a>
+    </div>
+    {% endif %}
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <h3>Pending</h3>
+        <p class="metric">{{ task_counts.pending }}</p>
+    </article>
+    <article class="stat-card">
+        <h3>In Progress</h3>
+        <p class="metric">{{ task_counts.in_progress }}</p>
+    </article>
+    <article class="stat-card">
+        <h3>Done</h3>
+        <p class="metric">{{ task_counts.done }}</p>
+    </article>
+    <article class="stat-card">
+        <h3>Today Earnings</h3>
+        <p class="metric">${{ '%.2f'|format(earnings.daily) }}</p>
+    </article>
+</section>
+
+<section class="panel agent-panel">
+    <div class="panel-head">
+        <div>
+            <p class="eyebrow">Task Agent</p>
+            <h3>{{ task_agent.headline }}</h3>
+        </div>
+        <div class="agent-meta">
+            <span class="pill">{{ task_agent.session_count }} focus sessions logged</span>
+            <span class="pill">Top platform: {{ task_agent.platform_name }}</span>
+        </div>
+    </div>
+    {% if focus_started %}
+    <p class="agent-banner">Focus session logged. Stay on the current task until the timer ends.</p>
+    {% endif %}
+    {% if auto_finished %}
+    <p class="agent-banner">Local auto-finisher marked your suggested task as done in this dashboard.</p>
+    {% endif %}
+    <p class="text-muted">{{ task_agent.focus_summary }}</p>
+    <div class="agent-steps">
+        {% for action in task_agent.actions %}
+        <article class="agent-step">
+            <span class="step-index">{{ loop.index }}</span>
+            <p>{{ action }}</p>
+        </article>
+        {% endfor %}
+    </div>
+    <div class="agent-actions-row">
+        {% if task_agent.suggested_task and task_agent.suggested_task.task_url %}
+        <a class="button" href="{{ task_agent.suggested_task.task_url }}" target="_blank" rel="noopener noreferrer">Open
+            Recommended Task</a>
+        {% endif %}
+        <form method="post" action="{{ url_for('dashboard.start_focus_session') }}" class="inline-form">
+            <input type="hidden" name="minutes" value="{{ task_agent.focus_minutes }}" />
+            <button class="button button-outline" type="submit">Start {{ task_agent.focus_minutes }} Min Focus
+                Session</button>
+        </form>
+        {% if task_agent.suggested_task %}
+        <form id="auto-finish-form" method="post" action="{{ url_for('dashboard.auto_finish_task') }}"
+            class="inline-form">
+            <input type="hidden" name="task_id" value="{{ task_agent.suggested_task.id }}" />
+            <button class="button button-outline" type="submit">Finish Suggested Task (Local)</button>
+        </form>
+        {% endif %}
+    </div>
+    <div class="timer-card" data-focus-timer data-focus-minutes="{{ task_agent.focus_minutes }}"
+        data-focus-started="{{ '1' if focus_started else '0' }}"
+        data-suggested-task-id="{{ task_agent.suggested_task.id if task_agent.suggested_task else '' }}">
+        <div>
+            <p class="eyebrow">Focus Timer</p>
+            <p class="timer-display" data-timer-display>{{ task_agent.focus_minutes }}:00</p>
+            <p class="text-muted" data-timer-reminder>Start a focus session to begin reminders.</p>
+        </div>
+        <div class="timer-actions">
+            <button class="button button-outline" type="button" data-timer-pause>Pause</button>
+            <button class="button button-outline" type="button" data-timer-reset>Reset</button>
+        </div>
+        <label class="timer-toggle">
+            <input type="checkbox" id="auto-finish-toggle" {% if not task_agent.suggested_task %}disabled{% endif %} />
+            Auto-finish suggested task in this local dashboard when timer reaches 00:00
+        </label>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h3>AI Daily Auto-Plan</h3>
+    </div>
+    <div class="plan-grid">
+        {% for block in daily_plan %}
+        <article class="plan-card">
+            <h4>{{ block.name }}</h4>
+            <p class="text-muted">{{ block.total_minutes }} mins · ${{ '%.2f'|format(block.total_pay) }}</p>
+            <ul class="plan-list">
+                {% for task in block.tasks %}
+                <li>
+                    <span>{{ task.title }}</span>
+                    <small>{{ task.priority }} · {{ task.platform }}</small>
+                </li>
+                {% else %}
+                <li class="text-muted">No queued tasks for this block.</li>
+                {% endfor %}
+            </ul>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h3>Top Tasks For Today</h3>
+        <a class="button" href="{{ url_for('tasks.task_list') }}">Manage Tasks</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Platform</th>
+                    <th>Priority</th>
+                    <th>Time</th>
+                    <th>Pay</th>
+                    <th>Status</th>
+                    <th>Quick Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in today_tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.platform }}</td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.estimated_time_minutes }} min</td>
+                    <td>${{ '%.2f'|format(task.estimated_pay) }}</td>
+                    <td><span class="pill">{{ task.status }}</span></td>
+                    <td>
+                        <div class="status-actions">
+                            {% if task.status == 'Pending' %}
+                            <form method="post" action="{{ url_for('tasks.update_status', task_id=task.id) }}">
+                                <input type="hidden" name="status" value="In Progress" />
+                                <input type="hidden" name="next" value="{{ url_for('dashboard.index') }}" />
+                                <button class="button button-outline" type="submit">Start</button>
+                            </form>
+                            {% endif %}
+                            {% if task.status == 'In Progress' %}
+                            <form method="post" action="{{ url_for('tasks.update_status', task_id=task.id) }}">
+                                <input type="hidden" name="status" value="Pending" />
+                                <input type="hidden" name="next" value="{{ url_for('dashboard.index') }}" />
+                                <button class="button button-outline" type="submit">Pause</button>
+                            </form>
+                            {% endif %}
+                            <form method="post" action="{{ url_for('tasks.update_status', task_id=task.id) }}">
+                                <input type="hidden" name="status" value="Done" />
+                                <input type="hidden" name="next" value="{{ url_for('dashboard.index') }}" />
+                                <button class="button button-outline" type="submit">Done</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-muted">No tasks yet. Add your first task in the Tasks page.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

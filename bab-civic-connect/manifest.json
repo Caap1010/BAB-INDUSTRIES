@@ -1,7 +1,8 @@
 {
     "name": "BAB CivicConnect",
     "short_name": "CivicConnect",
-    "start_url": "/bab-civic-connect/app.html",
+    "start_url": "./app.html",
+    "scope": "./",
     "display": "standalone",
     "background_color": "#020617",
     "theme_color": "#020617",

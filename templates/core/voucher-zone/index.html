@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voucher-Zone</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;700&display=swap");
+
+        :root {
+            --bg: #020617;
+            --panel: rgba(15, 23, 42, 0.9);
+            --line: #1e293b;
+            --ink: #e2e8f0;
+            --muted: #94a3b8;
+            --brand: #38bdf8;
+            --brand-deep: #0ea5e9;
+            --danger: #ef4444;
+            --ok: #22c55e;
+            --radius: 18px;
+            --shadow: 0 20px 55px rgba(2, 6, 23, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 0%, rgba(56, 189, 248, 0.18), transparent 30%),
+                radial-gradient(circle at 86% 6%, rgba(14, 165, 233, 0.15), transparent 26%),
+                var(--bg);
+        }
+
+        .shell {
+            width: min(calc(100% - 2rem), 1180px);
+            margin: 0 auto;
+            padding: 1.2rem 0 2.2rem;
+        }
+
+        .topbar,
+        .hero,
+        .panel,
+        .table-wrap,
+        .voucher-box {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.9rem 1rem;
+        }
+
+        .brand {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .hero {
+            margin-top: 1rem;
+            padding: 1.5rem;
+        }
+
+        .eyebrow {
+            font-size: 0.74rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--brand);
+            font-weight: 700;
+            margin: 0 0 0.6rem;
+        }
+
+        h1,
+        h2 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            letter-spacing: -0.03em;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.2vw, 3.3rem);
+            max-width: 15ch;
+            line-height: 1.05;
+        }
+
+        .hero p {
+            margin: 0.8rem 0 0;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 70ch;
+        }
+
+        .layout {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.05fr);
+            gap: 1rem;
+        }
+
+        .panel,
+        .table-wrap {
+            padding: 1rem;
+        }
+
+        .helper {
+            margin: 0.35rem 0 1rem;
+            font-size: 0.92rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .fields {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.86rem;
+            color: var(--muted);
+            margin-bottom: 0.35rem;
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            font: inherit;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: rgba(2, 6, 23, 0.7);
+            color: var(--ink);
+            padding: 0.8rem 0.9rem;
+        }
+
+        textarea {
+            min-height: 88px;
+            resize: vertical;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: 0;
+            border-radius: 999px;
+            padding: 0.78rem 1.25rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+            color: #031625;
+            font-weight: 700;
+        }
+
+        .fee {
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        .voucher-box {
+            margin-top: 0.9rem;
+            padding: 0.85rem;
+        }
+
+        .voucher-box h3 {
+            margin: 0 0 0.5rem;
+            font-size: 0.95rem;
+            color: var(--brand);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .voucher-output {
+            min-height: 86px;
+            border: 1px dashed #334155;
+            border-radius: 12px;
+            padding: 0.7rem;
+            background: rgba(2, 6, 23, 0.75);
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .voucher-output.empty {
+            color: var(--muted);
+            font-family: "Manrope", sans-serif;
+        }
+
+        .status {
+            margin-top: 0.65rem;
+            font-size: 0.86rem;
+            color: var(--muted);
+        }
+
+        .status.ok {
+            color: var(--ok);
+        }
+
+        .status.err {
+            color: var(--danger);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.72rem 0.62rem;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+
+        th {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--brand);
+        }
+
+        .pill {
+            display: inline-flex;
+            padding: 0.22rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.16);
+            color: var(--brand);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 980px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .shell {
+                width: min(calc(100% - 1rem), 1180px);
+            }
+
+            .split,
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="shell">
+        <section class="topbar">
+            <div class="brand">Voucher-Zone <small class="muted">free generation</small></div>
+            <div class="muted">Generate working vouchers for Betway, Hollywoodbets, exam, food, and more.</div>
+        </section>
+
+        <section class="hero">
+            <p class="eyebrow">Universal Voucher System</p>
+            <h1>One clean place to generate vouchers.</h1>
+            <p>This system generates vouchers at zero cost and keeps a live recent-voucher list so you can quickly test
+                and verify your codes. Choose the voucher type you need, generate, and copy the code from the generated
+                voucher box.</p>
+        </section>
+
+        <section class="layout">
+            <article class="panel">
+                <h2>Generate Voucher</h2>
+                <p class="helper">Choose voucher type, then click Generate. Your code appears in the generated voucher
+                    box immediately.</p>
+                <form id="generateForm" class="fields">
+                    <div>
+                        <label for="voucherPreset">Voucher Product</label>
+                        <select id="voucherPreset" name="voucherPreset" required>
+                            <option value="">Loading voucher products...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="name">Voucher Name</label>
+                        <input id="name" name="name" value="Betway Voucher" required />
+                    </div>
+                    <div class="split">
+                        <div>
+                            <label for="initialBalance">Voucher Amount</label>
+                            <input id="initialBalance" name="initialBalance" type="number" min="1" step="0.01"
+                                value="500" required />
+                        </div>
+                        <div>
+                            <label for="quantity">How Many</label>
+                            <input id="quantity" name="quantity" type="number" min="1" max="200" value="1" required />
+                        </div>
+                    </div>
+                    <div class="split">
+                        <div>
+                            <label for="supportedCategories">Category</label>
+                            <input id="supportedCategories" name="supportedCategories" value="betting" />
+                        </div>
+                        <div>
+                            <label for="supportedProviders">Provider</label>
+                            <input id="supportedProviders" name="supportedProviders" value="betway" />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="notes">Notes</label>
+                        <textarea id="notes"
+                            name="notes">Select a voucher product to auto-fill these details.</textarea>
+                    </div>
+                    <div class="actions">
+                        <button id="generateButton" type="submit">Generate</button>
+                        <span class="fee">Generation fee: 0.00 (free)</span>
+                    </div>
+                </form>
+
+                <section class="voucher-box">
+                    <h3>Generated Voucher</h3>
+                    <div id="generatedVoucherOutput" class="voucher-output empty">No voucher generated yet.</div>
+                    <div id="generatedVoucherStatus" class="status">Ready.</div>
+                </section>
+            </article>
+
+            <article class="table-wrap">
+                <h2>Recent Vouchers</h2>
+                <p class="helper">Latest generated vouchers in the system.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Balance / Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentVouchersBody">
+                        <tr>
+                            <td colspan="5" class="muted">Loading recent vouchers...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        const generateForm = document.getElementById("generateForm");
+        const generateButton = document.getElementById("generateButton");
+        const voucherPresetInput = document.getElementById("voucherPreset");
+        const voucherOutput = document.getElementById("generatedVoucherOutput");
+        const voucherStatus = document.getElementById("generatedVoucherStatus");
+        const recentVouchersBody = document.getElementById("recentVouchersBody");
+        const API_BASE = (window.location.port === "5500" || window.location.protocol === "file:")
+            ? "http://127.0.0.1:8000"
+            : "";
+
+        const CATEGORY_LABELS = {
+            airtime: "Airtime",
+            betting: "Betting",
+            retail: "Retail",
+            food: "Food",
+            data: "Data",
+            entertainment: "Entertainment",
+            exam: "Exam",
+            learning: "Learning",
+            electricity: "Electricity",
+            transport: "Transport",
+            other: "Other",
+        };
+        const catalogProductsById = new Map();
+        let selectedProduct = null;
+
+        function setStatus(message, kind) {
+            voucherStatus.textContent = message;
+            voucherStatus.className = `status ${kind || ""}`.trim();
+        }
+
+        function parseList(value) {
+            return String(value || "")
+                .split(",")
+                .map((item) => item.trim().toLowerCase())
+                .filter(Boolean);
+        }
+
+        function applyPreset(productId) {
+            const product = catalogProductsById.get(String(productId));
+            if (!product) {
+                return;
+            }
+            selectedProduct = product;
+            document.getElementById("name").value = product.name;
+            document.getElementById("initialBalance").value = product.salePrice || product.faceValue || "0";
+            document.getElementById("supportedCategories").value = product.category || "";
+            document.getElementById("supportedProviders").value = String(product.provider || "").toLowerCase();
+            document.getElementById("notes").value = product.notes || `${product.provider} ${product.name}`;
+            setStatus(`Internal ${product.provider} format selected. External providers only accept legitimate provider-issued vouchers.`, "");
+        }
+
+        function fallbackProducts() {
+            return [
+                { id: "fallback-ott", provider: "OTT Voucher", name: "OTT Voucher R100", category: "betting", salePrice: "100.00", faceValue: "100.00", notes: "Accepted across multiple bookmakers." },
+                { id: "fallback-1voucher", provider: "1Voucher", name: "1Voucher R100", category: "betting", salePrice: "100.00", faceValue: "100.00", notes: "Common betting wallet voucher." },
+                { id: "fallback-shoprite", provider: "Shoprite", name: "Shoprite Food Voucher R200", category: "retail", salePrice: "200.00", faceValue: "200.00", notes: "Retail grocery voucher." },
+                { id: "fallback-pearson", provider: "Pearson VUE", name: "Pearson VUE Exam Voucher", category: "exam", salePrice: "2500.00", faceValue: "2500.00", notes: "Certification exam voucher." },
+                { id: "fallback-uber", provider: "Uber", name: "Uber Gift Card R200", category: "transport", salePrice: "200.00", faceValue: "200.00", notes: "Transport voucher." },
+            ];
+        }
+
+        function populateVoucherProducts(items) {
+            const products = Array.isArray(items) && items.length ? items : fallbackProducts();
+            catalogProductsById.clear();
+
+            const grouped = products.reduce((accumulator, product) => {
+                const category = product.category || "other";
+                if (!accumulator[category]) {
+                    accumulator[category] = [];
+                }
+                accumulator[category].push(product);
+                catalogProductsById.set(String(product.id), product);
+                return accumulator;
+            }, {});
+
+            const options = ['<option value="">Select a voucher product</option>'];
+            Object.keys(grouped)
+                .sort()
+                .forEach((category) => {
+                    options.push(`<optgroup label="${CATEGORY_LABELS[category] || category}">`);
+                    grouped[category]
+                        .sort((left, right) => `${left.provider} ${left.name}`.localeCompare(`${right.provider} ${right.name}`))
+                        .forEach((product) => {
+                            options.push(`<option value="${product.id}">${product.provider} - ${product.name}</option>`);
+                        });
+                    options.push("</optgroup>");
+                });
+
+            voucherPresetInput.innerHTML = options.join("");
+            const firstProduct = products[0];
+            if (firstProduct) {
+                voucherPresetInput.value = String(firstProduct.id);
+                applyPreset(firstProduct.id);
+            }
+        }
+
+        async function submitJson(url, payload) {
+            const response = await fetch(`${API_BASE}${url}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            const data = await response.json();
+            return { ok: response.ok, data };
+        }
+
+        function renderRecentVouchers(items) {
+            if (!Array.isArray(items) || items.length === 0) {
+                recentVouchersBody.innerHTML = '<tr><td colspan="5" class="muted">No vouchers created yet.</td></tr>';
+                return;
+            }
+
+            recentVouchersBody.innerHTML = items
+                .slice(0, 18)
+                .map((voucher) => {
+                    const balance = voucher.voucherKind === "stored_value"
+                        ? `${voucher.remainingBalance} / ${voucher.initialBalance} ${voucher.currency}`
+                        : `${voucher.discountValue} ${voucher.discountType === "percent" ? "%" : voucher.currency}`;
+                    const status = voucher.isActive ? "Active" : "Inactive";
+                    return `
+                        <tr>
+                            <td><code>${voucher.code}</code></td>
+                            <td>${voucher.name}</td>
+                            <td><span class="pill">${voucher.voucherKind}</span></td>
+                            <td>${balance}</td>
+                            <td>${status}</td>
+                        </tr>
+                    `;
+                })
+                .join("");
+        }
+
+        async function refreshRecentVouchers() {
+            try {
+                const response = await fetch(`${API_BASE}/api/vouchers/?status=active&availableOnly=1&voucherKind=stored_value`);
+                const data = await response.json();
+                renderRecentVouchers(data.items || []);
+            } catch (error) {
+                recentVouchersBody.innerHTML = '<tr><td colspan="5" class="muted">Could not load vouchers.</td></tr>';
+            }
+        }
+
+        async function loadVoucherProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/api/vouchers/products/`);
+                const data = await response.json();
+                populateVoucherProducts(data.items || []);
+            } catch (error) {
+                populateVoucherProducts([]);
+            }
+        }
+
+        voucherPresetInput.addEventListener("change", () => applyPreset(voucherPresetInput.value));
+
+        generateForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const form = new FormData(generateForm);
+            const payload = {
+                name: form.get("name"),
+                voucherKind: "stored_value",
+                discountType: "fixed",
+                discountValue: "0",
+                initialBalance: form.get("initialBalance"),
+                quantity: form.get("quantity"),
+                usageLimit: 1,
+                prefix: "",
+                currency: "ZAR",
+                minOrderAmount: "0",
+                allowedChannels: [],
+                supportedCategories: parseList(form.get("supportedCategories")),
+                supportedProviders: parseList(form.get("supportedProviders")),
+                notes: form.get("notes"),
+                isGlobal: true,
+                codeCharset: selectedProduct?.metadata?.codeCharset || "alnum",
+                codeLength: selectedProduct?.metadata?.codeLength || 10,
+                codeGroupSize: selectedProduct?.metadata?.codeGroupSize || 0,
+                codeSeparator: selectedProduct?.metadata?.codeSeparator || "-",
+                metadata: {
+                    sourceProductId: selectedProduct?.id || null,
+                    sourceProductName: selectedProduct?.name || "",
+                    sourceProvider: selectedProduct?.provider || "",
+                    externalValidity: "internal-only",
+                },
+            };
+
+            generateButton.disabled = true;
+            generateButton.textContent = "Generating...";
+            setStatus("Generating voucher...", "");
+
+            try {
+                const result = await submitJson("/api/vouchers/generate/", payload);
+                if (!result.ok || !Array.isArray(result.data.items)) {
+                    voucherOutput.textContent = result.data.error || "Failed to generate voucher.";
+                    voucherOutput.classList.remove("empty");
+                    setStatus("Generation failed.", "err");
+                    return;
+                }
+
+                const generatedCodes = result.data.items.map((item) => item.code);
+                voucherOutput.textContent = generatedCodes.join("\n");
+                voucherOutput.classList.remove("empty");
+                setStatus(`Generated ${generatedCodes.length} internal voucher(s) successfully.`, "ok");
+                await refreshRecentVouchers();
+            } catch (error) {
+                voucherOutput.textContent = "Network error while generating voucher.";
+                voucherOutput.classList.remove("empty");
+                setStatus("Generation failed due to network error.", "err");
+            } finally {
+                generateButton.disabled = false;
+                generateButton.textContent = "Generate";
+            }
+        });
+
+        loadVoucherProducts();
+        refreshRecentVouchers();
+    </script>
+</body>
+
+</html>

@@ -1,21 +1,19 @@
 // Simple PWA service worker for BAB CivicConnect
 
-const CACHE_NAME = "civicconnect-cache-v1";
+const CACHE_NAME = "civicconnect-cache-v2";
 const ASSETS = [
-    "/bab-civic-connect/",
-    "/bab-civic-connect/index.html",
-    "/bab-civic-connect/app.html",
-    "/bab-civic-connect/login.html",
-    "/bab-civic-connect/register.html",
-    "/bab-civic-connect/profile.html",
-    "/bab-civic-connect/responders.html",
-    "/bab-civic-connect/reset-password.html",
-    "/bab-civic-connect/update-password.html",
-    "/bab-civic-connect/css/civicconnect.css",
-    "/bab-civic-connect/js/civicconnect-auth.js",
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js",
-    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    "./",
+    "./index.html",
+    "./app.html",
+    "./login.html",
+    "./register.html",
+    "./profile.html",
+    "./responders.html",
+    "./reset-password.html",
+    "./update-password.html",
+    "./css/civicconnect.css",
+    "./js/civicconnect-auth.js",
+    "./assets/images/civic-connect.png"
 ];
 
 // Install: cache core assets
@@ -38,7 +36,7 @@ self.addEventListener("activate", (event) => {
                     key !== CACHE_NAME ? caches.delete(key) : Promise.resolve()
                 )
             )
-        )
+        ).then(() => self.clients.claim())
     );
 });
 
@@ -53,13 +51,28 @@ self.addEventListener("fetch", (event) => {
 
     event.respondWith(
         caches.match(req).then((cached) => {
-            if (cached) {
-                return cached;
-            }
-            return fetch(req).catch((err) => {
-                console.warn("Fetch failed (offline?):", err);
-                // You can return a fallback page or asset here if you like
-            });
+            if (cached) return cached;
+
+            return fetch(req)
+                .then((networkResponse) => {
+                    // Cache same-origin successful GET responses for better offline support.
+                    if (
+                        req.url.startsWith(self.location.origin) &&
+                        networkResponse &&
+                        networkResponse.status === 200
+                    ) {
+                        const clone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+                    }
+                    return networkResponse;
+                })
+                .catch((err) => {
+                    console.warn("Fetch failed (offline?):", err);
+                    if (req.mode === "navigate") {
+                        return caches.match("./index.html");
+                    }
+                    return undefined;
+                });
         })
     );
 });
