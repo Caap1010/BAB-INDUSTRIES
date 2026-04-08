@@ -1,0 +1,21 @@
+{
+    "name": "Sfiso Quintin Tshotwane | Sasol Journey Portfolio",
+    "short_name": "Sasol Journey",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#030c1c",
+    "theme_color": "#0f71b8",
+    "description": "Sasol Information Management learner portfolio showcasing journey, projects, certifications, and media.",
+    "icons": [
+        {
+            "src": "images/sasol-logo.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "images/sasol-logo.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ]
+}
