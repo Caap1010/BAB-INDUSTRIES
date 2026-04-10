@@ -508,6 +508,11 @@ blockquote {
     letter-spacing: 0.04em;
 }
 
+.cert-badge--passed {
+    background: linear-gradient(90deg, #0f9f60, #52d08f);
+    color: #022212;
+}
+
 /* ===== SECTION BACKGROUND CARDS ===== */
 .card-bg {
     position: relative;

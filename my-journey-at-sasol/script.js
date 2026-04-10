@@ -490,10 +490,16 @@ function updateSaTimeAndCountdowns() {
     }
 
     examCards.forEach((card) => {
+        const status = (card.dataset.examStatus || '').toLowerCase();
         const examDateRaw = card.dataset.examDate;
         const examDate = new Date(examDateRaw);
         const countdownEl = card.querySelector('.cert-countdown');
         if (!countdownEl) {
+            return;
+        }
+
+        if (status === 'passed') {
+            countdownEl.textContent = 'Result: Passed';
             return;
         }
 
