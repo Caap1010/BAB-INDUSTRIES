@@ -1912,6 +1912,37 @@ function populateExamSelect() {
     examSelect.value = state.selectedExamId;
 }
 
+function formatExamDate(isoDate) {
+    const d = new Date(isoDate);
+    const parts = new Intl.DateTimeFormat("en-ZA", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: "Africa/Johannesburg"
+    }).formatToParts(d);
+    const get = (type) => (parts.find((p) => p.type === type) || {}).value || "";
+    const day = get("day");
+    const month = get("month");
+    const year = get("year");
+    const weekday = get("weekday");
+    const hour = get("hour");
+    const minute = get("minute");
+    return `${day} ${month} ${year} (${weekday}) ${hour}:${minute} SAST`;
+}
+
+function formatCountdown(isoDate) {
+    const diff = new Date(isoDate) - new Date();
+    if (diff <= 0) return "Exam passed";
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${days}d ${hours}h ${minutes}m`;
+}
+
 function updateOverview() {
     const exam = getSelectedExam();
 
@@ -1920,11 +1951,17 @@ function updateOverview() {
         return;
     }
 
+    const examDateBlock = exam.examDate
+        ? `<p><strong>Exam date:</strong> ${formatExamDate(exam.examDate)}${exam.booked ? ' <span class="booked-badge">Booked</span>' : ""}</p>
+        <p><strong>Countdown:</strong> ${formatCountdown(exam.examDate)}</p>`
+        : "";
+
     examOverview.innerHTML = `
         <p class="eyebrow">Exam blueprint</p>
         <h3>${exam.code} · ${exam.title}</h3>
         <p>${exam.focus}</p>
         <p><strong>Level:</strong> ${exam.level}</p>
+        ${examDateBlock}
         <p><strong>Questions:</strong> ${exam.questionBank.length}</p>
         <p><strong>Suggested time:</strong> ${FIXED_EXAM_DURATION_MINUTES} minutes</p>
         <p><strong>Readiness gate:</strong> ${READINESS_OVERALL_TARGET}%+ overall, ${READINESS_DOMAIN_TARGET}%+ per domain, ${READINESS_TIMED_STREAK_TARGET} consecutive exam-mode passes</p>

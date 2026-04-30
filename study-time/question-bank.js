@@ -80,6 +80,8 @@ window.studyTimeExams = [
         code: "AZ-500",
         title: "Azure Security Engineer",
         level: "Associate",
+        examDate: "2026-06-02T10:30:00+02:00",
+        booked: false,
         duration: 22,
         focus: "Identity security, platform protection, data security, network controls, and security operations across Azure workloads.",
         objectives: [
@@ -114,6 +116,8 @@ window.studyTimeExams = [
         code: "AI-102",
         title: "Azure AI Engineer",
         level: "Associate",
+        examDate: "2026-05-19T10:30:00+02:00",
+        booked: true,
         duration: 22,
         focus: "Applied AI solution design with Azure AI services, search, language, vision, prompt orchestration, and responsible AI controls.",
         objectives: [
