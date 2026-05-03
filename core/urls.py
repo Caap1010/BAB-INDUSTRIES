@@ -1,10 +1,20 @@
 from django.urls import path
 
 from .views import (
+    ai_suite_dub_cues,
+    ai_suite_moderate,
+    ai_suite_review_approve,
+    ai_suite_review_submit,
+    ai_suite_soundtrack,
+    ai_suite_webhook_test,
     credit_check_portal,
     credit_check_lookup,
     credit_check_add_debtor,
     credit_check_add_debt,
+    cap_anime_generate_image,
+    cap_anime_generate_script,
+    cap_anime_generate_video,
+    cap_anime_media_file,
     bab_watch_discover,
     bab_watch_genres,
     bab_watch_providers,
@@ -45,6 +55,16 @@ from .views import (
 )
 
 urlpatterns = [
+    path("api/cap-anime/generate-image/", cap_anime_generate_image, name="cap_anime_generate_image"),
+    path("api/cap-anime/generate-script/", cap_anime_generate_script, name="cap_anime_generate_script"),
+    path("api/cap-anime/generate-video/", cap_anime_generate_video, name="cap_anime_generate_video"),
+    path("api/cap-anime/media/<str:media_group>/<str:filename>", cap_anime_media_file, name="cap_anime_media_file"),
+    path("api/ai-suite/moderate/", ai_suite_moderate, name="ai_suite_moderate"),
+    path("api/ai-suite/dub-cues/", ai_suite_dub_cues, name="ai_suite_dub_cues"),
+    path("api/ai-suite/soundtrack/", ai_suite_soundtrack, name="ai_suite_soundtrack"),
+    path("api/ai-suite/review/submit/", ai_suite_review_submit, name="ai_suite_review_submit"),
+    path("api/ai-suite/review/approve/", ai_suite_review_approve, name="ai_suite_review_approve"),
+    path("api/ai-suite/webhook/test/", ai_suite_webhook_test, name="ai_suite_webhook_test"),
     path("api/pest-leads/", create_pest_lead, name="create_pest_lead"),
     path("api/pest-leads/list/", pest_lead_list, name="pest_lead_list"),
     path("api/bab-watch/genres/", bab_watch_genres, name="bab_watch_genres"),

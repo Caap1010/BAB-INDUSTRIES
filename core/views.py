@@ -1,17 +1,28 @@
 import json
 import os
+import random
+import subprocess
+import tempfile
+import base64
+import html
+import re
 from collections import Counter
 from decimal import Decimal, InvalidOperation
 from datetime import timedelta
-from urllib.parse import urlencode
+from pathlib import Path
+from uuid import uuid4
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
+import requests
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Count, Q, Sum
 from django.db.models.functions import TruncDate
-from django.http import HttpResponseNotAllowed, JsonResponse
+from django.http import FileResponse, Http404, HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.crypto import get_random_string
@@ -45,6 +56,161 @@ from .models import (
 from .voucher_provider_gateway import ProviderFulfillmentError, fulfill_catalog_item
 
 TMDB_BASE = "https://api.themoviedb.org/3"
+_CAP_MEDIA_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{2,120}$")
+
+
+def _cap_media_root(kind):
+	base_root = Path(getattr(settings, "CAP_ANIME_MEDIA_ROOT", settings.BASE_DIR / "generated_media" / "cap_anime"))
+	kind_safe = "videos" if str(kind or "").lower().startswith("video") else "images"
+	root = base_root / kind_safe
+	root.mkdir(parents=True, exist_ok=True)
+	return root
+
+
+def _cap_media_url(kind, filename):
+	group = "videos" if str(kind or "").lower().startswith("video") else "images"
+	return f"/api/cap-anime/media/{group}/{filename}"
+
+
+def _split_data_url(data_url):
+	text = str(data_url or "")
+	if not text.startswith("data:") or "," not in text:
+		return None, None
+	header, encoded = text.split(",", 1)
+	if ";base64" not in header:
+		return None, None
+	mime = header[5:].split(";", 1)[0].strip().lower()
+	if not mime:
+		return None, None
+	try:
+		return mime, base64.b64decode(encoded, validate=True)
+	except Exception:
+		return None, None
+
+
+def _mime_extension(mime, fallback):
+	map_ext = {
+		"image/png": "png",
+		"image/jpeg": "jpg",
+		"image/webp": "webp",
+		"image/svg+xml": "svg",
+		"video/webm": "webm",
+		"video/mp4": "mp4",
+	}
+	return map_ext.get(str(mime or "").lower(), fallback)
+
+
+def _save_cap_media_bytes(content, kind, extension, prefix):
+	if not content:
+		return None
+	ext = str(extension or "bin").lower().strip(".") or "bin"
+	name = f"{prefix}-{uuid4().hex[:18]}.{ext}"
+	path = _cap_media_root(kind) / name
+	path.write_bytes(content)
+	return {
+		"name": name,
+		"path": str(path),
+		"url": _cap_media_url(kind, name),
+	}
+
+
+def _save_cap_media_data_url(data_url, kind, fallback_ext, prefix):
+	mime, content = _split_data_url(data_url)
+	if not content:
+		return None
+	ext = _mime_extension(mime, fallback_ext)
+	return _save_cap_media_bytes(content, kind, ext, prefix)
+
+
+def _fetch_binary(url, timeout=60):
+	try:
+		res = requests.get(
+			str(url),
+			headers={
+				"User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+				"Accept": "video/*,image/*,*/*;q=0.8",
+			},
+			timeout=timeout,
+		)
+		if res.status_code >= 400:
+			return None, None, {"ok": False, "error": f"Provider HTTP {res.status_code}"}, 502
+		content = res.content
+		if not content:
+			return None, None, {"ok": False, "error": "Provider returned empty body."}, 502
+		content_type = (res.headers.get("Content-Type") or "application/octet-stream").split(";", 1)[0].strip().lower()
+		return content, content_type, None, 200
+	except Exception as exc:
+		return None, None, {"ok": False, "error": f"Provider request failed: {str(exc)}"}, 502
+
+
+def _ffmpeg_available():
+	try:
+		probe = subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True, check=False)
+		return probe.returncode == 0
+	except Exception:
+		return False
+
+
+def _create_local_video_from_image_data_url(image_data_url, duration_sec):
+	mime, image_bytes = _split_data_url(image_data_url)
+	if not image_bytes:
+		return None, {"ok": False, "error": "Cannot create fallback video: invalid image payload."}, 502
+	if not _ffmpeg_available():
+		return None, {"ok": False, "error": "Video provider unavailable and ffmpeg is not installed for fallback rendering."}, 503
+
+	duration = max(2, min(120, int(float(duration_sec or 8))))
+	image_ext = _mime_extension(mime, "png")
+	try:
+		with tempfile.TemporaryDirectory() as tmp:
+			input_path = Path(tmp) / f"frame.{image_ext}"
+			output_path = Path(tmp) / "clip.webm"
+			input_path.write_bytes(image_bytes)
+
+			fade_out_start = max(0.5, duration - 1.2)
+			vf_filter = (
+				"scale=1280:720:force_original_aspect_ratio=decrease,"
+				"pad=1280:720:(ow-iw)/2:(oh-ih)/2:black,"
+				"zoompan=z='min(zoom+0.0005,1.3)':x='iw/2-(iw/zoom/2)+sin(on/40)*8':y='ih/2-(ih/zoom/2)+cos(on/55)*6':d=1:s=1280x720:fps=24,"
+				"fade=t=in:st=0:d=0.6,"
+				f"fade=t=out:st={fade_out_start:.2f}:d=0.8"
+			)
+			cmd = [
+				"ffmpeg",
+				"-y",
+				"-loop",
+				"1",
+				"-i",
+				str(input_path),
+				"-t",
+				str(duration),
+				"-vf",
+				vf_filter,
+				"-an",
+				"-c:v",
+				"libvpx-vp9",
+				"-b:v",
+				"3M",
+				"-crf",
+				"22",
+				"-deadline",
+				"good",
+				"-cpu-used",
+				"2",
+				"-pix_fmt",
+				"yuv420p",
+				str(output_path),
+			]
+			run = subprocess.run(cmd, capture_output=True, text=True, check=False)
+			if run.returncode != 0 or not output_path.exists():
+				return None, {"ok": False, "error": "ffmpeg fallback render failed."}, 502
+
+			video_bytes = output_path.read_bytes()
+			asset = _save_cap_media_bytes(video_bytes, "video", "webm", "cap-video")
+			if not asset:
+				return None, {"ok": False, "error": "Could not persist fallback video."}, 500
+			return asset, None, 200
+	except Exception as exc:
+		return None, {"ok": False, "error": f"Fallback video render failed: {str(exc)}"}, 502
 
 
 def _tmdb_get(path, params=None):
@@ -71,6 +237,1101 @@ def _client_ip(request):
 	if forwarded_for:
 		return forwarded_for.split(",")[0].strip()
 	return request.META.get("REMOTE_ADDR")
+
+
+def _parse_json_body(request):
+	try:
+		return json.loads(request.body.decode("utf-8")), None
+	except (json.JSONDecodeError, UnicodeDecodeError):
+		return None, JsonResponse({"ok": False, "error": "Invalid JSON payload."}, status=400)
+
+
+def _post_json(url, payload, timeout=20):
+	body = json.dumps(payload).encode("utf-8")
+	req = Request(
+		url,
+		data=body,
+		headers={"Content-Type": "application/json"},
+		method="POST",
+	)
+	try:
+		with urlopen(req, timeout=timeout) as response:
+			raw = response.read().decode("utf-8")
+			if not raw:
+				return {"ok": response.status < 400}, response.status
+			try:
+				return json.loads(raw), response.status
+			except json.JSONDecodeError:
+				return {"ok": response.status < 400, "raw": raw}, response.status
+	except Exception as exc:
+		return {"ok": False, "error": f"Upstream request failed: {str(exc)}"}, 502
+
+
+def _fetch_image_data_url(url, timeout=45):
+	def _encode_image(body, content_type):
+		import base64
+
+		encoded = base64.b64encode(body).decode("ascii")
+		return f"data:{content_type};base64,{encoded}", None, 200
+
+	def _curl_fetch():
+		try:
+			with tempfile.NamedTemporaryFile(delete=True) as body_file, tempfile.NamedTemporaryFile(mode="w+b", delete=True) as header_file:
+				cmd = [
+					"curl",
+					"-sS",
+					"-L",
+					"--max-time",
+					str(int(timeout)),
+					"-A",
+					"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+					"-H",
+					"Accept: image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+					"-D",
+					header_file.name,
+					"-o",
+					body_file.name,
+					url,
+				]
+				run = subprocess.run(cmd, capture_output=True, text=True, check=False)
+				if run.returncode != 0:
+					return None, {"ok": False, "error": f"curl failed: {run.stderr.strip()[:180]}"}, 502
+
+				header_file.seek(0)
+				headers_text = header_file.read().decode("utf-8", errors="ignore")
+				status = 0
+				content_type = ""
+				for line in headers_text.splitlines():
+					line = line.strip()
+					if line.lower().startswith("http/"):
+						parts = line.split()
+						if len(parts) >= 2 and parts[1].isdigit():
+							status = int(parts[1])
+					if line.lower().startswith("content-type:"):
+						content_type = line.split(":", 1)[1].strip().lower()
+
+				body_file.seek(0)
+				body = body_file.read()
+				if status >= 400:
+					return None, {"ok": False, "error": f"Provider HTTP {status}"}, 502
+				if not body:
+					return None, {"ok": False, "error": "Provider returned empty body."}, 502
+				if not content_type.startswith("image/"):
+					preview = body[:240].decode("utf-8", errors="ignore")
+					return None, {"ok": False, "error": "Provider returned non-image payload.", "preview": preview}, 502
+
+				return _encode_image(body, content_type)
+		except Exception as exc:
+			return None, {"ok": False, "error": f"curl fallback failed: {str(exc)}"}, 502
+
+	headers = {
+		"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+		"Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+	}
+	try:
+		response = requests.get(url, headers=headers, timeout=timeout)
+		if response.status_code >= 400:
+			if "image.pollinations.ai" in url:
+				return _curl_fetch()
+			return None, {"ok": False, "error": f"Provider HTTP {response.status_code}"}, 502
+
+		content_type = (response.headers.get("Content-Type") or "").lower()
+		body = response.content
+		if not body:
+			return None, {"ok": False, "error": "Provider returned empty body."}, 502
+		if not content_type.startswith("image/"):
+			if "image.pollinations.ai" in url:
+				return _curl_fetch()
+			preview = body[:240].decode("utf-8", errors="ignore")
+			return None, {
+				"ok": False,
+				"error": "Provider returned non-image payload.",
+				"preview": preview,
+			}, 502
+		return _encode_image(body, content_type)
+	except HTTPError as exc:
+		if "image.pollinations.ai" in url:
+			return _curl_fetch()
+		return None, {"ok": False, "error": f"Provider HTTP {exc.code}"}, 502
+	except URLError as exc:
+		if "image.pollinations.ai" in url:
+			return _curl_fetch()
+		return None, {"ok": False, "error": f"Provider network error: {str(exc.reason)}"}, 502
+	except requests.RequestException as exc:
+		if "image.pollinations.ai" in url:
+			return _curl_fetch()
+		return None, {"ok": False, "error": f"Provider request failed: {str(exc)}"}, 502
+	except Exception as exc:
+		if "image.pollinations.ai" in url:
+			return _curl_fetch()
+		return None, {"ok": False, "error": f"Provider request failed: {str(exc)}"}, 502
+
+
+def _pollinations_image(prompt, width, height, seed, model):
+	prompt_text = str(prompt or "character concept").strip()
+	if not prompt_text:
+		return None, {"ok": False, "error": "Prompt is required."}, 400
+	prompt_text = prompt_text.replace("\n", " ").strip()[:260]
+
+	seed_value = int(seed or 0) if str(seed or "").strip() else random.randint(1, 9_999_999)
+	seed_value = abs(seed_value) % 9_999_999
+	if seed_value == 0:
+		seed_value = 1
+	model_value = str(model or "flux").strip().lower() or "flux"
+	last_error_payload = {"ok": False, "error": "Unknown provider error."}
+	last_status = 502
+
+	base_query = {
+		"width": int(width),
+		"height": int(height),
+		"nologo": "true",
+	}
+
+	variants = [
+		{"prompt": prompt_text, "query": {**base_query, "model": model_value, "enhance": "true"}, "with_seed": True},
+		{"prompt": prompt_text, "query": {**base_query, "model": model_value}, "with_seed": True},
+		{"prompt": prompt_text, "query": dict(base_query), "with_seed": True},
+		{"prompt": prompt_text, "query": {**base_query, "model": model_value}, "with_seed": False},
+		{"prompt": prompt_text, "query": dict(base_query), "with_seed": False},
+	]
+
+	for attempt in range(10):
+		for variant in variants:
+			query = dict(variant["query"])
+			if variant.get("with_seed"):
+				query["seed"] = random.randint(1, 9_999_999) if attempt > 0 else seed_value
+			prompt_path = quote(str(variant["prompt"]), safe="")
+			url = f"https://image.pollinations.ai/prompt/{prompt_path}?{urlencode(query)}"
+			data_url, error_payload, status = _fetch_image_data_url(url)
+			if data_url:
+				return data_url, None, 200
+			last_error_payload = error_payload or last_error_payload
+			last_status = status or last_status
+
+	return None, {
+		"ok": False,
+		"error": "All image provider attempts failed.",
+		"details": last_error_payload,
+	}, last_status
+
+
+def _azure_image_size(width, height):
+	width = int(width or 1024)
+	height = int(height or 1024)
+	if width == height:
+		return "1024x1024"
+	if width > height:
+		return "1792x1024"
+	return "1024x1792"
+
+
+def _azure_openai_image(prompt, width, height):
+	endpoint = os.getenv("AZURE_OPENAI_ENDPOINT", "").strip().rstrip("/")
+	api_key = os.getenv("AZURE_OPENAI_API_KEY", "").strip()
+	deployment = os.getenv("AZURE_OPENAI_IMAGE_DEPLOYMENT", "").strip()
+	api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-01").strip() or "2024-02-01"
+
+	if not endpoint or not api_key or not deployment:
+		return None, {"ok": False, "error": "Azure OpenAI image provider not configured."}, 503
+
+	url = (
+		f"{endpoint}/openai/deployments/{deployment}/images/generations"
+		f"?api-version={quote(api_version, safe='')}"
+	)
+	payload = {
+		"prompt": str(prompt or "").strip(),
+		"n": 1,
+		"size": _azure_image_size(width, height),
+	}
+	body = json.dumps(payload).encode("utf-8")
+	request = Request(
+		url,
+		data=body,
+		headers={
+			"Content-Type": "application/json",
+			"api-key": api_key,
+		},
+		method="POST",
+	)
+
+	try:
+		with urlopen(request, timeout=60) as response:
+			raw = response.read().decode("utf-8")
+			parsed = json.loads(raw) if raw else {}
+			items = parsed.get("data") if isinstance(parsed, dict) else None
+			if not items:
+				return None, {"ok": False, "error": "Azure returned empty image payload."}, 502
+
+			item = items[0] if isinstance(items, list) and items else {}
+			b64 = item.get("b64_json") if isinstance(item, dict) else None
+			if b64:
+				return f"data:image/png;base64,{b64}", None, 200
+
+			image_url = item.get("url") if isinstance(item, dict) else None
+			if image_url:
+				return _fetch_image_data_url(str(image_url), timeout=60)
+
+			return None, {"ok": False, "error": "Azure returned unsupported image format."}, 502
+	except HTTPError as exc:
+		message = f"Azure OpenAI HTTP {exc.code}"
+		try:
+			body = exc.read().decode("utf-8")
+			if body:
+				message = f"{message}: {body[:260]}"
+		except Exception:
+			pass
+		return None, {"ok": False, "error": message}, 502
+	except URLError as exc:
+		return None, {"ok": False, "error": f"Azure network error: {str(exc.reason)}"}, 502
+	except Exception as exc:
+		return None, {"ok": False, "error": f"Azure request failed: {str(exc)}"}, 502
+
+
+# ── Prompt enhancement & LLM helpers ─────────────────────────────────────────
+
+_ANIME_STYLE_TAGS = [
+	"anime art style", "hand-drawn animation", "cinematic lighting",
+	"dramatic composition", "vibrant color palette", "highly detailed background",
+	"sharp focus", "expressive character design", "dynamic camera angle", "cel-shaded",
+]
+
+_GENRE_TAGS = {
+	"action": ["intense motion blur", "power aura", "battle-worn environment", "dramatic shadows"],
+	"romance": ["soft warm lighting", "cherry blossoms", "pastel tones", "tender expression"],
+	"horror": ["dark desaturated palette", "eerie shadows", "unsettling composition", "fog"],
+	"fantasy": ["magical particles", "ethereal glow", "mystical atmosphere", "intricate architecture"],
+	"scifi": ["neon lighting", "cyberpunk aesthetic", "holographic displays", "futuristic cityscape"],
+	"slice of life": ["natural lighting", "cozy atmosphere", "everyday setting", "warm color palette"],
+}
+
+
+def _rule_enhance_prompt(prompt, style="anime"):
+	"""Rule-based prompt enhancer — adds anime art-direction terms with no API call required."""
+	text = str(prompt or "").strip()
+	if not text:
+		return text
+	if text.lower().startswith("create an image that matches this description exactly:"):
+		return text[:420]
+	base_tags = ", ".join(_ANIME_STYLE_TAGS[:6])
+	prompt_lower = text.lower()
+	extra = []
+	for genre, tags in _GENRE_TAGS.items():
+		if genre in prompt_lower:
+			extra.extend(tags[:2])
+	suffix = (", " + ", ".join(extra)) if extra else ""
+	return f"{text}, {base_tags}{suffix}, professional anime key art, 8K ultra-high detail"
+
+
+def _llm_chat(messages, max_tokens=512, temperature=0.7):
+	"""Call OpenAI gpt-4o-mini then Anthropic claude-haiku as fallback. Returns text or None."""
+	openai_key = os.getenv("OPENAI_API_KEY", "").strip()
+	if openai_key:
+		try:
+			res = requests.post(
+				"https://api.openai.com/v1/chat/completions",
+				headers={"Authorization": f"Bearer {openai_key}", "Content-Type": "application/json"},
+				json={"model": "gpt-4o-mini", "messages": messages, "max_tokens": max_tokens, "temperature": temperature},
+				timeout=30,
+			)
+			if res.status_code == 200:
+				content = res.json().get("choices", [{}])[0].get("message", {}).get("content", "")
+				if content:
+					return content.strip()
+		except Exception:
+			pass
+
+	anthropic_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+	if anthropic_key:
+		system_msg = ""
+		anthropic_msgs = []
+		for m in messages:
+			role = m.get("role", "user")
+			content = m.get("content", "")
+			if role == "system":
+				system_msg = content
+			else:
+				anthropic_msgs.append({"role": role, "content": content})
+		try:
+			body = {"model": "claude-haiku-20240307", "max_tokens": max_tokens, "messages": anthropic_msgs}
+			if system_msg:
+				body["system"] = system_msg
+			res = requests.post(
+				"https://api.anthropic.com/v1/messages",
+				headers={"x-api-key": anthropic_key, "anthropic-version": "2023-06-01", "Content-Type": "application/json"},
+				json=body,
+				timeout=30,
+			)
+			if res.status_code == 200:
+				blocks = res.json().get("content", [])
+				text = " ".join(b.get("text", "") for b in blocks if b.get("type") == "text").strip()
+				if text:
+					return text
+		except Exception:
+			pass
+
+	return None
+
+
+def _enhance_prompt(raw_prompt, style="anime"):
+	"""Enhance a prompt with art-direction terms via LLM (if configured) or rule-based fallback."""
+	text = str(raw_prompt or "").strip()
+	if not text:
+		return text
+	llm_result = _llm_chat(
+		[
+			{
+				"role": "system",
+				"content": (
+					"You are an expert anime art director and prompt engineer. "
+					"Given a user's animation concept, rewrite it as a rich, specific visual prompt "
+					"for an AI image generator. Include: art style, lighting, composition, "
+					"color palette, mood, and environmental detail. "
+					"Output ONLY the enhanced prompt — no explanation, no preamble. "
+					"Stay under 380 characters."
+				),
+			},
+			{"role": "user", "content": f"Animation concept: {text}"},
+		],
+		max_tokens=200,
+		temperature=0.6,
+	)
+	if llm_result:
+		return llm_result
+	return _rule_enhance_prompt(text, style=style)
+
+
+def _local_svg_image_data_url(prompt, width, height, seed):
+	"""Generate a deterministic local SVG image data URL when providers are unavailable."""
+	w = max(256, min(1792, int(width or 1024)))
+	h = max(256, min(1792, int(height or 1024)))
+	seed_text = f"{prompt}|{seed}|{w}x{h}"
+	seed_hash = abs(hash(seed_text))
+
+	def _hex(v):
+		return f"#{v & 0xFFFFFF:06x}"
+
+	c1 = _hex(seed_hash)
+	c2 = _hex(seed_hash >> 8)
+	c3 = _hex(seed_hash >> 16)
+	text = html.escape(str(prompt or "AI concept").strip()[:96] or "AI concept")
+	x1 = 10 + (seed_hash % 80)
+	x2 = 20 + ((seed_hash >> 7) % 70)
+
+	svg = (
+		f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">' 
+		f'<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+		f'<stop offset="0%" stop-color="{c1}"/><stop offset="55%" stop-color="{c2}"/><stop offset="100%" stop-color="{c3}"/>'
+		f'</linearGradient><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="{(seed_hash % 997) + 1}"/><feColorMatrix type="saturate" values="0.15"/></filter></defs>'
+		f'<rect width="100%" height="100%" fill="url(#g)"/>'
+		f'<rect width="100%" height="100%" opacity="0.16" filter="url(#n)"/>'
+		f'<circle cx="{int(w * x1 / 100)}" cy="{int(h * x2 / 100)}" r="{max(60, int(min(w, h) * 0.18))}" fill="#ffffff" opacity="0.14"/>'
+		f'<text x="50%" y="86%" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="{max(18, int(min(w, h) * 0.03))}" fill="#ffffff" opacity="0.92">{text}</text>'
+		f'</svg>'
+	)
+	encoded = base64.b64encode(svg.encode("utf-8")).decode("ascii")
+	return f"data:image/svg+xml;base64,{encoded}"
+
+
+def _openai_dalle3_image(prompt, width, height):
+	"""Generate an image via OpenAI DALL-E 3. Returns (data_url, error, status)."""
+	api_key = os.getenv("OPENAI_API_KEY", "").strip()
+	if not api_key:
+		return None, {"ok": False, "error": "OPENAI_API_KEY not configured."}, 503
+	w, h = int(width or 1024), int(height or 1024)
+	if w == h:
+		size = "1024x1024"
+	elif w > h:
+		size = "1792x1024"
+	else:
+		size = "1024x1792"
+	try:
+		res = requests.post(
+			"https://api.openai.com/v1/images/generations",
+			headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+			json={"model": "dall-e-3", "prompt": str(prompt)[:4000], "n": 1, "size": size, "quality": "hd", "response_format": "b64_json"},
+			timeout=90,
+		)
+		if res.status_code != 200:
+			return None, {"ok": False, "error": f"DALL-E 3 HTTP {res.status_code}: {res.text[:200]}"}, 502
+		b64 = (res.json().get("data") or [{}])[0].get("b64_json", "")
+		if not b64:
+			return None, {"ok": False, "error": "DALL-E 3 returned no image data."}, 502
+		return f"data:image/png;base64,{b64}", None, 200
+	except Exception as exc:
+		return None, {"ok": False, "error": f"DALL-E 3 request failed: {str(exc)}"}, 502
+
+
+def _stability_sdxl_image(prompt, width, height, seed):
+	"""Generate an image via Stability AI SDXL 1024. Returns (data_url, error, status)."""
+	api_key = os.getenv("STABILITY_API_KEY", "").strip()
+	if not api_key:
+		return None, {"ok": False, "error": "STABILITY_API_KEY not configured."}, 503
+	seed_value = abs(int(seed or 0)) % 4294967295
+	w, h = int(width or 1024), int(height or 1024)
+	aspect_ratio = w / h if h else 1
+	if aspect_ratio > 1.4:
+		sdxl_w, sdxl_h = 1344, 768
+	elif aspect_ratio < 0.75:
+		sdxl_w, sdxl_h = 768, 1344
+	else:
+		sdxl_w, sdxl_h = 1024, 1024
+	try:
+		res = requests.post(
+			"https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image",
+			headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json", "Accept": "application/json"},
+			json={
+				"text_prompts": [{"text": str(prompt)[:2000], "weight": 1.0}],
+				"cfg_scale": 7,
+				"width": sdxl_w,
+				"height": sdxl_h,
+				"steps": 30,
+				"samples": 1,
+				"seed": seed_value,
+				"style_preset": "anime",
+			},
+			timeout=120,
+		)
+		if res.status_code != 200:
+			return None, {"ok": False, "error": f"Stability AI HTTP {res.status_code}: {res.text[:200]}"}, 502
+		artifacts = res.json().get("artifacts", [])
+		if not artifacts:
+			return None, {"ok": False, "error": "Stability AI returned no artifacts."}, 502
+		b64 = artifacts[0].get("base64", "")
+		if not b64:
+			return None, {"ok": False, "error": "Stability AI returned empty image."}, 502
+		return f"data:image/png;base64,{b64}", None, 200
+	except Exception as exc:
+		return None, {"ok": False, "error": f"Stability AI request failed: {str(exc)}"}, 502
+
+
+@csrf_exempt
+def cap_anime_generate_image(request):
+	if request.method not in ["POST", "OPTIONS"]:
+		return HttpResponseNotAllowed(["POST", "OPTIONS"])
+
+	if request.method == "OPTIONS":
+		return JsonResponse({"ok": True}, status=200)
+
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+
+	raw_prompt = str(payload.get("prompt", "")).strip()
+	if not raw_prompt:
+		return JsonResponse({"ok": False, "error": "Prompt is required."}, status=400)
+
+	aspect = str(payload.get("aspect", "16:9"))
+	if aspect == "1:1":
+		width, height = 1024, 1024
+	elif aspect == "9:16":
+		width, height = 720, 1280
+	else:
+		width, height = 1280, 720
+
+	model = str(payload.get("model", "dall-e-3")).strip().lower() or "dall-e-3"
+	seed = payload.get("seed")
+	provider = str(payload.get("provider", "auto")).strip().lower() or "auto"
+
+	# Enhance the prompt with art-direction terms (uses LLM if keys set, otherwise rule-based)
+	prompt = _enhance_prompt(raw_prompt)
+
+	def _store_and_respond(data_url, source):
+		stored = _save_cap_media_data_url(data_url, "image", "png", "cap-image")
+		return JsonResponse(
+			{
+				"ok": True,
+				"source": source,
+				"image": data_url,
+				"imageUrl": stored["url"] if stored else "",
+				"model": model,
+				"width": width,
+				"height": height,
+			},
+			status=200,
+		)
+
+	# 1. DALL-E 3 (OpenAI) — highest quality
+	if provider in ["auto", "dalle3", "openai"]:
+		data_url, error_payload, status = _openai_dalle3_image(prompt, width, height)
+		if data_url:
+			return _store_and_respond(data_url, "dall-e-3")
+		if provider in ["dalle3", "openai"]:
+			return JsonResponse(error_payload or {"ok": False, "error": "DALL-E 3 generation failed."}, status=status or 502)
+
+	# 2. Stable Diffusion XL (Stability AI)
+	if provider in ["auto", "sdxl", "stability"]:
+		data_url, error_payload, status = _stability_sdxl_image(prompt, width, height, seed)
+		if data_url:
+			return _store_and_respond(data_url, "sdxl")
+		if provider in ["sdxl", "stability"]:
+			return JsonResponse(error_payload or {"ok": False, "error": "SDXL generation failed."}, status=status or 502)
+
+	# 3. Azure OpenAI
+	if provider in ["auto", "azure"]:
+		data_url, error_payload, status = _azure_openai_image(prompt, width, height)
+		if data_url:
+			return _store_and_respond(data_url, "azure-openai")
+		if provider == "azure":
+			return JsonResponse(error_payload or {"ok": False, "error": "Azure generation failed."}, status=status or 502)
+
+	# 4. Pollinations — zero-config fallback (flux model)
+	data_url, error_payload, status = _pollinations_image(raw_prompt, width, height, seed, "flux")
+	if data_url:
+		return _store_and_respond(data_url, "pollinations")
+
+	# 5. Local deterministic fallback — guarantees image generation availability.
+	local_data_url = _local_svg_image_data_url(raw_prompt, width, height, seed)
+	if local_data_url:
+		return _store_and_respond(local_data_url, "local-svg")
+
+	return JsonResponse(error_payload or {"ok": False, "error": "All image providers failed."}, status=status or 502)
+
+
+@csrf_exempt
+def cap_anime_generate_video(request):
+	if request.method not in ["POST", "OPTIONS"]:
+		return HttpResponseNotAllowed(["POST", "OPTIONS"])
+
+	if request.method == "OPTIONS":
+		return JsonResponse({"ok": True}, status=200)
+
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+
+	raw_prompt = str(payload.get("prompt", "")).strip()
+	if not raw_prompt:
+		return JsonResponse({"ok": False, "error": "Prompt is required."}, status=400)
+	prompt = _enhance_prompt(raw_prompt)
+
+	aspect = str(payload.get("aspect", "16:9"))
+	duration = max(2, min(120, int(float(payload.get("duration", 8) or 8))))
+	model = str(payload.get("model", "flux")).strip().lower() or "flux"
+	seed = payload.get("seed")
+	provider = str(payload.get("provider", "auto")).strip().lower() or "auto"
+	provider_url = os.getenv("AI_SUITE_VIDEO_URL", "").strip()
+
+	if provider in ["auto", "provider"] and provider_url:
+		provider_payload, status = _post_json(
+			provider_url,
+			{
+				"prompt": prompt,
+				"aspect": aspect,
+				"duration": duration,
+				"model": model,
+				"seed": seed,
+			},
+			timeout=120,
+		)
+		if status < 400 and provider_payload.get("ok"):
+			video_data_url = str(provider_payload.get("videoDataUrl") or "")
+			video_base64 = str(provider_payload.get("videoBase64") or "")
+			video_url = str(provider_payload.get("videoUrl") or "")
+			thumb_data_url = str(provider_payload.get("thumbnailDataUrl") or "")
+
+			stored_video = None
+			if video_data_url:
+				stored_video = _save_cap_media_data_url(video_data_url, "video", "webm", "cap-video")
+			elif video_base64:
+				try:
+					decoded = base64.b64decode(video_base64, validate=True)
+					stored_video = _save_cap_media_bytes(decoded, "video", "webm", "cap-video")
+				except Exception:
+					stored_video = None
+			elif video_url:
+				content, content_type, fetch_error, fetch_status = _fetch_binary(video_url, timeout=120)
+				if content:
+					ext = _mime_extension(content_type, "webm")
+					stored_video = _save_cap_media_bytes(content, "video", ext, "cap-video")
+				elif provider == "provider":
+					return JsonResponse(fetch_error or {"ok": False, "error": "Video fetch failed."}, status=fetch_status or 502)
+
+			if stored_video:
+				stored_thumb = _save_cap_media_data_url(thumb_data_url, "image", "png", "cap-thumb") if thumb_data_url else None
+				return JsonResponse(
+					{
+						"ok": True,
+						"source": "provider",
+						"videoUrl": stored_video["url"],
+						"thumbnailUrl": stored_thumb["url"] if stored_thumb else "",
+						"duration": duration,
+						"model": model,
+					},
+					status=200,
+				)
+
+			if provider == "provider":
+				return JsonResponse({"ok": False, "error": "Video provider response did not contain usable media."}, status=502)
+
+	if provider == "provider":
+		return JsonResponse({"ok": False, "error": "AI_SUITE_VIDEO_URL is not configured."}, status=503)
+
+	image_data_url, image_error, image_status = _pollinations_image(prompt, 1280, 720, seed, model)
+	if not image_data_url:
+		return JsonResponse(
+			image_error or {"ok": False, "error": "Unable to generate base frame for fallback video."},
+			status=image_status or 502,
+		)
+
+	video_asset, video_error, video_status = _create_local_video_from_image_data_url(image_data_url, duration)
+	if not video_asset:
+		return JsonResponse(video_error or {"ok": False, "error": "Fallback video generation failed."}, status=video_status or 502)
+
+	stored_thumb = _save_cap_media_data_url(image_data_url, "image", "png", "cap-thumb")
+	return JsonResponse(
+		{
+			"ok": True,
+			"source": "fallback",
+			"videoUrl": video_asset["url"],
+			"thumbnailUrl": stored_thumb["url"] if stored_thumb else "",
+			"image": image_data_url,
+			"duration": duration,
+			"model": model,
+		},
+		status=200,
+	)
+
+
+def cap_anime_media_file(request, media_group, filename):
+	group = str(media_group or "").strip().lower()
+	if group not in ["images", "videos"]:
+		raise Http404("Media group not found")
+	name = str(filename or "").strip()
+	if not _CAP_MEDIA_NAME_RE.match(name):
+		raise Http404("Media file not found")
+	path = _cap_media_root(group) / name
+	if not path.exists() or not path.is_file():
+		raise Http404("Media file not found")
+	content_type = "video/webm" if group == "videos" and name.lower().endswith(".webm") else None
+	if group == "videos" and name.lower().endswith(".mp4"):
+		content_type = "video/mp4"
+	if group == "images" and name.lower().endswith(".png"):
+		content_type = "image/png"
+	if group == "images" and name.lower().endswith(".jpg"):
+		content_type = "image/jpeg"
+	if group == "images" and name.lower().endswith(".jpeg"):
+		content_type = "image/jpeg"
+	if group == "images" and name.lower().endswith(".webp"):
+		content_type = "image/webp"
+	if group == "images" and name.lower().endswith(".svg"):
+		content_type = "image/svg+xml"
+	response = FileResponse(open(path, "rb"), content_type=content_type)
+	response["Cache-Control"] = "public, max-age=604800"
+	response["X-Content-Type-Options"] = "nosniff"
+	return response
+
+
+# ── AI Script generation ──────────────────────────────────────────────────
+
+_SCRIPT_TEMPLATES = {
+	"action": [
+		"[NARRATOR]: A clash of fates was inevitable.",
+		"{char1}: This ends now!",
+		"{char2}: You think you can stop me?",
+		"{char1}: I've trained my whole life for this moment.",
+		"{char2}: Then show me everything you've got!",
+		"[SCENE: Intense battle begins. Shockwaves crack the earth.]",
+	],
+	"romance": [
+		"[SCENE: Sunset. Golden light. Both characters stand at the edge of a rooftop.]",
+		"{char1}: I never knew how to say this to you.",
+		"{char2}: Say what?",
+		"{char1}: That you're the reason I keep going every single day.",
+		"[BEAT: Silence. Wind stirs their hair.]",
+		"{char2}: I feel exactly the same way.",
+	],
+	"fantasy": [
+		"[NARRATOR]: In a realm where magic flows through all living things…",
+		"{char1}: The prophecy is real. I can feel it in my blood.",
+		"{char2}: Then we face our destiny together.",
+		"{char1}: Are you certain you’re ready for what’s ahead?",
+		"{char2}: I was born ready.",
+		"[SCENE: The ancient gate begins to glow.]",
+	],
+	"horror": [
+		"[NARRATOR]: Something was wrong. They could all feel it.",
+		"{char1}: Did you hear that? Something’s out there.",
+		"{char2}: Don’t open that door.",
+		"{char1}: We have to. There’s no other way out.",
+		"[SOUND: Slow, ominous footsteps grow closer.]",
+		"{char2}: Whatever it is… it’s already inside.",
+	],
+	"scifi": [
+		"[NARRATOR]: Year 2387. The last colony ship on record.",
+		"{char1}: All systems nominal. Warp core charged.",
+		"{char2}: Then get us out of here before the signal dies.",
+		"{char1}: Coordinates locked. Taking us to the edge of the known universe.",
+		"{char2}: Whatever’s out there… we’ll face it together.",
+		"[SCENE: The ship jumps to warp. Stars streak into light.]",
+	],
+	"default": [
+		"[NARRATOR]: The story begins.",
+		"{char1}: Are you ready for this?",
+		"{char2}: I’ve never been more ready in my life.",
+		"[SCENE: The two protagonists set out on their journey.]",
+		"{char1}: No matter what happens, we face it together.",
+		"{char2}: Together.",
+	],
+}
+
+
+def _template_anime_script(prompt, genre, tone, characters):
+	genre_key = str(genre or "default").lower()
+	matched = next((k for k in _SCRIPT_TEMPLATES if k in genre_key or genre_key in k), "default")
+	lines = list(_SCRIPT_TEMPLATES[matched])
+	char_names = [c.strip() for c in str(characters or "").split(",") if c.strip()]
+	char1 = char_names[0] if len(char_names) > 0 else "Protagonist"
+	char2 = char_names[1] if len(char_names) > 1 else "Antagonist"
+	return "\n".join(line.replace("{char1}", char1).replace("{char2}", char2) for line in lines)
+
+
+@csrf_exempt
+def cap_anime_generate_script(request):
+	if request.method not in ["POST", "OPTIONS"]:
+		return HttpResponseNotAllowed(["POST", "OPTIONS"])
+	if request.method == "OPTIONS":
+		return JsonResponse({"ok": True}, status=200)
+	payload, err = _parse_json_body(request)
+	if err:
+		return err
+
+	prompt = str(payload.get("prompt", "")).strip()
+	if not prompt:
+		return JsonResponse({"ok": False, "error": "Prompt is required."}, status=400)
+
+	genre = str(payload.get("genre", "action")).strip().lower() or "action"
+	tone = str(payload.get("tone", "dramatic")).strip().lower() or "dramatic"
+	characters = str(payload.get("characters", "")).strip()
+	scenes = max(1, min(10, int(float(payload.get("scenes", 3) or 3))))
+
+	llm_result = _llm_chat(
+		[
+			{
+				"role": "system",
+				"content": (
+					"You are a professional anime screenwriter. Write a compelling, emotionally resonant anime script. "
+					f"Genre: {genre}. Tone: {tone}. "
+					f"Include {scenes} scene(s). Format each line as either: "
+					"CHARACTER NAME: dialogue text, or [SCENE/ACTION/NARRATOR: description]. "
+					"Characters must speak with authentic emotion and personality. No meta-commentary — just the script."
+				),
+			},
+			{
+				"role": "user",
+				"content": (
+					f"Write an anime script for: {prompt}"
+					+ (f". Main characters: {characters}" if characters else "")
+					+ f". Include {scenes} scene(s)."
+				),
+			},
+		],
+		max_tokens=900,
+		temperature=0.78,
+	)
+	if llm_result:
+		segments = [line.strip() for line in llm_result.split("\n") if line.strip()]
+		return JsonResponse(
+			{"ok": True, "source": "llm", "script": llm_result, "segments": segments, "genre": genre, "tone": tone},
+			status=200,
+		)
+
+	script_text = _template_anime_script(prompt, genre, tone, characters)
+	segments = [line.strip() for line in script_text.split("\n") if line.strip()]
+	return JsonResponse(
+		{"ok": True, "source": "template", "script": script_text, "segments": segments, "genre": genre, "tone": tone},
+		status=200,
+	)
+
+
+def _local_prompt_moderation(prompt, mode="standard", blocked_terms=None):
+	text = str(prompt or "").lower()
+	provided = blocked_terms if isinstance(blocked_terms, list) else []
+	provided = [str(term).strip().lower() for term in provided if str(term).strip()]
+	strict_defaults = ["nudity", "sexual", "explicit", "gore", "violent assault", "hate symbol"]
+	merged = provided + (strict_defaults if str(mode).lower() == "strict" else [])
+	violations = [term for term in merged if term and term in text]
+	return {
+		"ok": True,
+		"allowed": len(violations) == 0,
+		"violations": violations,
+		"mode": str(mode or "standard").lower(),
+		"source": "local",
+	}
+
+
+def _seconds_to_srt_timestamp(value):
+	seconds = max(0.0, float(value or 0))
+	hours = int(seconds // 3600)
+	minutes = int((seconds % 3600) // 60)
+	whole_seconds = int(seconds % 60)
+	millis = int(round((seconds - int(seconds)) * 1000))
+	if millis >= 1000:
+		whole_seconds += 1
+		millis = 0
+	return f"{hours:02}:{minutes:02}:{whole_seconds:02},{millis:03}"
+
+
+def _build_dub_cues(script, duration_seconds):
+	lines = [line.strip() for line in str(script or "").split("\n") if line.strip()]
+	if not lines:
+		return []
+	count = len(lines)
+	segment = max(0.1, float(duration_seconds or 0) / count)
+	cues = []
+	for idx, line in enumerate(lines):
+		start = round(segment * idx, 3)
+		end = round(segment * (idx + 1), 3)
+		cues.append(
+			{
+				"index": idx + 1,
+				"text": line,
+				"start": start,
+				"end": end,
+				"duration": round(end - start, 3),
+			}
+		)
+	return cues
+
+
+def _build_srt_from_cues(cues):
+	rows = []
+	for cue in cues:
+		rows.append(
+			"\n".join(
+				[
+					str(cue.get("index", "")),
+					f"{_seconds_to_srt_timestamp(cue.get('start', 0))} --> {_seconds_to_srt_timestamp(cue.get('end', 0))}",
+					str(cue.get("text", "")),
+				]
+			)
+		)
+	return "\n\n".join(rows)
+
+
+def _load_reviews_cache():
+	reviews = cache.get("ai_suite_reviews_v1")
+	if isinstance(reviews, list):
+		return reviews
+	return []
+
+
+def _save_reviews_cache(reviews):
+	cache.set("ai_suite_reviews_v1", reviews, timeout=60 * 60 * 24 * 14)
+
+
+@csrf_exempt
+def ai_suite_moderate(request):
+	if request.method != "POST":
+		return HttpResponseNotAllowed(["POST"])
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+	prompt = payload.get("prompt")
+	mode = payload.get("mode", "standard")
+	blocked_terms = payload.get("blockedTerms", [])
+
+	provider_url = os.getenv("AI_SUITE_MODERATION_URL", "").strip()
+	if provider_url:
+		provider_payload, status = _post_json(
+			provider_url,
+			{
+				"prompt": prompt,
+				"mode": mode,
+				"blockedTerms": blocked_terms,
+			},
+		)
+		if provider_payload.get("ok"):
+			provider_payload.setdefault("source", "provider")
+			return JsonResponse(provider_payload, status=200)
+		return JsonResponse(provider_payload, status=status)
+
+	return JsonResponse(_local_prompt_moderation(prompt, mode=mode, blocked_terms=blocked_terms), status=200)
+
+
+@csrf_exempt
+def ai_suite_dub_cues(request):
+	if request.method != "POST":
+		return HttpResponseNotAllowed(["POST"])
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+	script = payload.get("script", "")
+	language = str(payload.get("language", "en-US"))
+	duration_seconds = float(payload.get("duration", 24) or 24)
+
+	provider_url = os.getenv("AI_SUITE_DUB_URL", "").strip()
+	if provider_url:
+		provider_payload, status = _post_json(
+			provider_url,
+			{
+				"script": script,
+				"language": language,
+				"duration": duration_seconds,
+			},
+		)
+		if provider_payload.get("ok"):
+			provider_payload.setdefault("source", "provider")
+			return JsonResponse(provider_payload, status=200)
+
+	# Try LLM for natural pacing and per-speaker timing
+	llm_cues_json = _llm_chat(
+		[
+			{
+				"role": "system",
+				"content": (
+					"You are an anime dubbing director. Given a script and total duration in seconds, "
+					"output a JSON array of dub cue objects. Each object must have: "
+					"'start' (float seconds), 'end' (float seconds), 'text' (string, spoken line only), 'speaker' (character name or 'narrator'). "
+					"Skip scene directions ([...]) or convert them to brief pauses. "
+					"Pace dialogue to sound natural with brief gaps between speakers. "
+					f"Total duration: {duration_seconds:.1f}s. Output ONLY the JSON array, no markdown, no explanation."
+				),
+			},
+			{"role": "user", "content": f"Script:\n{script}"},
+		],
+		max_tokens=700,
+		temperature=0.3,
+	)
+	if llm_cues_json:
+		try:
+			json_text = llm_cues_json.strip()
+			if "```" in json_text:
+				parts = json_text.split("```")
+				json_text = parts[1] if len(parts) > 1 else json_text
+				if json_text.startswith("json"):
+					json_text = json_text[4:]
+			llm_cues = json.loads(json_text)
+			if isinstance(llm_cues, list) and llm_cues:
+				return JsonResponse(
+					{"ok": True, "source": "llm", "language": language, "cues": llm_cues, "srt": _build_srt_from_cues(llm_cues)},
+					status=200,
+				)
+		except Exception:
+			pass
+
+	cues = _build_dub_cues(script, duration_seconds)
+	return JsonResponse(
+		{
+			"ok": True,
+			"source": "local",
+			"language": language,
+			"cues": cues,
+			"srt": _build_srt_from_cues(cues),
+		},
+		status=200,
+	)
+
+
+@csrf_exempt
+def ai_suite_soundtrack(request):
+	if request.method != "POST":
+		return HttpResponseNotAllowed(["POST"])
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+	mood = str(payload.get("mood", "intense"))
+	duration_seconds = float(payload.get("duration", 24) or 24)
+
+	provider_url = os.getenv("AI_SUITE_SOUNDTRACK_URL", "").strip()
+	if provider_url:
+		provider_payload, status = _post_json(
+			provider_url,
+			{
+				"mood": mood,
+				"duration": duration_seconds,
+			},
+		)
+		if provider_payload.get("ok"):
+			provider_payload.setdefault("source", "provider")
+			return JsonResponse(provider_payload, status=200)
+		return JsonResponse(provider_payload, status=status)
+
+	return JsonResponse(
+		{
+			"ok": True,
+			"source": "local",
+			"mood": mood,
+			"duration": duration_seconds,
+			"note": "No AI_SUITE_SOUNDTRACK_URL configured. Use client fallback synth or configure provider.",
+		},
+		status=200,
+	)
+
+
+@csrf_exempt
+def ai_suite_review_submit(request):
+	if request.method != "POST":
+		return HttpResponseNotAllowed(["POST"])
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+
+	review = {
+		"id": str(uuid4()),
+		"workspace": str(payload.get("workspace", "default")),
+		"notes": str(payload.get("notes", ""))[:800],
+		"license": str(payload.get("license", "commercial")),
+		"approved": False,
+		"createdAt": timezone.now().isoformat(),
+	}
+	reviews = _load_reviews_cache()
+	reviews.append(review)
+	_save_reviews_cache(reviews)
+	return JsonResponse({"ok": True, "review": review, "count": len(reviews)}, status=200)
+
+
+@csrf_exempt
+def ai_suite_review_approve(request):
+	if request.method != "POST":
+		return HttpResponseNotAllowed(["POST"])
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+	target_id = str(payload.get("id", "")).strip()
+	reviews = _load_reviews_cache()
+	if not reviews:
+		return JsonResponse({"ok": False, "error": "No submitted reviews found."}, status=404)
+
+	approved = None
+	if target_id:
+		for index, item in enumerate(reviews):
+			if str(item.get("id", "")) == target_id:
+				reviews[index]["approved"] = True
+				reviews[index]["approvedAt"] = timezone.now().isoformat()
+				approved = reviews[index]
+				break
+		if not approved:
+			return JsonResponse({"ok": False, "error": "Review not found."}, status=404)
+	else:
+		reviews[-1]["approved"] = True
+		reviews[-1]["approvedAt"] = timezone.now().isoformat()
+		approved = reviews[-1]
+
+	_save_reviews_cache(reviews)
+	return JsonResponse({"ok": True, "review": approved}, status=200)
+
+
+@csrf_exempt
+def ai_suite_webhook_test(request):
+	if request.method != "POST":
+		return HttpResponseNotAllowed(["POST"])
+	payload, error = _parse_json_body(request)
+	if error:
+		return error
+
+	url = str(payload.get("url", "")).strip() or os.getenv("AI_SUITE_WEBHOOK_URL", "").strip()
+	if not url:
+		return JsonResponse({"ok": False, "error": "Webhook URL missing."}, status=400)
+
+	body = {
+		"event": payload.get("event", "test"),
+		"at": timezone.now().isoformat(),
+		"payload": payload.get("payload", {}),
+	}
+	result, status = _post_json(url, body)
+	if status >= 400:
+		return JsonResponse(result, status=status)
+	return JsonResponse({"ok": True, "target": url, "response": result}, status=200)
 
 
 @csrf_exempt

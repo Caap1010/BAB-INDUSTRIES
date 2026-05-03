@@ -70,6 +70,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Persist generated CAP Anime Studio image/video assets so recents survive browser sessions.
+CAP_ANIME_MEDIA_ROOT = BASE_DIR / "generated_media" / "cap_anime"
+
 # Provider integration hooks for voucher catalog fulfillment.
 # Keys are lowercase provider slugs, for example: betway, hollywoodbets, mtn.
 VOUCHER_PROVIDER_ENDPOINTS = {
