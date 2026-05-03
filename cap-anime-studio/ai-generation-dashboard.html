@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Generation Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/ai-flow.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="ai-dashboard-page">
+  <div class="ai-dash-wrap">
+    <div class="ai-dash-top">
+      <a class="ai-dash-back" href="index.html#ai-generator">← Back to Prompt</a>
+      <div id="dashModeBadge" class="ai-dash-status">Mode: image</div>
+    </div>
+
+    <div class="ai-dash-grid">
+      <div>
+        <div class="ai-dash-preview" id="dashPreviewWrap">
+          <canvas id="dashImageCanvas" width="1280" height="720"></canvas>
+          <video id="dashVideoPreview" controls playsinline hidden></video>
+        </div>
+        <div class="ai-dash-recent" id="dashRecent"></div>
+      </div>
+
+      <div class="ai-dash-panel">
+        <label class="ai-dash-label" for="dashPrompt">Prompt</label>
+        <textarea id="dashPrompt" rows="5"></textarea>
+
+        <label class="ai-dash-label" for="dashPriority">Priority</label>
+        <select id="dashPriority">
+          <option value="fast">Fast</option>
+          <option value="balanced" selected>Balanced</option>
+          <option value="quality">Quality</option>
+        </select>
+
+        <label class="ai-dash-label">Aspect Ratio</label>
+        <div class="ai-dash-aspect" id="dashAspectGroup">
+          <div class="ai-dash-chip" data-aspect="9:16">9:16</div>
+          <div class="ai-dash-chip active" data-aspect="16:9">16:9</div>
+          <div class="ai-dash-chip" data-aspect="1:1">1:1</div>
+        </div>
+
+        <label class="ai-dash-label" for="dashDuration">Duration (Video)</label>
+        <input id="dashDuration" type="number" min="2" max="120" value="8" />
+
+        <div class="ai-dash-actions">
+          <button id="dashGenerate" class="ai-dash-btn-primary">Generate</button>
+          <button id="dashDownload" class="ai-dash-btn-outline">Download</button>
+        </div>
+        <div id="dashStatus" class="ai-dash-status">Ready.</div>
+        <div class="ai-dash-status">Recent generated (images and videos) appears below the preview.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="aiToastRegion" class="ai-toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="js/ai-generation-dashboard.js"></script>
+</body>
+</html>

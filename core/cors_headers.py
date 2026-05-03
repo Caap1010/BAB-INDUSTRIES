@@ -15,6 +15,7 @@ class MarketApiCorsHeadersMiddleware(MiddlewareMixin):
     ALLOWED_PATH_PREFIXES = (
         "/api/market/",
         "/api/vouchers/",
+        "/api/cap-anime/",
     )
 
     def _should_apply(self, path):
