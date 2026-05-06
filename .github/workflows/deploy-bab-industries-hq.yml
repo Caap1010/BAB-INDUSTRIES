@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - bab-industries-hq/**
-      - .github/workflows/deploy-bab-industries-hq.yml
   workflow_dispatch:
 
 permissions:
