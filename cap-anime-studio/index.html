@@ -13,6 +13,8 @@
 
 <body>
 
+  <a href="#mainContent" class="skip-link">Skip to content</a>
+
   <!-- ===== TOP HEADER ===== -->
   <header class="top-header">
     <div class="header-inner">
@@ -26,9 +28,9 @@
 
       <div class="header-right">
         <span class="header-badge">SEASON 1 — NOW AIRING</span>
-        <button class="btn-primary">Watch Now</button>
+        <a href="#seasons" class="btn-primary nav-link" data-section="seasons">Watch Now</a>
         <button id="btnThemeToggle" class="sidebar-toggle-btn" aria-label="Toggle dark/light theme" title="Theme">🌙</button>
-        <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar">☰</button>
+        <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar" aria-controls="sidebar" aria-expanded="false">☰</button>
       </div>
     </div>
   </header>
@@ -128,7 +130,7 @@
     </aside>
 
     <!-- ===== MAIN CONTENT ===== -->
-    <main class="main-content">
+    <main id="mainContent" class="main-content" tabindex="-1">
 
       <!-- HERO SECTION -->
       <section id="home" class="hero-section content-section active">
@@ -1538,77 +1540,77 @@
           <canvas id="galacticMapCanvas"></canvas>
 
           <!-- Realm labels rendered over canvas -->
-          <div class="gmap-labels" id="gmapLabels">
-            <div class="gmap-label" style="left:50%;top:8%;">
+          <div class="gmap-labels interactive" id="gmapLabels">
+            <a href="#realm-astral-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-astral-dashboard" style="left:50%;top:8%;">
               <span class="gmap-label-sigil">⚜</span>
               <span class="gmap-label-name">Astral Nexus</span>
               <span class="gmap-label-sub">Divine Realm</span>
-            </div>
-            <div class="gmap-label" style="left:78%;top:16%;">
+            </a>
+            <a href="#realm-dragon-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-dragon-dashboard" style="left:78%;top:16%;">
               <span class="gmap-label-sigil">🐉</span>
               <span class="gmap-label-name">Dragon Realm</span>
               <span class="gmap-label-sub">Ancient Sky</span>
-            </div>
-            <div class="gmap-label" style="left:88%;top:38%;">
+            </a>
+            <a href="#realm-dreamscape-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-dreamscape-dashboard" style="left:88%;top:38%;">
               <span class="gmap-label-sigil">☽</span>
               <span class="gmap-label-name">Dreamscape Realm</span>
               <span class="gmap-label-sub">Ethereal</span>
-            </div>
-            <div class="gmap-label" style="left:76%;top:58%;">
+            </a>
+            <a href="#realm-earth-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-earth-dashboard" style="left:76%;top:58%;">
               <span class="gmap-label-sigil">🌍</span>
               <span class="gmap-label-name">Earth Realm</span>
               <span class="gmap-label-sub">Mortal Lands</span>
-            </div>
-            <div class="gmap-label" style="left:54%;top:78%;">
+            </a>
+            <a href="#realm-oblivion-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-oblivion-dashboard" style="left:54%;top:78%;">
               <span class="gmap-label-sigil">🌀</span>
               <span class="gmap-label-name">Oblivion Rift</span>
               <span class="gmap-label-sub">Chaos Zone</span>
-            </div>
-            <div class="gmap-label" style="left:28%;top:72%;">
+            </a>
+            <a href="#realm-phoenix-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-phoenix-dashboard" style="left:28%;top:72%;">
               <span class="gmap-label-sigil">🔥</span>
               <span class="gmap-label-name">Phoenix Realm</span>
               <span class="gmap-label-sub">Rebirth</span>
-            </div>
-            <div class="gmap-label" style="left:12%;top:58%;">
+            </a>
+            <a href="#realm-temple-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-temple-dashboard" style="left:12%;top:58%;">
               <span class="gmap-label-sigil">🗿</span>
               <span class="gmap-label-name">Temple of Shadows</span>
               <span class="gmap-label-sub">Dark Sanctum</span>
-            </div>
-            <div class="gmap-label" style="left:6%;top:32%;">
+            </a>
+            <a href="#realm-titan-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-titan-dashboard" style="left:6%;top:32%;">
               <span class="gmap-label-sigil">⚔</span>
               <span class="gmap-label-name">Titan Realm</span>
               <span class="gmap-label-sub">Colossal</span>
-            </div>
-            <div class="gmap-label" style="left:18%;top:10%;">
+            </a>
+            <a href="#realm-void-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-void-dashboard" style="left:18%;top:10%;">
               <span class="gmap-label-sigil">✦</span>
               <span class="gmap-label-name">Void Territories</span>
               <span class="gmap-label-sub">The Abyss</span>
-            </div>
-            <div class="gmap-label" style="left:44%;top:50%;">
+            </a>
+            <a href="#realm-nexus-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-nexus-dashboard" style="left:44%;top:50%;">
               <span class="gmap-label-sigil">⬡</span>
               <span class="gmap-label-name">Nexus Core</span>
               <span class="gmap-label-sub">Convergence</span>
-            </div>
-            <div class="gmap-label" style="left:36%;top:24%;">
+            </a>
+            <a href="#realm-yatha-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-yatha-dashboard" style="left:36%;top:24%;">
               <span class="gmap-label-sigil">✧</span>
               <span class="gmap-label-name">Yatha Realm</span>
               <span class="gmap-label-sub">Mystical</span>
-            </div>
-            <div class="gmap-label" style="left:62%;top:28%;">
+            </a>
+            <a href="#realm-infernal-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-infernal-dashboard" style="left:62%;top:28%;">
               <span class="gmap-label-sigil">🔱</span>
               <span class="gmap-label-name">Infernal Dominion</span>
               <span class="gmap-label-sub">Hellfire</span>
-            </div>
-            <div class="gmap-label" style="left:68%;top:68%;">
+            </a>
+            <a href="#realm-leviathan-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-leviathan-dashboard" style="left:68%;top:68%;">
               <span class="gmap-label-sigil">🌊</span>
               <span class="gmap-label-name">Leviathan Abyss</span>
               <span class="gmap-label-sub">Deep Waters</span>
-            </div>
-            <div class="gmap-label" style="left:32%;top:56%;">
+            </a>
+            <a href="#realm-monkey-dashboard" class="gmap-label gmap-label-link nav-link" data-section="realm-monkey-dashboard" style="left:32%;top:56%;">
               <span class="gmap-label-sigil">🐵</span>
-              <span class="gmap-label-name">Monkey Realm</span>
+              <span class="gmap-label-name">Forsaken Kingdom Realm</span>
               <span class="gmap-label-sub">Wild Jungles</span>
-            </div>
+            </a>
           </div>
 
           <!-- Floating runes -->
@@ -2829,6 +2831,69 @@ Hero render of [weapon], forged from divine energy + alien technology + forbidde
           'realm-monkey-dashboard': { strength: 'Adaptive Medium', total: '350,000', active: '210,000', reserves: '140,000', capital: '82,000', city: '24,000', town: '10,000' }
         };
 
+        var realmAffiliationData = {
+          'realm-astral-dashboard': {
+            families: ['Convergence High Seat', 'Somnium Sovereigns'],
+            factions: ['Royal Astral Court', 'Astral Senate Network', 'Sentinel Wardens']
+          },
+          'realm-dragon-dashboard': {
+            families: ['Raido Royal House', 'Dragon Celestial Bloodline', 'Raido Dragon Royal House', 'Elena Dragon Maternal Branch'],
+            factions: ['Dragon Royal Family', 'Imperial Legion Prefectures', 'Rift Ward Clans', 'Embers of Dominion']
+          },
+          'realm-dreamscape-dashboard': {
+            families: ['Somnium Sovereigns'],
+            factions: ['Somnium Sovereign Court', 'Mind-Weaver Houses', 'Dream Ward Circles']
+          },
+          'realm-earth-dashboard': {
+            families: ['Earth Anchor Covenant Line', 'Church and Anchor Crown Line', 'Infernal Jensen Record'],
+            factions: ['Anchor Custodian Court', 'Church Defense Command', 'Khoisan Guardian Tribes']
+          },
+          'realm-oblivion-dashboard': {
+            families: ['Rift Claimants', 'Rift Rogue Register'],
+            factions: ['Rift Regent Court', 'Chrono Sentinel Bureaus', 'Fracture Miner Syndicates', 'Oblivion Behemoths']
+          },
+          'realm-phoenix-dashboard': {
+            families: ['Phoenix Ember Line', 'Phoenix Ember Dynasty'],
+            factions: ['Phoenix Royal Court', 'Ember Guild Consortium', 'Caldera Ward Clans', 'Phoenix Family']
+          },
+          'realm-temple-dashboard': {
+            families: ['Shadow Custodians', 'Forsaken Nightline Houses'],
+            factions: ['Shadow Custodian Monastery', 'Silent Tribunal Orders', 'Acolyte Processions', 'Silent Blades of Ruin']
+          },
+          'realm-titan-dashboard': {
+            families: ['Titan Graveline', 'Titan Graveline House'],
+            factions: ['Titan High Throne', 'Forge Council Assemblies', 'Ore Convoy Houses', 'Titan Family']
+          },
+          'realm-void-dashboard': {
+            families: ['Busiris Bloodline', 'Busiris Origin Chain', 'Busiris War-Origin Dynasty'],
+            factions: ['Busiris Dominion Court', 'Entropy Legions', 'Ruin Broker Clans', 'Void Swarm', 'Abyssal Horde', 'Chaos Harbingers']
+          },
+          'realm-nexus-dashboard': {
+            families: ['Convergence High Seat', 'Calton Forgeblood Registry', 'Rift Rogue Register'],
+            factions: ['Convergence High Seat', 'Transit Authority Guilds', 'Tribunal Civic Leagues', 'Calton Bloodline']
+          },
+          'realm-yatha-dashboard': {
+            families: ['Yatha Dragon Throne', 'Thong War Line', 'Raido Dragon Royal House'],
+            factions: ['Yatha Dragon Throne', 'Legion Command Houses', 'River March Wardens', 'Angels of Death Legion', 'Fallen Legion (10 Fingers of Death)']
+          },
+          'realm-infernal-dashboard': {
+            families: ['Morningstar Line', 'Lucifer Morningstar Lineage', 'Infernal Jensen Record'],
+            factions: ['Lucifer Court Regime', 'Infernal War Bureaus', 'Fuel and Pact Syndicates', 'Lucifer\'s Order']
+          },
+          'realm-leviathan-dashboard': {
+            families: ['Leviathan Royal Basin', 'Leviathan Trench Sovereigns'],
+            factions: ['Leviathan Royal Basin', 'Lock Warden Fleet', 'Tide Guild Houses', 'Leviathan Family']
+          },
+          'realm-monkey-dashboard': {
+            families: ['Forsaken Nightline', 'Forsaken-Monkey Crown Line', 'Forsaken Nightline Houses'],
+            factions: ['Forsaken Throne Court', 'Sanctuary Ward Cohorts', 'Root and Canopy Clans', 'Forsaken Kingdom', 'Monkey Kingdom', 'Paths of Chaos', 'Bloodfang Clan']
+          }
+        };
+
+        function joinAssoc(list) {
+          return (list && list.length) ? list.join(', ') : 'No recorded affiliations yet.';
+        }
+
         function metricBadges(metrics) {
           return '<div class="realm-metric-row">' +
             '<span class="metric-badge knowledge">Knowledge ' + metrics.knowledge + '</span>' +
@@ -3192,6 +3257,7 @@ Hero render of [weapon], forged from divine energy + alien technology + forbidde
           dossier.className = 'realm-dossier';
           var realmMetrics = getPlaceMetrics(sectionId, { capital: true, type: 'Main Kingdom' });
           var realmArmy = realmArmyData[sectionId] || { strength: 'Medium', total: '300,000', active: '180,000', reserves: '120,000', capital: '70,000', city: '24,000', town: '10,000' };
+          var assoc = realmAffiliationData[sectionId] || { families: [], factions: [] };
           dossier.innerHTML =
             '<h4>Realm Dossier</h4>' +
             metricBadges(realmMetrics) +
@@ -3204,7 +3270,9 @@ Hero render of [weapon], forged from divine energy + alien technology + forbidde
             '<p><strong>Strengths:</strong> ' + lore.strengths + '</p>' +
             '<p><strong>Weaknesses:</strong> ' + lore.weaknesses + '</p>' +
             '<p><strong>People Profile:</strong> ' + lore.people + '</p>' +
-            '<p><strong>Faction Distribution:</strong> Capital - ' + lore.capitalFaction + '; Cities - ' + lore.cityFaction + '; Towns - ' + lore.townFaction + '.</p>';
+            '<p><strong>Faction Distribution:</strong> Capital - ' + lore.capitalFaction + '; Cities - ' + lore.cityFaction + '; Towns - ' + lore.townFaction + '.</p>' +
+            '<p><strong>Associated Families:</strong> ' + joinAssoc(assoc.families) + '</p>' +
+            '<p><strong>Associated Factions:</strong> ' + joinAssoc(assoc.factions) + '</p>';
 
           var infoPanel = document.createElement('div');
           infoPanel.className = 'realm-city-info';
@@ -4018,13 +4086,949 @@ Hero render of [weapon], forged from divine energy + alien technology + forbidde
             <p>Next-generation heir registry — who holds succession rights, who is hidden, missing, or at risk across every crown.</p>
             <span class="geo-card-meta">Succession Registry</span>
           </a>
+          <a href="#families-realm-map" class="info-card accent-border nav-link dashboard-link geo-dashboard-link" data-section="families-realm-map">
+            <h4>🗺️ Realm Power Map</h4>
+            <p>Interactive realm map showing family and faction influence circles, territorial power zones, and cross-realm holdings across all 14 realms.</p>
+            <span class="geo-card-meta">Influence Atlas</span>
+          </a>
         </div>
       </section>
+
+      <!-- ===== FAMILIES REALM POWER MAP ===== -->
+      <section id="families-realm-map" class="content-section">
+        <p class="eyebrow">Families &amp; Factions Dashboard</p>
+        <h2 class="section-title">Realm Power Map</h2>
+        <p class="section-sub">Click any realm to reveal all families, factions, and influence circles active within it. Coloured halos show primary territory; dashed rings mark cross-realm power.</p>
+
+        <!-- Legend -->
+        <div class="gmap-legend frm-legend">
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8;"></span>Prime Ruling Family</span>
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7;"></span>Allied House</span>
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#ef4444;box-shadow:0 0 8px #ef4444;"></span>Rival / Hostile Faction</span>
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#10b981;box-shadow:0 0 8px #10b981;"></span>Neutral Presence</span>
+          <span class="gmap-legend-item">
+            <svg width="28" height="8" viewBox="0 0 28 8" style="margin-right:4px;vertical-align:middle;">
+              <line x1="0" y1="4" x2="28" y2="4" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+            </svg>Cross-Realm Influence
+          </span>
+        </div>
+
+        <!-- Filter chips -->
+        <div class="frm-filter-bar" id="frmFilterBar">
+          <button class="frm-chip active" data-filter="all">All</button>
+          <button class="frm-chip" data-filter="prime">Prime Bloodlines</button>
+          <button class="frm-chip" data-filter="factions">Factions</button>
+          <button class="frm-chip" data-filter="cross">Cross-Realm Only</button>
+        </div>
+
+        <!-- Layout: map + panel -->
+        <div class="frm-layout" id="frmLayout">
+
+          <!-- Map zone -->
+          <div class="frm-map-outer" id="frmMapOuter">
+            <div class="gmap-container frm-map-shell" id="frmMapWrap">
+              <canvas id="frmCanvas"></canvas>
+
+              <!-- Realm clickable labels (HTML overlay) -->
+              <div class="frm-realm-labels" id="frmRealmLabels">
+                <button class="frm-realm-btn" data-realm="0"  style="left:50%;top:8%;">  <span class="frm-realm-sigil">⚜</span>  <span class="frm-realm-name">Astral Nexus</span></button>
+                <button class="frm-realm-btn" data-realm="1"  style="left:78%;top:16%;"> <span class="frm-realm-sigil">🐉</span>  <span class="frm-realm-name">Dragon Realm</span></button>
+                <button class="frm-realm-btn" data-realm="2"  style="left:88%;top:38%;"> <span class="frm-realm-sigil">☽</span>   <span class="frm-realm-name">Dreamscape</span></button>
+                <button class="frm-realm-btn" data-realm="3"  style="left:76%;top:58%;"> <span class="frm-realm-sigil">🌍</span>  <span class="frm-realm-name">Earth Realm</span></button>
+                <button class="frm-realm-btn" data-realm="4"  style="left:54%;top:78%;"> <span class="frm-realm-sigil">🌀</span>  <span class="frm-realm-name">Oblivion Rift</span></button>
+                <button class="frm-realm-btn" data-realm="5"  style="left:28%;top:72%;"> <span class="frm-realm-sigil">🔥</span>  <span class="frm-realm-name">Phoenix Realm</span></button>
+                <button class="frm-realm-btn" data-realm="6"  style="left:12%;top:58%;"> <span class="frm-realm-sigil">🗿</span>  <span class="frm-realm-name">Temple of Shadows</span></button>
+                <button class="frm-realm-btn" data-realm="7"  style="left:6%;top:32%;">  <span class="frm-realm-sigil">⚔</span>   <span class="frm-realm-name">Titan Realm</span></button>
+                <button class="frm-realm-btn" data-realm="8"  style="left:18%;top:10%;"> <span class="frm-realm-sigil">☠</span>   <span class="frm-realm-name">Void Territories</span></button>
+                <button class="frm-realm-btn" data-realm="9"  style="left:44%;top:50%;"> <span class="frm-realm-sigil">⬡</span>   <span class="frm-realm-name">Nexus Core</span></button>
+                <button class="frm-realm-btn" data-realm="10" style="left:36%;top:24%;"> <span class="frm-realm-sigil">✧</span>   <span class="frm-realm-name">Yatha Realm</span></button>
+                <button class="frm-realm-btn" data-realm="11" style="left:62%;top:28%;"> <span class="frm-realm-sigil">🔱</span>  <span class="frm-realm-name">Infernal Dominion</span></button>
+                <button class="frm-realm-btn" data-realm="12" style="left:68%;top:68%;"> <span class="frm-realm-sigil">🌊</span>  <span class="frm-realm-name">Leviathan Abyss</span></button>
+                <button class="frm-realm-btn" data-realm="13" style="left:32%;top:56%;"> <span class="frm-realm-sigil">🐵</span>  <span class="frm-realm-name">Forsaken Kingdom</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detail panel -->
+          <div class="frm-detail-panel" id="frmDetailPanel" aria-live="polite">
+            <div class="frm-detail-inner" id="frmDetailInner">
+              <div class="frm-detail-placeholder">
+                <span class="frm-placeholder-icon">🗺️</span>
+                <p>Click any realm on the map to view its ruling families, active factions, and influence circles.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:2rem;">
+          <a href="#families" class="btn-outline nav-link" data-section="families">Back to Families Hub</a>
+        </div>
+
+        <script>
+        (function () {
+          /* ============================================================
+             REALM / FAMILY / FACTION DATA
+          ============================================================ */
+          var REALMS = [
+            {
+              id: 0, sigil: '⚜', name: 'Astral Nexus', color: '#38bdf8',
+              cx: 0.50, cy: 0.08, r: 0.09,
+              family: 'Raido Royal House',
+              familyType: 'prime',
+              familyDesc: 'The supreme ruling bloodline. Commands cross-realm royal authority from the Astral Throne. First seated by King Raido the Eternal.',
+              faction: 'Dragon Royal Family',
+              factionType: 'prime',
+              factionDesc: 'Supreme military-royal bloc. Enforces cosmic crown law across all allied realms.',
+              influence: 0.20,
+              alliances: [9, 10, 1],
+              rivals: [8, 11],
+              crossRealmFamilies: [
+                { from: 9, name: 'Convergence High Seat', type: 'allied', note: 'Diplomatic presence at the Astral summit' },
+                { from: 1,  name: 'Sunforge Crownline',    type: 'allied', note: 'Trade and military agreement delegates' },
+              ],
+              crossRealmFactions: [
+                { from: 10, name: 'Legion Command Houses', type: 'ally', note: 'Joint martial patrols along astral borders' },
+              ]
+            },
+            {
+              id: 1, sigil: '🐉', name: 'Dragon Realm', color: '#f59e0b',
+              cx: 0.78, cy: 0.16, r: 0.07,
+              family: 'Sunforge Crownline',
+              familyType: 'prime',
+              familyDesc: 'Warrior emperors of the Dragon Realm. Known for unbroken military lineage forged in Dragon Fire Trials.',
+              faction: 'Imperial Legion Prefectures',
+              factionType: 'prime',
+              factionDesc: 'Seven territorial legion prefectures loyal to the Sunforge throne. Controls the eastern corridor.',
+              influence: 0.17,
+              alliances: [0, 10, 11],
+              rivals: [4, 8],
+              crossRealmFamilies: [
+                { from: 0,  name: 'Raido Royal House',     type: 'allied', note: 'Crown summit representation' },
+                { from: 11, name: 'Morningstar Line',      type: 'rival',  note: 'Border conflict along the eastern fire lanes' },
+              ],
+              crossRealmFactions: [
+                { from: 11, name: 'Lucifer Court Regime',  type: 'rival',  note: 'Competing claim to outer dragon territories' },
+              ]
+            },
+            {
+              id: 2, sigil: '☽', name: 'Dreamscape Realm', color: '#a855f7',
+              cx: 0.88, cy: 0.38, r: 0.08,
+              family: 'Somnium Sovereigns',
+              familyType: 'prime',
+              familyDesc: 'Dream-born rulers who govern through mind-craft, prophetic decrees, and sleep-world tribunals.',
+              faction: 'Mind-Weaver Houses',
+              factionType: 'prime',
+              factionDesc: 'Seven aristocratic houses that hold psychic dominion over entire districts. Allegiance is bound through dream-pacts.',
+              influence: 0.18,
+              alliances: [10, 9, 11],
+              rivals: [8, 4],
+              crossRealmFamilies: [
+                { from: 11, name: 'Morningstar Line',      type: 'rival',  note: 'Competing influence over subconscious territories' },
+              ],
+              crossRealmFactions: [
+                { from: 9,  name: 'Transit Authority Guilds', type: 'allied', note: 'Passage rights through the dreamscape corridor' },
+              ]
+            },
+            {
+              id: 3, sigil: '🌍', name: 'Earth Realm', color: '#10b981',
+              cx: 0.76, cy: 0.58, r: 0.08,
+              family: 'Anchor Custodians',
+              familyType: 'prime',
+              familyDesc: "Stewards of the living land. Sworn to protect the Earth Realm's natural order against all conquest.",
+              faction: 'Church Defense Command',
+              factionType: 'prime',
+              factionDesc: 'A combined faith-military institution overseeing the defenses of Earth Realm shrines and settlements.',
+              influence: 0.18,
+              alliances: [5, 6, 9],
+              rivals: [11, 4],
+              crossRealmFamilies: [
+                { from: 5,  name: 'Phoenix Ember Line',    type: 'allied', note: 'Joint preservation oath since the Third Burning' },
+                { from: 12, name: 'Leviathan Royal Basin', type: 'neutral', note: 'Coastal boundary agreements' },
+              ],
+              crossRealmFactions: [
+                { from: 6,  name: 'Silent Tribunal Orders', type: 'allied', note: 'Shadow defense auxiliaries' },
+              ]
+            },
+            {
+              id: 4, sigil: '🌀', name: 'Oblivion Rift', color: '#1f2937',
+              cx: 0.54, cy: 0.78, r: 0.08,
+              family: 'Rift Claimants',
+              familyType: 'prime',
+              familyDesc: 'Fractured bloodline that emerged after the Rift Collapse. Holds power through time-lock mechanisms rather than traditional rule.',
+              faction: 'Chrono Sentinel Bureaus',
+              factionType: 'prime',
+              factionDesc: 'Temporal enforcement bureaus that patrol the time-fault lines of the Oblivion Rift.',
+              influence: 0.17,
+              alliances: [8, 12],
+              rivals: [0, 9, 3],
+              crossRealmFamilies: [
+                { from: 8,  name: 'Busiris Bloodline',     type: 'allied', note: 'Entropy-Rift mutual non-aggression pact' },
+                { from: 12, name: 'Leviathan Royal Basin',  type: 'neutral', note: 'Boundary sharing along the tidal rift' },
+              ],
+              crossRealmFactions: [
+                { from: 11, name: 'Lucifer Court Regime',  type: 'rival',  note: 'Infernal annexation petition contested by Rift Claimants' },
+              ]
+            },
+            {
+              id: 5, sigil: '🔥', name: 'Phoenix Realm', color: '#ef4444',
+              cx: 0.28, cy: 0.72, r: 0.08,
+              family: 'Phoenix Ember Line',
+              familyType: 'prime',
+              familyDesc: 'Resurgent dynasty that rises from destruction. The Ember Line has died and been reborn three times across recorded history.',
+              faction: 'Ember Guild Consortium',
+              factionType: 'prime',
+              factionDesc: 'Merchant-military consortiums that control Phoenix Realm trade and fire-forge industries.',
+              influence: 0.18,
+              alliances: [3, 6, 13],
+              rivals: [11, 8],
+              crossRealmFamilies: [
+                { from: 3,  name: 'Anchor Custodians',     type: 'allied', note: 'Preservation Accord since the Third Burning' },
+                { from: 13, name: 'Forsaken Nightline',    type: 'neutral', note: 'Refugee shelter treaties' },
+              ],
+              crossRealmFactions: [
+                { from: 7,  name: 'Forge Council Assemblies', type: 'allied', note: 'Weapon-craft exchange alliance' },
+              ]
+            },
+            {
+              id: 6, sigil: '🗿', name: 'Temple of Shadows', color: '#7c3aed',
+              cx: 0.12, cy: 0.58, r: 0.07,
+              family: 'Shadow Custodians',
+              familyType: 'prime',
+              familyDesc: 'Ancient guardian bloodline installed before recorded time. Bound to the temple grounds through soul-covenant.',
+              faction: 'Silent Tribunal Orders',
+              factionType: 'prime',
+              factionDesc: 'Secretive judicial fraternities operating within the Temple. Render binding verdicts through silent consensus.',
+              influence: 0.16,
+              alliances: [7, 3, 13],
+              rivals: [8, 11],
+              crossRealmFamilies: [
+                { from: 7,  name: 'Titan Graveline',       type: 'allied', note: 'Forge–Temple mutual defense compact' },
+                { from: 3,  name: 'Anchor Custodians',     type: 'allied', note: 'Shared oath custodian lineage' },
+              ],
+              crossRealmFactions: [
+                { from: 8,  name: 'Entropy Legions',       type: 'rival',  note: 'Constant incursions along the shadow perimeter' },
+              ]
+            },
+            {
+              id: 7, sigil: '⚔', name: 'Titan Realm', color: '#d4af37',
+              cx: 0.06, cy: 0.32, r: 0.07,
+              family: 'Titan Graveline',
+              familyType: 'prime',
+              familyDesc: 'Iron-blooded warrior dynasty built on conquest, forge-honour, and siege lineage. Masters of heavy war doctrine.',
+              faction: 'Forge Council Assemblies',
+              factionType: 'prime',
+              factionDesc: 'Industrial-military councils running the great forges, armament halls, and siege weapon yards of the Titan Realm.',
+              influence: 0.16,
+              alliances: [6, 8, 5],
+              rivals: [11, 4],
+              crossRealmFamilies: [
+                { from: 13, name: 'Forsaken Nightline',    type: 'neutral', note: 'Shared boundary garrison' },
+                { from: 6,  name: 'Shadow Custodians',     type: 'allied', note: 'Mutual defence of the western corridor' },
+              ],
+              crossRealmFactions: [
+                { from: 5,  name: 'Ember Guild Consortium', type: 'allied', note: 'Forge-fire exchange agreement' },
+              ]
+            },
+            {
+              id: 8, sigil: '☠', name: 'Void Territories', color: '#1e3a5f',
+              cx: 0.18, cy: 0.10, r: 0.08,
+              family: 'Busiris Bloodline',
+              familyType: 'prime',
+              familyDesc: 'Entropy lords who rule the Void. Claim descent from the pre-creation architects. The Busiris line thrives on dissolution.',
+              faction: 'Entropy Legions',
+              factionType: 'rival',
+              factionDesc: 'Relentless military legions fuelled by void-energy. Operate on scorched-earth doctrine with no fixed base.',
+              influence: 0.19,
+              alliances: [4, 7],
+              rivals: [0, 9, 6],
+              crossRealmFamilies: [
+                { from: 4,  name: 'Rift Claimants',        type: 'allied', note: 'Mutual entropy-rift corridor pact' },
+                { from: 11, name: 'Morningstar Line',      type: 'rival',  note: 'Void border annexation dispute' },
+              ],
+              crossRealmFactions: [
+                { from: 6,  name: 'Silent Tribunal Orders', type: 'rival', note: 'Tribunal bans on Entropy Legion incursions' },
+              ]
+            },
+            {
+              id: 9, sigil: '⬡', name: 'Nexus Core', color: '#06b6d4',
+              cx: 0.44, cy: 0.50, r: 0.06,
+              family: 'Convergence High Seat',
+              familyType: 'neutral',
+              familyDesc: 'The elected governing council of the Nexus Core. No hereditary rule — seats rotate among realm envoys.',
+              faction: 'Transit Authority Guilds',
+              factionType: 'neutral',
+              factionDesc: 'Powerful guilds managing inter-realm trade corridors, transit tolls, and passage rights across every realm.',
+              influence: 0.22,
+              alliances: [0, 1, 2, 3, 5, 7, 10, 12, 13],
+              rivals: [8, 4],
+              crossRealmFamilies: [
+                { from: 0,  name: 'Raido Royal House',     type: 'allied', note: 'Crown summit sponsor' },
+                { from: 10, name: 'Yatha Dragon Throne',   type: 'allied', note: 'Eastern transit concession holder' },
+                { from: 13, name: 'Forsaken Nightline',    type: 'neutral', note: 'Sanctuary aid corridor access' },
+              ],
+              crossRealmFactions: [
+                { from: 1,  name: 'Imperial Legion Prefectures', type: 'allied', note: 'Security escorts for nexus trade convoys' },
+              ]
+            },
+            {
+              id: 10, sigil: '✧', name: 'Yatha Realm', color: '#c084fc',
+              cx: 0.36, cy: 0.24, r: 0.07,
+              family: 'Yatha Dragon Throne',
+              familyType: 'prime',
+              familyDesc: 'Ancient eastern dragon throne. Pre-dates the Sunforge crownline. Considers itself the true dragon bloodline.',
+              faction: 'Legion Command Houses',
+              factionType: 'prime',
+              factionDesc: 'Military-aristocratic houses that lead the Yatha legions. Each house controls a quadrant of the Yatha war-grid.',
+              influence: 0.17,
+              alliances: [0, 1, 9],
+              rivals: [11, 8],
+              crossRealmFamilies: [
+                { from: 0,  name: 'Raido Royal House',     type: 'allied', note: 'Ancestral honours treaty' },
+                { from: 2,  name: 'Somnium Sovereigns',    type: 'allied', note: 'Dream-alliance intelligence sharing' },
+              ],
+              crossRealmFactions: [
+                { from: 11, name: 'Lucifer Court Regime',  type: 'rival',  note: 'Disputed Yatha eastern border claims' },
+              ]
+            },
+            {
+              id: 11, sigil: '🔱', name: 'Infernal Dominion', color: '#dc2626',
+              cx: 0.62, cy: 0.28, r: 0.08,
+              family: 'Morningstar Line',
+              familyType: 'rival',
+              familyDesc: 'Infernal nobility descended from a fallen cosmic archon. Relentlessly expansionist. Considers all neighbouring realms subject territories.',
+              faction: 'Lucifer Court Regime',
+              factionType: 'rival',
+              factionDesc: 'The iron-fisted ruling regime of the Infernal Dominion. Operates through terror, binding contracts, and annihilation threats.',
+              influence: 0.21,
+              alliances: [4, 8],
+              rivals: [0, 3, 6, 7, 10],
+              crossRealmFamilies: [
+                { from: 8,  name: 'Busiris Bloodline',     type: 'allied', note: 'Void-Infernal expansion pact' },
+                { from: 2,  name: 'Somnium Sovereigns',    type: 'rival',  note: 'Dream-realm subconscious infiltration operations' },
+              ],
+              crossRealmFactions: [
+                { from: 4,  name: 'Chrono Sentinel Bureaus', type: 'allied', note: 'Temporal blind-spot agreements' },
+              ]
+            },
+            {
+              id: 12, sigil: '🌊', name: 'Leviathan Abyss', color: '#1e40af',
+              cx: 0.68, cy: 0.68, r: 0.08,
+              family: 'Leviathan Royal Basin',
+              familyType: 'prime',
+              familyDesc: 'The royal court of the deep. Commands the sea-lanes, tidal fortresses, and under-realm passages.',
+              faction: 'Lock Warden Fleet',
+              factionType: 'prime',
+              factionDesc: 'Leviathan's naval enforcement fleet. Patrols every tidal lock, deep-sea corridor, and abyss passage.',
+              influence: 0.18,
+              alliances: [3, 9, 13],
+              rivals: [4, 11],
+              crossRealmFamilies: [
+                { from: 4,  name: 'Rift Claimants',        type: 'neutral', note: 'Shared tidal-rift boundary zones' },
+                { from: 13, name: 'Forsaken Nightline',    type: 'allied', note: 'Sanctuary sea-route treaties' },
+              ],
+              crossRealmFactions: [
+                { from: 9,  name: 'Transit Authority Guilds', type: 'allied', note: 'Undersea trade-lane concession' },
+              ]
+            },
+            {
+              id: 13, sigil: '🐵', name: 'Forsaken Kingdom', color: '#b45309',
+              cx: 0.32, cy: 0.56, r: 0.07,
+              family: 'Forsaken Nightline',
+              familyType: 'neutral',
+              familyDesc: 'The exiled dynasty. Once one of the greatest crowns, they were stripped of their realm and rebuilt in the wilderness.',
+              faction: 'Sanctuary Ward Cohorts',
+              factionType: 'neutral',
+              factionDesc: 'Independent militia and aid cohorts maintaining safety in the Forsaken Kingdom settlements and refugee corridors.',
+              influence: 0.16,
+              alliances: [5, 6, 12],
+              rivals: [8, 11],
+              crossRealmFamilies: [
+                { from: 7,  name: 'Titan Graveline',       type: 'neutral', note: 'Shared boundary garrison posts' },
+                { from: 12, name: 'Leviathan Royal Basin',  type: 'allied', note: 'Sea sanctuary access agreements' },
+              ],
+              crossRealmFactions: [
+                { from: 5,  name: 'Ember Guild Consortium', type: 'neutral', note: 'Refugee trade supply chain' },
+              ]
+            },
+          ];
+
+          /* ============================================================
+             CANVAS SETUP
+          ============================================================ */
+          var canvas   = document.getElementById('frmCanvas');
+          var mapWrap  = document.getElementById('frmMapWrap');
+          if (!canvas || !mapWrap) return;
+          var ctx      = canvas.getContext('2d');
+          var W, H;
+          var stars    = [];
+          var nebulae  = [];
+          var activeRealm = -1;
+          var filterMode = 'all';
+
+          var LINKS = [
+            [9,0],[9,1],[9,2],[9,3],[9,4],[9,5],[9,6],[9,7],[9,8],[9,10],[9,11],[9,12],[9,13],
+            [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[10,11],[11,12],[12,13],[13,8]
+          ];
+
+          function resize() {
+            W = mapWrap.offsetWidth;
+            if (!W) return;
+            H = Math.round(W * 0.52);
+            canvas.width = W;
+            canvas.height = H;
+            buildStars();
+            buildNebulae();
+            draw();
+          }
+
+          function buildStars() {
+            stars = [];
+            var n = Math.floor(W * H / 900);
+            for (var i = 0; i < n; i++) {
+              stars.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + 0.2, a: Math.random() * 0.7 + 0.3 });
+            }
+          }
+
+          function buildNebulae() {
+            nebulae = [
+              { x: 0.30, y: 0.30, rx: 0.18, ry: 0.12, color: 'rgba(99,102,241,0.07)' },
+              { x: 0.65, y: 0.50, rx: 0.20, ry: 0.14, color: 'rgba(168,85,247,0.06)' },
+              { x: 0.15, y: 0.68, rx: 0.14, ry: 0.10, color: 'rgba(239,68,68,0.05)' },
+              { x: 0.75, y: 0.25, rx: 0.15, ry: 0.10, color: 'rgba(56,189,248,0.07)' },
+              { x: 0.50, y: 0.75, rx: 0.16, ry: 0.09, color: 'rgba(16,185,129,0.05)' },
+            ];
+          }
+
+          function nxy(realm) {
+            return { x: realm.cx * W, y: realm.cy * H, r: realm.r * Math.min(W, H) };
+          }
+
+          function drawNebula(n) {
+            var x = n.x * W, y = n.y * H;
+            var rx = n.rx * W, ry = n.ry * H;
+            ctx.save();
+            ctx.scale(1, ry / rx);
+            var g = ctx.createRadialGradient(x, y * (rx / ry), 0, x, y * (rx / ry), rx);
+            g.addColorStop(0, n.color); g.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.arc(x, y * (rx / ry), rx, 0, Math.PI * 2);
+            ctx.fillStyle = g; ctx.fill(); ctx.restore();
+          }
+
+          function drawLink(a, b) {
+            var p1 = nxy(a), p2 = nxy(b);
+            var mx = (p1.x + p2.x) / 2 + (Math.random() - 0.5) * 70;
+            var my = (p1.y + p2.y) / 2 + (Math.random() - 0.5) * 50;
+            var g = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+            g.addColorStop(0, a.color + '66'); g.addColorStop(0.5, '#ffffff18'); g.addColorStop(1, b.color + '66');
+            ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.quadraticCurveTo(mx, my, p2.x, p2.y);
+            ctx.strokeStyle = g; ctx.lineWidth = 1; ctx.shadowBlur = 6; ctx.shadowColor = '#38bdf8'; ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+
+          function drawInfluenceCircle(realm, active) {
+            var p = nxy(realm);
+            var ir = realm.influence * Math.min(W, H);
+            var show = (filterMode === 'all' || filterMode === 'prime' || filterMode === 'factions');
+            if (!show) return;
+            var alpha = active ? 0.32 : 0.11;
+            var g = ctx.createRadialGradient(p.x, p.y, p.r * 0.5, p.x, p.y, ir);
+            g.addColorStop(0, realm.color + Math.round(alpha * 2.5 * 255).toString(16).padStart(2,'0'));
+            g.addColorStop(0.6, realm.color + Math.round(alpha * 1.2 * 255).toString(16).padStart(2,'0'));
+            g.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.arc(p.x, p.y, ir, 0, Math.PI * 2);
+            ctx.fillStyle = g; ctx.fill();
+            // influence border ring
+            ctx.beginPath(); ctx.arc(p.x, p.y, ir, 0, Math.PI * 2);
+            ctx.strokeStyle = realm.color + (active ? 'aa' : '44');
+            ctx.lineWidth = active ? 2 : 1;
+            ctx.setLineDash([6, 4]);
+            ctx.stroke(); ctx.setLineDash([]);
+          }
+
+          function drawCrossRealmLines(realm) {
+            if (filterMode !== 'all' && filterMode !== 'cross') return;
+            realm.alliances.forEach(function (idx) {
+              var target = REALMS[idx];
+              if (!target) return;
+              var p1 = nxy(realm), p2 = nxy(target);
+              ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = realm.color + '55'; ctx.lineWidth = 0.8; ctx.setLineDash([3, 5]);
+              ctx.stroke(); ctx.setLineDash([]);
+            });
+          }
+
+          function drawNode(realm, active) {
+            var p = nxy(realm);
+            // outer glow
+            var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2.8);
+            g.addColorStop(0, realm.color + 'bb'); g.addColorStop(0.35, realm.color + '44'); g.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.8, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+            // spiral arms
+            for (var arm = 0; arm < 3; arm++) {
+              var offset = (arm / 3) * Math.PI * 2;
+              ctx.beginPath();
+              for (var t = 0; t < Math.PI * 3; t += 0.06) {
+                var rr = (t / (Math.PI * 3)) * p.r;
+                var x = p.x + Math.cos(t + offset) * rr;
+                var y = p.y + Math.sin(t + offset) * rr * 0.55;
+                if (t === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+              }
+              ctx.strokeStyle = realm.color + '55'; ctx.lineWidth = 0.8; ctx.stroke();
+            }
+            // core
+            var core = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+            core.addColorStop(0, '#ffffff'); core.addColorStop(0.25, realm.color); core.addColorStop(1, realm.color + '00');
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = core; ctx.fill();
+            // active pulse ring
+            if (active) {
+              ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 1.6, 0, Math.PI * 2);
+              ctx.strokeStyle = realm.color; ctx.lineWidth = 2; ctx.shadowColor = realm.color; ctx.shadowBlur = 14; ctx.stroke();
+              ctx.shadowBlur = 0;
+            }
+          }
+
+          function draw() {
+            if (!W) return;
+            ctx.clearRect(0, 0, W, H);
+            // background
+            ctx.fillStyle = '#060d1a'; ctx.fillRect(0, 0, W, H);
+            // stars
+            stars.forEach(function (s) {
+              ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(255,255,255,' + s.a + ')'; ctx.fill();
+            });
+            // nebulae
+            nebulae.forEach(drawNebula);
+            // links
+            LINKS.forEach(function (pair) {
+              drawLink(REALMS[pair[0]], REALMS[pair[1]]);
+            });
+            // influence circles (back to front)
+            REALMS.forEach(function (r) { drawInfluenceCircle(r, r.id === activeRealm); });
+            // cross-realm dashed lines for active
+            if (activeRealm >= 0) drawCrossRealmLines(REALMS[activeRealm]);
+            // nodes
+            REALMS.forEach(function (r) { drawNode(r, r.id === activeRealm); });
+          }
+
+          /* ============================================================
+             DETAIL PANEL
+          ============================================================ */
+          var detailPanel = document.getElementById('frmDetailPanel');
+          var detailInner = document.getElementById('frmDetailInner');
+
+          var INFLUENCE_TYPE_LABEL = { prime: 'Prime Ruling', allied: 'Allied House', rival: 'Rival / Hostile', neutral: 'Neutral Presence' };
+          var INFLUENCE_TYPE_COLOR = { prime: '#38bdf8', allied: '#a855f7', rival: '#ef4444', neutral: '#10b981' };
+
+          function openRealmPanel(realm) {
+            activeRealm = realm.id;
+            // update buttons
+            document.querySelectorAll('.frm-realm-btn').forEach(function (b) {
+              b.classList.toggle('active', Number(b.dataset.realm) === realm.id);
+            });
+            draw();
+
+            var allyNames = realm.alliances.map(function (i) { return REALMS[i] ? REALMS[i].sigil + ' ' + REALMS[i].name : ''; }).join(', ');
+            var rivalNames = realm.rivals.map(function (i) { return REALMS[i] ? REALMS[i].sigil + ' ' + REALMS[i].name : ''; }).join(', ') || 'None declared';
+
+            var crossFamiliesHtml = realm.crossRealmFamilies.map(function (cf) {
+              var src = REALMS[cf.from];
+              return '<div class="frm-cross-item">' +
+                '<span class="frm-cross-badge" style="color:' + (INFLUENCE_TYPE_COLOR[cf.type] || '#aaa') + '">' + INFLUENCE_TYPE_LABEL[cf.type] + '</span>' +
+                '<strong>' + cf.name + '</strong>' +
+                (src ? '<span class="frm-cross-from">from ' + src.sigil + ' ' + src.name + '</span>' : '') +
+                '<p>' + cf.note + '</p>' +
+                '</div>';
+            }).join('');
+
+            var crossFactionsHtml = realm.crossRealmFactions.map(function (cf) {
+              var src = REALMS[cf.from];
+              return '<div class="frm-cross-item">' +
+                '<span class="frm-cross-badge" style="color:' + (INFLUENCE_TYPE_COLOR[cf.type] || '#aaa') + '">' + INFLUENCE_TYPE_LABEL[cf.type] + '</span>' +
+                '<strong>' + cf.name + '</strong>' +
+                (src ? '<span class="frm-cross-from">from ' + src.sigil + ' ' + src.name + '</span>' : '') +
+                '<p>' + cf.note + '</p>' +
+                '</div>';
+            }).join('');
+
+            detailInner.innerHTML =
+              '<div class="frm-detail-header" style="border-color:' + realm.color + '">' +
+                '<span class="frm-detail-sigil" style="color:' + realm.color + '">' + realm.sigil + '</span>' +
+                '<div>' +
+                  '<h3 class="frm-detail-title">' + realm.name + '</h3>' +
+                  '<span class="frm-detail-badge" style="background:' + realm.color + '22;color:' + realm.color + '">Realm ' + (realm.id + 1) + ' of 14</span>' +
+                '</div>' +
+              '</div>' +
+
+              '<div class="frm-detail-section">' +
+                '<h4 class="frm-ds-title">👑 Ruling Family</h4>' +
+                '<div class="frm-family-card" style="border-color:' + (INFLUENCE_TYPE_COLOR[realm.familyType] || '#38bdf8') + '">' +
+                  '<div class="frm-family-name">' + realm.family +
+                    '<span class="frm-inline-badge" style="background:' + (INFLUENCE_TYPE_COLOR[realm.familyType]) + '22;color:' + (INFLUENCE_TYPE_COLOR[realm.familyType]) + '">' + INFLUENCE_TYPE_LABEL[realm.familyType] + '</span>' +
+                  '</div>' +
+                  '<p class="frm-family-desc">' + realm.familyDesc + '</p>' +
+                '</div>' +
+              '</div>' +
+
+              '<div class="frm-detail-section">' +
+                '<h4 class="frm-ds-title">🛡️ Active Faction</h4>' +
+                '<div class="frm-family-card" style="border-color:' + (INFLUENCE_TYPE_COLOR[realm.factionType] || '#a855f7') + '">' +
+                  '<div class="frm-family-name">' + realm.faction +
+                    '<span class="frm-inline-badge" style="background:' + (INFLUENCE_TYPE_COLOR[realm.factionType]) + '22;color:' + (INFLUENCE_TYPE_COLOR[realm.factionType]) + '">' + INFLUENCE_TYPE_LABEL[realm.factionType] + '</span>' +
+                  '</div>' +
+                  '<p class="frm-family-desc">' + realm.factionDesc + '</p>' +
+                '</div>' +
+              '</div>' +
+
+              '<div class="frm-detail-section">' +
+                '<h4 class="frm-ds-title">🔵 Influence Radius</h4>' +
+                '<div class="frm-influence-bar-wrap">' +
+                  '<div class="frm-influence-bar" style="width:' + Math.round(realm.influence * 400) + '%;background:' + realm.color + '"></div>' +
+                '</div>' +
+                '<p class="frm-influence-label">' + Math.round(realm.influence * 100) + '% territorial coverage</p>' +
+              '</div>' +
+
+              '<div class="frm-detail-section">' +
+                '<h4 class="frm-ds-title">🤝 Allied Realms</h4>' +
+                '<p class="frm-small-text">' + (allyNames || 'None') + '</p>' +
+              '</div>' +
+
+              '<div class="frm-detail-section">' +
+                '<h4 class="frm-ds-title">⚔️ Rival Realms</h4>' +
+                '<p class="frm-small-text frm-rival-text">' + rivalNames + '</p>' +
+              '</div>' +
+
+              (crossFamiliesHtml ? '<div class="frm-detail-section"><h4 class="frm-ds-title">🌐 Cross-Realm Families Present</h4>' + crossFamiliesHtml + '</div>' : '') +
+              (crossFactionsHtml ? '<div class="frm-detail-section"><h4 class="frm-ds-title">⚡ Cross-Realm Factions Active</h4>' + crossFactionsHtml + '</div>' : '') +
+
+              '<div class="frm-detail-close-row">' +
+                '<button class="btn-outline frm-close-btn" id="frmClosePanelBtn">✕ Close</button>' +
+              '</div>';
+
+            detailPanel.classList.add('open');
+
+            var closeBtn = document.getElementById('frmClosePanelBtn');
+            if (closeBtn) closeBtn.addEventListener('click', function () {
+              activeRealm = -1;
+              document.querySelectorAll('.frm-realm-btn').forEach(function (b) { b.classList.remove('active'); });
+              detailPanel.classList.remove('open');
+              draw();
+            });
+          }
+
+          /* ============================================================
+             REALM BUTTON CLICK HANDLERS
+          ============================================================ */
+          document.querySelectorAll('.frm-realm-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              var idx = Number(btn.dataset.realm);
+              var realm = REALMS[idx];
+              if (!realm) return;
+              openRealmPanel(realm);
+              // scroll panel into view on mobile
+              if (window.innerWidth < 900) {
+                detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            });
+          });
+
+          /* ============================================================
+             FILTER CHIPS
+          ============================================================ */
+          var filterBar = document.getElementById('frmFilterBar');
+          if (filterBar) {
+            filterBar.querySelectorAll('.frm-chip').forEach(function (chip) {
+              chip.addEventListener('click', function () {
+                filterBar.querySelectorAll('.frm-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                filterMode = chip.dataset.filter;
+                draw();
+              });
+            });
+          }
+
+          /* ============================================================
+             RESIZE & INIT
+          ============================================================ */
+          var resizeObs = window.ResizeObserver
+            ? new ResizeObserver(function () { resize(); draw(); })
+            : null;
+          if (resizeObs) resizeObs.observe(mapWrap);
+          window.addEventListener('resize', function () { resize(); draw(); });
+          resize();
+
+          // Re-render when section becomes visible
+          var sectionEl = document.getElementById('families-realm-map');
+          if (sectionEl) {
+            var mutObs = new MutationObserver(function () {
+              if (sectionEl.classList.contains('active') && (!W || W !== mapWrap.offsetWidth)) {
+                resize();
+              }
+            });
+            mutObs.observe(sectionEl, { attributes: true, attributeFilter: ['class'] });
+          }
+
+        })();
+        </script>
+      </section>
+      <!-- ===== END FAMILIES REALM POWER MAP ===== -->
 
       <section id="families-family-trees" class="content-section">
         <p class="eyebrow">Families &amp; Factions Dashboard</p>
         <h2 class="section-title">Family Trees</h2>
-        <p class="section-sub">Family tree content removed as requested.</p>
+        <p class="section-sub">A galactic-style lineage map plotting the major families and faction blocs directly on each house node.</p>
+
+        <div class="gmap-legend">
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#38bdf8;box-shadow:0 0 6px #38bdf8;"></span>Prime Bloodline</span>
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#a855f7;box-shadow:0 0 6px #a855f7;"></span>Allied House</span>
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#ef4444;box-shadow:0 0 6px #ef4444;"></span>Rival House</span>
+          <span class="gmap-legend-item"><span class="gmap-dot" style="background:#10b981;box-shadow:0 0 6px #10b981;"></span>Neutral Branch</span>
+          <span class="gmap-legend-item"><span class="gmap-line"></span>Lineage Link</span>
+        </div>
+
+        <div class="gmap-container" id="familyTreeMapWrap">
+          <canvas id="familyTreeCanvas"></canvas>
+
+          <div class="gmap-labels family-tree-labels" id="familyTreeLabels"></div>
+
+          <div class="gmap-runes" id="familyTreeRunes">
+            <span class="gmap-rune" style="left:30%;top:25%;animation-delay:0s;">ᚠ</span>
+            <span class="gmap-rune" style="left:55%;top:18%;animation-delay:1.2s;">ᚢ</span>
+            <span class="gmap-rune" style="left:75%;top:55%;animation-delay:0.6s;">ᚦ</span>
+            <span class="gmap-rune" style="left:18%;top:80%;animation-delay:1.8s;">ᚨ</span>
+            <span class="gmap-rune" style="left:48%;top:80%;animation-delay:0.3s;">ᚱ</span>
+            <span class="gmap-rune" style="left:88%;top:22%;animation-delay:2.1s;">ᚲ</span>
+            <span class="gmap-rune" style="left:38%;top:68%;animation-delay:0.9s;">ᚷ</span>
+            <span class="gmap-rune" style="left:8%;top:30%;animation-delay:1.5s;">ᚹ</span>
+          </div>
+        </div>
+
+        <script>
+        (function () {
+          var canvas = document.getElementById('familyTreeCanvas');
+          var section = document.getElementById('families-family-trees');
+          var labelsWrap = document.getElementById('familyTreeLabels');
+          if (!canvas) return;
+          var ctx = canvas.getContext('2d');
+
+          // Nodes: [cx%, cy%, radius%, color]
+          var nodes = [
+            [0.50, 0.08, 0.09, '#38bdf8'],
+            [0.78, 0.16, 0.07, '#f59e0b'],
+            [0.88, 0.38, 0.08, '#a855f7'],
+            [0.76, 0.58, 0.08, '#10b981'],
+            [0.54, 0.78, 0.08, '#1f2937'],
+            [0.28, 0.72, 0.08, '#ef4444'],
+            [0.12, 0.58, 0.07, '#7c3aed'],
+            [0.06, 0.32, 0.07, '#d4af37'],
+            [0.18, 0.10, 0.08, '#1e3a5f'],
+            [0.44, 0.50, 0.06, '#06b6d4'],
+            [0.36, 0.24, 0.07, '#c084fc'],
+            [0.62, 0.28, 0.08, '#dc2626'],
+            [0.68, 0.68, 0.08, '#1e40af'],
+            [0.32, 0.56, 0.07, '#b45309']
+          ];
+
+          // Labels align to each node index: [sigil, family, faction]
+          var familyLabels = [
+            ['⚜', 'Raido Royal House', 'Dragon Royal Family'],
+            ['👑', 'Sunforge Crownline', 'Imperial Legion Prefectures'],
+            ['☽', 'Somnium Sovereigns', 'Mind-Weaver Houses'],
+            ['✝', 'Anchor Custodians', 'Church Defense Command'],
+            ['🌀', 'Rift Claimants', 'Chrono Sentinel Bureaus'],
+            ['🔥', 'Phoenix Ember Line', 'Ember Guild Consortium'],
+            ['🕯', 'Shadow Custodians', 'Silent Tribunal Orders'],
+            ['⚒', 'Titan Graveline', 'Forge Council Assemblies'],
+            ['☠', 'Busiris Bloodline', 'Entropy Legions'],
+            ['⬡', 'Convergence High Seat', 'Transit Authority Guilds'],
+            ['🐉', 'Yatha Dragon Throne', 'Legion Command Houses'],
+            ['👁', 'Morningstar Line', 'Lucifer Court Regime'],
+            ['🌊', 'Leviathan Royal Basin', 'Lock Warden Fleet'],
+            ['🐵', 'Forsaken Nightline', 'Sanctuary Ward Cohorts']
+          ];
+
+          var links = [
+            [9, 0], [9, 1], [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 10], [9, 11], [9, 12], [9, 13],
+            [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [10, 11], [11, 12], [12, 13], [13, 8]
+          ];
+
+          var stars = [];
+          var nebulae = [];
+          var W, H;
+
+          function resize() {
+            var cont = canvas.parentElement;
+            W = cont.offsetWidth;
+            if (!W) return;
+            H = Math.round(W * 0.52);
+            canvas.width = W;
+            canvas.height = H;
+            buildStars();
+            buildNebulae();
+            renderLabels();
+            draw();
+          }
+
+          function buildStars() {
+            stars = [];
+            var count = Math.floor(W * H / 800);
+            for (var i = 0; i < count; i++) {
+              stars.push({
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: Math.random() * 1.2 + 0.2,
+                a: Math.random() * 0.7 + 0.3
+              });
+            }
+          }
+
+          function buildNebulae() {
+            nebulae = [
+              { x: 0.3, y: 0.3, rx: 0.18, ry: 0.12, color: 'rgba(99,102,241,0.08)' },
+              { x: 0.65, y: 0.5, rx: 0.20, ry: 0.14, color: 'rgba(168,85,247,0.07)' },
+              { x: 0.15, y: 0.65, rx: 0.14, ry: 0.10, color: 'rgba(239,68,68,0.06)' },
+              { x: 0.75, y: 0.25, rx: 0.15, ry: 0.10, color: 'rgba(56,189,248,0.07)' },
+              { x: 0.5, y: 0.75, rx: 0.16, ry: 0.09, color: 'rgba(16,185,129,0.06)' }
+            ];
+          }
+
+          function nxy(node) {
+            return { x: node[0] * W, y: node[1] * H, r: node[2] * Math.min(W, H) };
+          }
+
+          function drawNebula(n) {
+            var x = n.x * W;
+            var y = n.y * H;
+            var rx = n.rx * W;
+            var ry = n.ry * H;
+            var grad = ctx.createRadialGradient(x, y, 0, x, y, Math.max(rx, ry));
+            grad.addColorStop(0, n.color);
+            grad.addColorStop(1, 'transparent');
+            ctx.save();
+            ctx.scale(1, ry / rx);
+            ctx.beginPath();
+            ctx.arc(x, y * (rx / ry), rx, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.restore();
+          }
+
+          function drawLink(a, b) {
+            var p1 = nxy(a), p2 = nxy(b);
+            var mx = (p1.x + p2.x) / 2 + (Math.random() - 0.5) * 80;
+            var my = (p1.y + p2.y) / 2 + (Math.random() - 0.5) * 60;
+            var grad = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+            grad.addColorStop(0, a[3] + '88');
+            grad.addColorStop(0.5, '#ffffff22');
+            grad.addColorStop(1, b[3] + '88');
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.quadraticCurveTo(mx, my, p2.x, p2.y);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 1.2;
+            ctx.shadowColor = '#38bdf8';
+            ctx.shadowBlur = 8;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+
+          function drawNode(node) {
+            var p = nxy(node);
+
+            var glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2.5);
+            glow.addColorStop(0, node[3] + 'cc');
+            glow.addColorStop(0.3, node[3] + '44');
+            glow.addColorStop(1, 'transparent');
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = glow;
+            ctx.fill();
+
+            for (var arm = 0; arm < 3; arm++) {
+              var offset = (arm / 3) * Math.PI * 2;
+              ctx.beginPath();
+              for (var t = 0; t < Math.PI * 3; t += 0.05) {
+                var r = (t / (Math.PI * 3)) * p.r;
+                var x = p.x + Math.cos(t + offset) * r;
+                var y = p.y + Math.sin(t + offset) * r * 0.55;
+                if (t === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+              }
+              ctx.strokeStyle = node[3] + '55';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+
+            var core = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+            core.addColorStop(0, '#ffffff');
+            core.addColorStop(0.2, node[3]);
+            core.addColorStop(1, node[3] + '00');
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = core;
+            ctx.fill();
+          }
+
+          function renderLabels() {
+            if (!labelsWrap) return;
+            labelsWrap.innerHTML = '';
+            familyLabels.forEach(function (label, index) {
+              var node = nodes[index];
+              if (!node) return;
+              var item = document.createElement('div');
+              item.className = 'gmap-label family-tree-label';
+              item.style.left = (node[0] * 100) + '%';
+              item.style.top = (node[1] * 100) + '%';
+              item.innerHTML =
+                '<span class="gmap-label-sigil">' + label[0] + '</span>' +
+                '<span class="gmap-label-name">' + label[1] + '</span>' +
+                '<span class="gmap-label-sub">' + label[2] + '</span>';
+              labelsWrap.appendChild(item);
+            });
+          }
+
+          function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            var bg = ctx.createLinearGradient(0, 0, 0, H);
+            bg.addColorStop(0, '#030712');
+            bg.addColorStop(0.35, '#020617');
+            bg.addColorStop(1, '#000814');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            stars.forEach(function (s) {
+              ctx.globalAlpha = s.a;
+              ctx.beginPath();
+              ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+
+            nebulae.forEach(drawNebula);
+
+            links.forEach(function (pair) {
+              drawLink(nodes[pair[0]], nodes[pair[1]]);
+            });
+
+            nodes.forEach(drawNode);
+          }
+
+          window.addEventListener('resize', function () {
+            if (!section || section.classList.contains('active')) resize();
+          });
+
+          if (section) {
+            var observer = new MutationObserver(function () {
+              if (section.classList.contains('active')) resize();
+            });
+            observer.observe(section, { attributes: true, attributeFilter: ['class'] });
+          }
+
+          resize();
+        })();
+        </script>
+
         <div style="text-align:center;margin-top:2rem;"><a href="#families" class="btn-outline nav-link" data-section="families">Back to Families Hub</a></div>
       </section>
 
@@ -7561,7 +8565,5 @@ Hero render of [weapon], forged from divine energy + alien technology + forbidde
   <div id="aiToastRegion" class="ai-toast-region" aria-live="polite" aria-atomic="true"></div>
 
   <script src="js/app.js"></script>
-  <script src="js/studio.js"></script>
-  <script src="js/ai-generator-lite.js"></script>
 </body>
 </html>

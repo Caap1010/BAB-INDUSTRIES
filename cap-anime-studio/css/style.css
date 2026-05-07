@@ -18,6 +18,34 @@ html, body {
   height: 100%;
 }
 
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -48px;
+  z-index: 1200;
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #38bdf8;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0f172a; }
@@ -232,6 +260,11 @@ html, body {
   background-color: #0f1f3d;
   color: #38bdf8;
   border-left-color: #38bdf8;
+}
+
+.nav-item:focus-visible {
+  background-color: #0f1f3d;
+  color: #e2e8f0;
 }
 
 .nav-icon { font-size: 1rem; width: 1.25rem; text-align: center; flex-shrink: 0; }
@@ -617,6 +650,11 @@ a.info-card:active {
   inset: 0;
   pointer-events: none;
 }
+
+.gmap-labels.interactive {
+  pointer-events: auto;
+}
+
 .gmap-label {
   position: absolute;
   display: flex;
@@ -643,6 +681,40 @@ a.info-card:active {
   color: #64748b;
   text-shadow: 0 0 6px #0a0f1e;
   white-space: nowrap;
+}
+
+.gmap-label-link {
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.gmap-label-link .gmap-label-name {
+  padding: 0.12rem 0.45rem;
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 999px;
+  background: rgba(2,6,23,0.55);
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.gmap-label-link:hover .gmap-label-name,
+.gmap-label-link:focus-visible .gmap-label-name {
+  color: #38bdf8;
+  border-color: rgba(56,189,248,0.72);
+  transform: translateY(-1px);
+}
+
+.family-tree-labels .family-tree-label {
+  max-width: 160px;
+}
+
+.family-tree-labels .family-tree-label .gmap-label-name {
+  font-size: 0.66rem;
+  letter-spacing: 0.01em;
+}
+
+.family-tree-labels .family-tree-label .gmap-label-sub {
+  font-size: 0.54rem;
+  color: #8aa2c3;
 }
 
 .gmap-runes {
@@ -4087,4 +4159,249 @@ html.light-theme .btn-outline:hover {
 
 @media (min-width: 1200px) {
   .main-content { max-width: calc(100vw - 240px); }
+}
+
+/* =====================================================
+   FAMILIES REALM POWER MAP
+   ===================================================== */
+
+/* Filter chips */
+.frm-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0.5rem 0 1.25rem;
+}
+.frm-chip {
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.frm-chip:hover { border-color: #38bdf8; color: #e2e8f0; }
+.frm-chip.active { background: #0ea5e9; border-color: #38bdf8; color: #fff; }
+
+/* Legend extra line */
+.frm-legend { margin-bottom: 0.75rem; }
+.frm-legend svg { display: inline; }
+
+/* Layout: two-column on wide, stacked on mobile */
+.frm-layout {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+.frm-map-outer {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Map shell */
+.frm-map-shell {
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #060d1a;
+  border: 1px solid #1e293b;
+  box-shadow: 0 0 40px rgba(56,189,248,0.06);
+}
+.frm-map-shell canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Realm buttons overlay */
+.frm-realm-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.frm-realm-btn {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(6,13,26,0.72);
+  border: 1px solid #1e3a5f;
+  border-radius: 8px;
+  padding: 4px 7px;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  z-index: 2;
+}
+.frm-realm-btn:hover {
+  background: rgba(14,165,233,0.18);
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56,189,248,0.25);
+}
+.frm-realm-btn.active {
+  background: rgba(14,165,233,0.28);
+  border-color: #38bdf8;
+  box-shadow: 0 0 18px rgba(56,189,248,0.45);
+}
+.frm-realm-sigil {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.frm-realm-name {
+  font-size: 0.58rem;
+  color: #cbd5e1;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Detail panel */
+.frm-detail-panel {
+  width: 320px;
+  flex-shrink: 0;
+  background: #0a1628;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  overflow-y: auto;
+  max-height: 70vh;
+  transition: opacity 0.25s, transform 0.25s;
+  opacity: 0;
+  transform: translateX(12px);
+  pointer-events: none;
+}
+.frm-detail-panel.open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.frm-detail-inner {
+  padding: 1.1rem 1rem;
+}
+.frm-detail-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  color: #475569;
+  text-align: center;
+}
+.frm-placeholder-icon { font-size: 2.5rem; }
+
+/* Panel content */
+.frm-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 2px solid transparent;
+}
+.frm-detail-sigil { font-size: 2.2rem; line-height: 1; }
+.frm-detail-title { font-size: 1.05rem; font-weight: 700; color: #f1f5f9; margin: 0 0 0.2rem; }
+.frm-detail-badge {
+  font-size: 0.68rem;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.frm-detail-section { margin-bottom: 1rem; }
+.frm-ds-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.45rem;
+}
+
+.frm-family-card {
+  background: #0f172a;
+  border-left: 3px solid #38bdf8;
+  border-radius: 6px;
+  padding: 0.55rem 0.7rem;
+}
+.frm-family-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.frm-family-desc { font-size: 0.78rem; color: #94a3b8; line-height: 1.5; }
+
+.frm-inline-badge {
+  font-size: 0.62rem;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-weight: 600;
+}
+
+/* Influence bar */
+.frm-influence-bar-wrap {
+  background: #1e293b;
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 0.3rem;
+}
+.frm-influence-bar { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
+.frm-influence-label { font-size: 0.72rem; color: #64748b; }
+
+/* Small text / rival text */
+.frm-small-text { font-size: 0.78rem; color: #94a3b8; }
+.frm-rival-text { color: #f87171; }
+
+/* Cross-realm items */
+.frm-cross-item {
+  background: #0f172a;
+  border-radius: 6px;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.45rem;
+}
+.frm-cross-item strong { display: block; font-size: 0.82rem; color: #e2e8f0; margin-bottom: 0.1rem; }
+.frm-cross-item p { font-size: 0.75rem; color: #64748b; margin: 0; }
+.frm-cross-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.frm-cross-from {
+  font-size: 0.68rem;
+  color: #475569;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.frm-detail-close-row { text-align: right; margin-top: 0.75rem; }
+.frm-close-btn { font-size: 0.78rem; padding: 0.3rem 0.75rem; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .frm-layout { flex-direction: column; }
+  .frm-detail-panel { width: 100%; max-height: none; transform: translateY(8px); }
+  .frm-detail-panel.open { transform: translateY(0); }
+}
+@media (max-width: 540px) {
+  .frm-realm-btn { padding: 2px 4px; }
+  .frm-realm-sigil { font-size: 0.75rem; }
+  .frm-realm-name { font-size: 0.48rem; max-width: 60px; }
 }
